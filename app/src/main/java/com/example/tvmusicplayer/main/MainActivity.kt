@@ -10,13 +10,27 @@ import com.example.tvmusicplayer.R
 
 class MainActivity : AppCompatActivity() {
 
+    private var mToolbar : Toolbar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         
-        val toolbar : Toolbar = findViewById(R.id.main_toolbar)
-        toolbar.title = ""
-        setSupportActionBar(toolbar)
+        initView()
+        setActionBar()
+    }
+    
+    
+    fun initView(){
+        mToolbar = findViewById(R.id.main_toolbar)
+    }
+    
+    fun setActionBar(){
+        mToolbar?.title = ""
+        setSupportActionBar(mToolbar)
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setHomeAsUpIndicator(R.drawable.ic_navi)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
