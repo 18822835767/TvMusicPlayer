@@ -22,11 +22,12 @@
             app:tabTextColor="#88FFFFFF"
             app:tabSelectedTextColor="@color/white"
             app:tabIndicatorHeight="0dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            app:tabTextAppearance="@style/tab_text_size">
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="我的"/>
+                android:text="我的" />
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
