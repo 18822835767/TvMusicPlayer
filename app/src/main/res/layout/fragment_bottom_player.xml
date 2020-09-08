@@ -5,6 +5,11 @@
     android:layout_height="wrap_content"
     tools:context=".bottomPlayer.BottomPlayerFragment">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#696969"/>
+    
     <ImageView
         android:id="@+id/music_picture"
         android:layout_width="50dp"
