@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context=".main.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -35,5 +34,12 @@
         </com.google.android.material.tabs.TabLayout>
         
     </androidx.appcompat.widget.Toolbar>
-    
-</LinearLayout>
+
+    <fragment
+        android:id="@+id/bottom_player"
+        android:name="com.example.tvmusicplayer.bottomPlayer.BottomPlayerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
