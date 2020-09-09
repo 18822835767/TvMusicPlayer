@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.adapter.UserAdapter
 
 class UserFragment : Fragment() {
     
@@ -30,5 +32,17 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mRecyclerView = view.findViewById(R.id.recycler_view)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        
+        val userText = mutableListOf<String>()
+        userText.add("本地音乐")
+        userText.add("下载管理")
+        val adapter : UserAdapter = UserAdapter(userText,R.layout.user_item)
+        mRecyclerView.adapter = adapter
+        val manager = LinearLayoutManager(context)
+        mRecyclerView.layoutManager = manager
     }
 }
