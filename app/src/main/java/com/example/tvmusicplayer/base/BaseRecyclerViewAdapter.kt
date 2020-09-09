@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 
-abstract class BaseRecyclerViewAdapter<T>(private var data: List<T>, private var itemLayoutId: Int)
+abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private var itemLayoutId: Int)
     : RecyclerView.Adapter<CommonViewHolder>() {
 
     companion object {
@@ -24,7 +24,7 @@ abstract class BaseRecyclerViewAdapter<T>(private var data: List<T>, private var
            return CommonViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.footer_view,
                parent,false))
        }else{
-           var view : View = LayoutInflater.from(parent.context).inflate(itemLayoutId,parent,
+           val view : View = LayoutInflater.from(parent.context).inflate(itemLayoutId,parent,
                false)
            return CommonViewHolder(view)
        }
