@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.recommend.RecommendFragment
 import com.example.tvmusicplayer.user.UserFragment
 import com.google.android.material.tabs.TabLayout
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     
     fun initData(){
         fragments.add(UserFragment())
-        fragments.add(UserFragment())
+        fragments.add(RecommendFragment())
 
         viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager,
             BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

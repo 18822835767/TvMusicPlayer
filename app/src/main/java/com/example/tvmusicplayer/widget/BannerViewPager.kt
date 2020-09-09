@@ -285,9 +285,6 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val v = mViews[position]
-            val parent = v.parent as ViewGroup
-            parent?.removeAllViews()
             container.addView(mViews[position])
             return mViews[position]
         }
