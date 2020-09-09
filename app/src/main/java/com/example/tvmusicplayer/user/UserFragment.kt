@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.UserAdapter
+import com.example.tvmusicplayer.util.Constant
 
 class UserFragment : Fragment() {
     
@@ -38,8 +39,8 @@ class UserFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         
         val userText = mutableListOf<String>()
-        userText.add("本地音乐")
-        userText.add("下载管理")
+        userText.add(Constant.LOCAL_MUSIC)
+        userText.add(Constant.DOWNLOAD_MANAGER)
         val adapter : UserAdapter = UserAdapter(userText,R.layout.user_item)
         mRecyclerView.adapter = adapter
         val manager = LinearLayoutManager(context)

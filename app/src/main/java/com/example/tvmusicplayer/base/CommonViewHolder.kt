@@ -29,7 +29,7 @@ class CommonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
     
     fun setImageResource(viewId : Int,resId : Int) : CommonViewHolder{
-        val imageView : ImageView = getView<ImageView>(resId) as ImageView
+        val imageView : ImageView = getView<ImageView>(viewId) as ImageView
         imageView.setImageResource(resId)
         return this
     }

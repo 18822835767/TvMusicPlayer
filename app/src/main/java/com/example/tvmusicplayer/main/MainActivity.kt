@@ -50,12 +50,9 @@ class MainActivity : AppCompatActivity() {
                 return fragments.size
             }
         }
-
+        //设置联动
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(viewPager))
-        
-//        tabLayout.setupWithViewPager(viewPager)
-        
     }
     
     fun setActionBar(){
