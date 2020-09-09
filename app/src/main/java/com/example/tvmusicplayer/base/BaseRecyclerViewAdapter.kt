@@ -17,7 +17,7 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private v
     /**
      * 表示是否底部有类似"加载更多"的东西.
      * */
-    private var showBottom: Boolean = false
+    protected var showBottom: Boolean = false
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder {
        if(TYPE_BOTTOM == viewType){
@@ -54,10 +54,6 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private v
         }else{
             return TYPE_OTHER
         }
-    }
-    
-    fun setShowBottom(showBottom : Boolean){
-        this.showBottom = showBottom
     }
     
     fun setDatas(datas : List<T>){
