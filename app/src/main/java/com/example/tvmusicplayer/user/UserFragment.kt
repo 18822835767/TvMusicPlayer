@@ -40,6 +40,7 @@ class UserFragment : Fragment() {
         
         val userText = mutableListOf<String>()
         userText.add(Constant.LOCAL_MUSIC)
+        userText.add(Constant.MY_SONG_LIST)
         userText.add(Constant.DOWNLOAD_MANAGER)
         val adapter : UserAdapter = UserAdapter(userText,R.layout.user_item)
         mRecyclerView.adapter = adapter
