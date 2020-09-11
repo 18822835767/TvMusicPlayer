@@ -1,5 +1,6 @@
 package com.example.tvmusicplayer.adapter
 
+import android.widget.BaseAdapter
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.base.CommonViewHolder
