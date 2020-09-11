@@ -1,2 +1,3 @@
 rootProject.name='TvMusicPlayer'
 include ':app'
+include ':repository'
