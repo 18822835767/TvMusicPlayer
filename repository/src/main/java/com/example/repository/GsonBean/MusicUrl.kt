@@ -1,9 +1,10 @@
 package com.example.repository.GsonBean
 
 /**
- * 接口:baseUrl/song/url?id=191528,191527
+ * 获取音乐url接口:baseUrl/song/url?id=191528,191527
+ * Gson解析的bean类.
  * */
-class MusicBean {
+class MusicUrl {
     var data : MutableList<Data>? = null
     var code : Int? = null
     
