@@ -64,11 +64,11 @@
             android:layout_height="0dp"
             android:layout_weight="1">
             
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.example.tvmusicplayer.widget.RotationCircleImage
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center"
-                android:src="@drawable/album_view"
+                android:src="@drawable/test"
                 android:scaleType="centerCrop"
                 app:civ_border_width="35dp"
                 app:civ_border_color="@color/black"/>

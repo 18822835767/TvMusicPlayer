@@ -1,9 +1,11 @@
 package com.example.tvmusicplayer.detail
 
+import android.animation.FloatEvaluator
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tvmusicplayer.R
 
