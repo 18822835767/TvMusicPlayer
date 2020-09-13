@@ -1,6 +1,7 @@
 package com.example.tvmusicplayer.widget
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
@@ -159,6 +160,21 @@ class LrcView : View {
             }
         }
         return lryList
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        //得到中心的Y坐标
+        val centerY = (measuredHeight + textBounds.height()) / 2 //?
+        //如果歌词列表是空的，那么就提示无歌词
+        if(lryList.isEmpty()){
+            canvas?.drawText(DEFAUKT_TEXT,viewWidth - currentPaint.measureText(DEFAUKT_TEXT),
+                centerY.toFloat(),currentPaint)
+        }
+        
+        //要高亮显示的歌词文本
+        var currentLrc = lryList[currentLine].text
+        //要高亮显示的歌词文本的X坐标
+        var currentX = (viewWidth - currentPaint.measureText(currentLrc)) / 2
     }
 
     fun reset() {
