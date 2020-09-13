@@ -1,11 +1,18 @@
 package com.example.tvmusicplayer.main
 
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Scroller
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -13,12 +20,14 @@ import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.recommend.RecommendFragment
 import com.example.tvmusicplayer.user.UserFragment
 import com.google.android.material.tabs.TabLayout
+import java.util.concurrent.CopyOnWriteArrayList
 
 class MainActivity : AppCompatActivity() {
 
     private var toolbar : Toolbar? = null
     private lateinit var viewPager : ViewPager
     private lateinit var tabLayout : TabLayout
+    private lateinit var drawerLyout : DrawerLayout
     private var fragments = mutableListOf<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.main_toolbar)
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tab_layout)
+        drawerLyout = findViewById(R.id.drawer_layout)
     }
     
     fun initData(){
@@ -72,6 +82,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.search -> Toast.makeText(this,"搜索",Toast.LENGTH_SHORT).show()
+            android.R.id.home -> drawerLyout.openDrawer(GravityCompat.START)
         }        
         return true
     }

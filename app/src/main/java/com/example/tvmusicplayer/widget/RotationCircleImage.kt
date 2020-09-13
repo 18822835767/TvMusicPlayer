@@ -51,6 +51,4 @@ class RotationCircleImage : CircleImageView {
             }
         }
     }
-    
-    
 }
