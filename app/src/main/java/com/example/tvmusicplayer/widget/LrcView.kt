@@ -35,12 +35,12 @@ class LrcView : View {
     /**
      * 宽度.
      * */
-    private var viewWidth: Int = 0
+    private var viewWidth: Int = 200
 
     /**
      * 歌词界面的高度.
      * */
-    private var lryHeight: Int = 0
+    private var lrcHeight: Int = 0
 
     /**
      * 记录展示多少行.
@@ -77,15 +77,15 @@ class LrcView : View {
     /**
      * 常规字体的画笔.
      * */
-    private var normalPaint= Paint()
+    private var normalPaint = Paint()
 
     /**
      * 高亮行的画笔.
      * */
     private var currentPaint: Paint = Paint()
-    
-    private var scroller : Scroller? = null 
-    
+
+    private var scroller: Scroller? = null
+
     constructor(context: Context?) : super(context) {
         initData()
     }
@@ -99,20 +99,80 @@ class LrcView : View {
         initData()
     }
 
-    private fun initData(){
+    private fun initData() {
+        scroller = Scroller(context)
+
+        lrcHeight = ((textSize + dividerHeight) * rows + 5).toInt()
+
         //初始化画笔
         normalPaint = Paint()
         currentPaint = Paint()
-        
+
         normalPaint.textSize = textSize
         normalPaint.color = Color.WHITE
         normalPaint.isAntiAlias = true
         currentPaint.textSize = textSize
         currentPaint.color = Color.GREEN
         currentPaint.isAntiAlias = true
-        
-        currentPaint .getTextBounds(DEFAUKT_TEXT,0, DEFAUKT_TEXT.length,textBounds)
+
+        currentPaint.getTextBounds(DEFAUKT_TEXT, 0, DEFAUKT_TEXT.length, textBounds)
         maxScroll = (textBounds.height() + dividerHeight).toInt()
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec) //?
+        //重新设置View的高度
+        val measureHeightSpec = MeasureSpec.makeMeasureSpec(lrcHeight, MeasureSpec.AT_MOST)
+        super.onMeasure(widthMeasureSpec, measureHeightSpec)
+    }
+
+    /**
+     * 设置歌词.
+     * */
+    fun setLyrics(lyricText: String) {
+        lryList.addAll(parseLyrics(lyricText))
+    }
+
+    /**
+     * 解析歌词的文本.
+     * */
+    private fun parseLyrics(lyricText: String): MutableList<Lyrics> {
+        val lryList = mutableListOf<Lyrics>()
+        val lyricsArray: List<String> = lyricText.split("\n")
+        for (i in 0..lyricsArray.size - 1) {
+            //每一行文本，包括 歌词 与 时间
+            val text = lyricsArray[i]
+            //歌词
+            val lyric = text.substring(text.indexOf("]") + 1)
+            //若像 [xxx]，后面没有东西，直接丢弃.
+            if (lyric.equals("")) {
+                continue
+            }
+            //开始时的时间
+            val time = text.substring(text.indexOf("["), text.indexOf("]") + 1)
+            if (time.contains(".")) {
+                val min = time.substring(time.indexOf("[") + 1, time.indexOf("[") + 3)
+                val second = time.substring(time.indexOf(":") + 1, time.indexOf(":") + 3)
+                val mills = time.substring(time.indexOf(".") + 1, time.indexOf("]"))
+                val startTime = min.toLong() * 60 * 1000 + second.toLong() * 1000 + mills.toLong()
+                lryList.add(Lyrics(lyric, startTime))
+            }
+        }
+        return lryList
+    }
+
+    fun reset() {
+        lryList.clear()
+        currentLine = 0
+        nextTime = 0
+        offSetY = 0F
+        postInvalidate()//?
+    }
+
+    /**
+     * 判断是否有歌词数据.
+     * */
+    fun hasLrc(): Boolean {
+        return !lryList.isEmpty()
+    }
 }
