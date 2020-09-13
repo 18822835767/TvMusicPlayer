@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * 获取歌曲详情，包括专辑图片等(无音乐url)：baseUrl/song/detail?ids=191528,191527
  * Gson解析的bean类.
  * */
-class MusicDetail {
+class MusicDetailJson {
     var songs: MutableList<Song>? = null
 
     class Song {
