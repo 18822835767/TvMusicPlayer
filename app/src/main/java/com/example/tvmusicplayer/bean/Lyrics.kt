@@ -4,8 +4,8 @@ package com.example.tvmusicplayer.bean
  * 歌词的实体类.
  * */
 class Lyrics {
-    var text : String? = null
-    var start : Long? = null
+    var text : String = ""
+    var start : Long = 0
     
     constructor(){
     }

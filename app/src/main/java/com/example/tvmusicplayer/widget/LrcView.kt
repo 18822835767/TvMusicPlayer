@@ -85,7 +85,7 @@ class LrcView : View {
      * */
     private var currentPaint: Paint = Paint()
 
-    private var scroller: Scroller? = null
+    private lateinit var scroller: Scroller
 
     constructor(context: Context?) : super(context) {
         initData()
@@ -127,6 +127,12 @@ class LrcView : View {
         super.onMeasure(widthMeasureSpec, measureHeightSpec)
     }
 
+    //?
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        viewWidth = measuredWidth
+    }
+
     /**
      * 设置歌词.
      * */
@@ -166,45 +172,97 @@ class LrcView : View {
         //得到中心的Y坐标
         val centerY = (measuredHeight + textBounds.height()) / 2 //?
         //如果歌词列表是空的，那么就提示无歌词
-        if(lryList.isEmpty()){
-            canvas?.drawText(DEFAUKT_TEXT,viewWidth - currentPaint.measureText(DEFAUKT_TEXT),
-                centerY.toFloat(),currentPaint)
+        if (lryList.isEmpty()) {
+            canvas?.drawText(
+                DEFAUKT_TEXT, viewWidth - currentPaint.measureText(DEFAUKT_TEXT),
+                centerY.toFloat(), currentPaint
+            )
         }
-        
+
         //要高亮显示的歌词文本
         val currentLrc = lryList[currentLine].text
         //要高亮显示的歌词文本的X坐标
         val currentX = (viewWidth - currentPaint.measureText(currentLrc)) / 2
         //画当前行
-        canvas?.drawText(currentLrc?:"",currentX,centerY - offSetY,currentPaint)
-        
+        canvas?.drawText(currentLrc ?: "", currentX, centerY - offSetY, currentPaint)
+
         val span = textBounds.height() + dividerHeight //?
         //要显示的第一行的下标
-        var firstLine = currentLine - rows/2
+        var firstLine = currentLine - rows / 2
         //边界检查
-        firstLine = if(firstLine < 0) 0 else firstLine
-        var lastLine = currentLine + rows/2 + 2 //?
+        firstLine = if (firstLine < 0) 0 else firstLine
+        var lastLine = currentLine + rows / 2 + 2 //?
         //边界检查
-        lastLine = if(lastLine > lryList.size - 1) lryList.size else lastLine
+        lastLine = if (lastLine > lryList.size - 1) lryList.size else lastLine
 
         var j = 1
-        //画中间行上面的歌词
-        for(i in currentLine-1..firstLine){
-            //拿到歌词
-            val lrcText = lryList[i].text
-            val x = (viewWidth - normalPaint.measureText(lrcText)) / 2
-            //绘制歌词
-            canvas?.drawText(lrcText?:"",x,centerY - j * span - offSetY,normalPaint)
-            j++
+        if (currentLine != 0) {
+            //画中间行上面的歌词
+            for (i in currentLine - 1..firstLine) {
+                //拿到歌词
+                val lrcText = lryList[i].text
+                val x = (viewWidth - normalPaint.measureText(lrcText)) / 2
+                //绘制歌词
+                canvas?.drawText(lrcText ?: "", x, centerY - j * span - offSetY, normalPaint)
+                j++
+            }
         }
-        
+
         j = 1
-        for(i in currentLine+1..lastLine){
+        //画中间行下面的歌词
+        for (i in currentLine + 1..lastLine) {
             //拿到歌词
             val lycText = lryList[i].text
-            
+            val x = (viewWidth - normalPaint.measureText(lycText)) / 2
+            canvas?.drawText(lycText ?: "", x, centerY + j * span - offSetY, normalPaint)
+        }
+    }
+
+    /**
+     * 音乐播放器的回调.
+     * 为什么加锁?
+     * */
+    @Synchronized fun onProgress(time : Long) {
+        //如果当前时间小于下一句开始的时间,直接return
+        if(nextTime > time){
+            return
         }
         
+        val size = lryList.size
+        for(i in 0 until size){
+            //todo 解决最后一行的问题
+            
+            //找到大于当前时间的，作为下一行
+            if(lryList[i].start > time){
+                nextTime = lryList[i].start
+                //若 时间<第一句歌词开始时间 或者 在第一句歌词时间范围内，那么直接第一句歌词高亮.
+                if(currentLine == 0 && i == 1){
+                    postInvalidate()
+                    break
+                }
+                scroller.abortAnimation()//? 若有未完成的滚动，完成它，终止
+                //这里的滚动，其实是之前高亮的那一行，要先缓慢地往上滚动，使得歌词的切换有个过渡的效果
+                //在computeScroll()中，会等之前高亮的那一行往上滚动结束后，将当前的行高亮
+                scroller.startScroll(i,0,0,maxScroll, SCROLL_TIME)//这里的i用于记录下一行的行数
+                postInvalidate()
+            }
+        }
+    }
+
+    override fun computeScroll() {
+        if(scroller.computeScrollOffset()){
+            //根据Scroller的计算，获取滚动的过程中，Y方向上应该有的偏移量
+            offSetY = scroller.currY.toFloat()
+            //如果滚动已经结束
+            if(scroller.isFinished){
+                //获取下一行
+                val nextLine = scroller.currX
+                //转化为当前应该显示的行
+                currentLine = if(nextLine <= 1) 0 else nextLine - 1
+                //显示当前应该显示的行
+            }
+            postInvalidate()
+        }
     }
 
     fun reset() {
