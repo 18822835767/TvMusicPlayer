@@ -172,9 +172,39 @@ class LrcView : View {
         }
         
         //要高亮显示的歌词文本
-        var currentLrc = lryList[currentLine].text
+        val currentLrc = lryList[currentLine].text
         //要高亮显示的歌词文本的X坐标
-        var currentX = (viewWidth - currentPaint.measureText(currentLrc)) / 2
+        val currentX = (viewWidth - currentPaint.measureText(currentLrc)) / 2
+        //画当前行
+        canvas?.drawText(currentLrc?:"",currentX,centerY - offSetY,currentPaint)
+        
+        val span = textBounds.height() + dividerHeight //?
+        //要显示的第一行的下标
+        var firstLine = currentLine - rows/2
+        //边界检查
+        firstLine = if(firstLine < 0) 0 else firstLine
+        var lastLine = currentLine + rows/2 + 2 //?
+        //边界检查
+        lastLine = if(lastLine > lryList.size - 1) lryList.size else lastLine
+
+        var j = 1
+        //画中间行上面的歌词
+        for(i in currentLine-1..firstLine){
+            //拿到歌词
+            val lrcText = lryList[i].text
+            val x = (viewWidth - normalPaint.measureText(lrcText)) / 2
+            //绘制歌词
+            canvas?.drawText(lrcText?:"",x,centerY - j * span - offSetY,normalPaint)
+            j++
+        }
+        
+        j = 1
+        for(i in currentLine+1..lastLine){
+            //拿到歌词
+            val lycText = lryList[i].text
+            
+        }
+        
     }
 
     fun reset() {
