@@ -145,7 +145,7 @@ class LrcView : View {
      * */
     private fun parseLyrics(lyricText: String): MutableList<Lyrics> {
         val lryList = mutableListOf<Lyrics>()
-        val lyricsArray: List<String> = lyricText.split("\\n") //第一个斜杆用于转义
+        val lyricsArray: List<String> = lyricText.split("\\n") //?待定。第一个斜杆用于转义
         for (i in 0..lyricsArray.size - 1) {
             //每一行文本，包括 歌词 与 时间
             val text = lyricsArray[i]
@@ -184,7 +184,7 @@ class LrcView : View {
         //要高亮显示的歌词文本的X坐标
         val currentX = (viewWidth - currentPaint.measureText(currentLrc)) / 2
         //画当前行
-        canvas?.drawText(currentLrc ?: "", currentX, centerY - offSetY, currentPaint)
+        canvas?.drawText(currentLrc, currentX, centerY - offSetY, currentPaint)
 
         val span = textBounds.height() + dividerHeight //?
         //要显示的第一行的下标
@@ -203,7 +203,7 @@ class LrcView : View {
                 val lrcText = lryList[i].text
                 val x = (viewWidth - normalPaint.measureText(lrcText)) / 2
                 //绘制歌词
-                canvas?.drawText(lrcText ?: "", x, centerY - j * span - offSetY, normalPaint)
+                canvas?.drawText(lrcText, x, centerY - j * span - offSetY, normalPaint)
                 j++
             }
         }
@@ -214,7 +214,7 @@ class LrcView : View {
             //拿到歌词
             val lycText = lryList[i].text
             val x = (viewWidth - normalPaint.measureText(lycText)) / 2
-            canvas?.drawText(lycText ?: "", x, centerY + j * span - offSetY, normalPaint)
+            canvas?.drawText(lycText, x, centerY + j * span - offSetY, normalPaint)
             j++
         }
     }
@@ -241,11 +241,14 @@ class LrcView : View {
                     postInvalidate()
                     break
                 }
+                currentLine = i - 1
+
                 scroller.abortAnimation()//? 若有未完成的滚动，完成它，终止
                 //这里的滚动，其实是之前高亮的那一行，要先缓慢地往上滚动，使得歌词的切换有个过渡的效果
                 //在computeScroll()中，会等之前高亮的那一行往上滚动结束后，将当前的行高亮
                 scroller.startScroll(i,0,0,maxScroll, SCROLL_TIME)//这里的i用于记录下一行的行数
                 postInvalidate()
+                break
             }
         }
     }
