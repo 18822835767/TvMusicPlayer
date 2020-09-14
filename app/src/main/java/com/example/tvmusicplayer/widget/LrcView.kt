@@ -145,7 +145,7 @@ class LrcView : View {
      * */
     private fun parseLyrics(lyricText: String): MutableList<Lyrics> {
         val lryList = mutableListOf<Lyrics>()
-        val lyricsArray: List<String> = lyricText.split("\n")
+        val lyricsArray: List<String> = lyricText.split("\\n") //第一个斜杆用于转义
         for (i in 0..lyricsArray.size - 1) {
             //每一行文本，包括 歌词 与 时间
             val text = lyricsArray[i]
@@ -215,6 +215,7 @@ class LrcView : View {
             val lycText = lryList[i].text
             val x = (viewWidth - normalPaint.measureText(lycText)) / 2
             canvas?.drawText(lycText ?: "", x, centerY + j * span - offSetY, normalPaint)
+            j++
         }
     }
 
