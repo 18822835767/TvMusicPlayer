@@ -26,6 +26,7 @@ class DataUtil private constructor() {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)
             .build()
+        
     }
     
     /**
