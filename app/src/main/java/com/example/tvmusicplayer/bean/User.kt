@@ -11,7 +11,7 @@ class User : Parcelable {
     /**
      * 用户id
      */
-    var id: Long = 0
+    var id: Long = -1
         private set
 
     /**

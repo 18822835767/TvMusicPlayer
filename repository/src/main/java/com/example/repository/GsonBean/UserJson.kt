@@ -13,6 +13,6 @@ class UserJson {
     
     class Profile{
         var avatarUrl : String? = null
-        var nickName : String? = null
+        var nickname : String? = null
     }
 }

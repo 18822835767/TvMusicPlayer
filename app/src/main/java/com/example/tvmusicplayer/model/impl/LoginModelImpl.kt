@@ -11,7 +11,7 @@ class LoginModelImpl : LoginModel{
     override fun login(username: String, password: String, listener: LoginModel.OnListener) {
         DataUtil.clientLoginApi.login(username,password,object : CallBack<UserJson>{
             override fun callback(data: UserJson) {
-                listener.loginSuccess(User(data.account?.id?:0,data.profile?.nickName))
+                listener.loginSuccess(User(data.account?.id?:-1,data.profile?.nickname))
             }
         })   
     }
