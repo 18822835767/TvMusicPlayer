@@ -1,6 +1,8 @@
 package com.example.tvmusicplayer.login
 
 import android.app.ProgressDialog
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +22,13 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
     private lateinit var passWord : EditText
     private lateinit var loginButton : Button
     private lateinit var progressBar : ProgressBar
+    
+    companion object{
+        fun actionStart(context : Context){
+            val intent : Intent = Intent(context,LoginActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +53,7 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
     fun initEvent(){
         loginButton.setOnClickListener(this)
     }
-
+    
     override fun showSuccess(user: User) {
         LoginStatusManager.alreadyLogin = true
         LoginStatusManager.user = user
