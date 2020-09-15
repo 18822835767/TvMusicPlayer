@@ -8,13 +8,12 @@ import com.example.repository.clientApi.ClientLoginApi
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
 class ClientLoginApiImpl : ClientLoginApi{
-    override fun login(phone: String, password: String, callback : CallBack<UserJson>){
-        DataUtil.observableLoginApi.login(phone, password)
+    override fun login(username: String, password: String, callback : CallBack<UserJson>){
+        DataUtil.observableLoginApi.login(username, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<UserJson>{
