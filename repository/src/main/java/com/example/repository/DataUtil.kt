@@ -1,5 +1,7 @@
 package com.example.repository
 
+import com.example.repository.clientApi.ClientLoginApi
+import com.example.repository.clientApi.impl.ClientLoginApiImpl
 import com.example.repository.observableApi.ObservableLoginApi
 import com.example.repository.util.Constant
 import okhttp3.OkHttpClient
@@ -13,7 +15,8 @@ object DataUtil{
 
     private var client : OkHttpClient 
     private var retrofit : Retrofit
-    private var observableApi : ObservableLoginApi
+    internal var observableLoginApi : ObservableLoginApi
+    val clientLoginApi = ClientLoginApiImpl()
     
     init {
         client = OkHttpClient.Builder()
@@ -30,7 +33,8 @@ object DataUtil{
             .build()
         
         //获取ObservableApi
-        observableApi = retrofit.create(ObservableLoginApi::class.java)
+        observableLoginApi = retrofit.create(ObservableLoginApi::class.java)
     }
+    
 
 }
