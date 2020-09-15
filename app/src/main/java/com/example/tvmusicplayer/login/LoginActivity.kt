@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-    
+            
         initView()
         initData()
         initEvent()
