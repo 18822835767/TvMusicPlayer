@@ -211,11 +211,13 @@ class LrcView : View {
         j = 1
         //画中间行下面的歌词
         for (i in currentLine + 1..lastLine) {
-            //拿到歌词
-            val lycText = lryList[i].text
-            val x = (viewWidth - normalPaint.measureText(lycText)) / 2
-            canvas?.drawText(lycText, x, centerY + j * span - offSetY, normalPaint)
-            j++
+            if(i < lryList.size){
+                //拿到歌词
+                val lycText = lryList[i].text
+                val x = (viewWidth - normalPaint.measureText(lycText)) / 2
+                canvas?.drawText(lycText, x, centerY + j * span - offSetY, normalPaint)
+                j++
+            }
         }
     }
 
@@ -231,13 +233,21 @@ class LrcView : View {
         
         val size = lryList.size
         for(i in 0 until size){
-            //todo 解决最后一行的问题
+            //解决最后一行不能高亮显示的问题
+            if (nextTime == lryList[size - 1].start) {
+                currentLine = size - 1
+                nextTime = nextTime + 60 * 1000 //让nextTime变大，使其不会被重复绘制
+                scroller.abortAnimation()
+                scroller.startScroll(size, 0, 0, maxScroll, SCROLL_TIME)
+                postInvalidate() //重绘
+                break
+            }
             
             //找到大于当前时间的，作为下一行
             if(lryList[i].start > time){
                 nextTime = lryList[i].start
                 //若 时间<第一句歌词开始时间 或者 在第一句歌词时间范围内，那么直接第一句歌词高亮.
-                if(currentLine == 0 && i == 1){
+                if(i == 0 || i == 1){
                     postInvalidate()
                     break
                 }
@@ -257,14 +267,14 @@ class LrcView : View {
         if(scroller.computeScrollOffset()){
             //根据Scroller的计算，获取滚动的过程中，Y方向上应该有的偏移量
             offSetY = scroller.currY.toFloat()
-            //如果滚动已经结束
-            if(scroller.isFinished){
-                //获取下一行
-                val nextLine = scroller.currX
-                //转化为当前应该显示的行
-                currentLine = if(nextLine <= 1) 0 else nextLine - 1
-                //显示当前应该显示的行
-            }
+//            //如果滚动已经结束
+//            if(scroller.isFinished){
+//                //获取下一行
+//                val nextLine = scroller.currX
+//                //转化为当前应该显示的行
+//                currentLine = if(nextLine <= 1) 0 else nextLine - 1
+//                //显示当前应该显示的行
+//            }
             postInvalidate()
         }
     }
