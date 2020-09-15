@@ -1,20 +1,19 @@
 package com.example.repository
 
+import com.example.repository.observableApi.ObservableLoginApi
 import com.example.repository.util.Constant
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.util.concurrent.TimeUnit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class DataUtil private constructor() {
+object DataUtil{
 
     private var client : OkHttpClient 
     private var retrofit : Retrofit
+    private var observableApi : ObservableLoginApi
     
     init {
         client = OkHttpClient.Builder()
@@ -29,22 +28,9 @@ class DataUtil private constructor() {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)
             .build()
-    }
-    
-    /**
-     * 获取单例.
-     * */
-    fun getInstance(): DataUtil {
-        return InstanceHolder.instance
-    }
-
-    /**
-     * 单例模式，静态内部类构造对象.
-     * */
-    private class InstanceHolder {
-        companion object {
-            internal val instance: DataUtil = DataUtil()
-        }
+        
+        //获取ObservableApi
+        observableApi = retrofit.create(ObservableLoginApi::class.java)
     }
 
 }
