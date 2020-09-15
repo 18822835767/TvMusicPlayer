@@ -1,7 +1,10 @@
 package com.example.repository
 
 import com.example.repository.util.Constant
+import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.util.concurrent.TimeUnit
@@ -26,7 +29,6 @@ class DataUtil private constructor() {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)
             .build()
-        
     }
     
     /**

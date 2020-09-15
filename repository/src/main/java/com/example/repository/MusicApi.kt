@@ -1,9 +1,6 @@
 package com.example.repository
 
-import com.example.repository.GsonBean.MusicDetailJson
 import com.example.repository.GsonBean.SongListJson
-import retrofit2.http.GET
-import rx.Observable
 
 /**
  * 这是暴露给用户的接口.
