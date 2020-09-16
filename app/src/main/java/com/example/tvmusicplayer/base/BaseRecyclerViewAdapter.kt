@@ -19,6 +19,8 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private v
      * */
     protected var showBottom: Boolean = false
     
+    private var listener : OnItemClickListener? = null
+    
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder {
        if(TYPE_BOTTOM == viewType){
            return CommonViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.footer_view,
@@ -32,7 +34,9 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private v
 
     override fun onBindViewHolder(holder: CommonViewHolder, position: Int) {
         if(getItemViewType(position) != TYPE_BOTTOM){
-            initItemView(holder,position)   
+            initItemView(holder,position)  
+            //添加点击监听
+            holder.itemView.setOnClickListener { v -> listener?.onItemClick(v,position) }
         }else{
             //todo 处理bottom
         }
@@ -56,8 +60,16 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private v
         }
     }
     
+    fun setItemClickListener(listener: OnItemClickListener){
+        this.listener = listener
+    }
+    
     fun setDatas(datas : List<T>){
         data = datas
         notifyDataSetChanged()
+    }
+    
+    interface OnItemClickListener{
+        fun onItemClick(v : View?,position : Int)
     }
 } 

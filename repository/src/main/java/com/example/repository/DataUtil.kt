@@ -4,6 +4,7 @@ import com.example.repository.clientApi.ClientLoginApi
 import com.example.repository.clientApi.impl.ClientLoginApiImpl
 import com.example.repository.observableApi.ObservableLoginApi
 import com.example.repository.util.Constant
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
