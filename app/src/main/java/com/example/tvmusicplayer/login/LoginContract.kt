@@ -10,6 +10,7 @@ interface LoginContract {
     }
     
     interface OnView : BaseView<Presenter>{
-        fun showSuccess(user : User)
+        fun loginSuccess(user : User)
+        fun loginFailure() //登陆失败
     }
 }

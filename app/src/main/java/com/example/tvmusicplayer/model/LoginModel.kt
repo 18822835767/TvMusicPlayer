@@ -8,5 +8,9 @@ interface LoginModel{
     
     interface OnListener{
         fun loginSuccess(user : User)
+        
+        fun loginFailure()
+        
+        fun loginError(msg : String)
     }
 }

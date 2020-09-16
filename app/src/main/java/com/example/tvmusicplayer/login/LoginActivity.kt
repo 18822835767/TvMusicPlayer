@@ -54,9 +54,13 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
         loginButton.setOnClickListener(this)
     }
     
-    override fun showSuccess(user: User) {
+    override fun loginSuccess(user: User) {
         LoginStatusManager.alreadyLogin = true
         LoginStatusManager.user = user
+    }
+
+    override fun loginFailure() {
+        Toast.makeText(this,"账号或密码错误",Toast.LENGTH_SHORT).show()
     }
 
     override fun setPresenter(presenter: LoginContract.Presenter) {
@@ -72,7 +76,7 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
     }
 
     override fun showError(errorMessage: String) {
-        
+        Toast.makeText(this,"错误：$errorMessage",Toast.LENGTH_SHORT).show()
     }
 
     override fun onClick(v: View?) {

@@ -23,7 +23,17 @@ class LoginPresenter(var onView : LoginContract.OnView) : LoginContract.Presente
 
     override fun loginSuccess(user: User) {
         onView.hideLoading()
-        onView.showSuccess(user)
+        onView.loginSuccess(user)
+    }
+
+    override fun loginFailure() {
+        onView.hideLoading()
+        onView.loginFailure()
+    }
+
+    override fun loginError(msg : String) {
+        onView.hideLoading()
+        onView.showError(msg)
     }
 
 }

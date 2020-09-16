@@ -11,7 +11,17 @@ class LoginModelImpl : LoginModel{
     override fun login(username: String, password: String, listener: LoginModel.OnListener) {
         DataUtil.clientLoginApi.login(username,password,object : CallBack<UserJson>{
             override fun callback(data: UserJson) {
-                listener.loginSuccess(User(data.account?.id?:-1,data.profile?.nickname))
+                if(data.account == null){
+                    //说明登录失败，账号密码错误...
+                    listener.loginFailure()
+                }else{
+                    //登录成功
+                    listener.loginSuccess(User(data.account?.id?:-1,data.profile?.nickname))
+                }
+            }
+
+            override fun error(errorMsg: String) {
+                listener.loginError(errorMsg)
             }
         })   
     }
