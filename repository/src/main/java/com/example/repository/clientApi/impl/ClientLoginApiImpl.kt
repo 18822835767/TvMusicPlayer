@@ -1,6 +1,7 @@
 package com.example.repository.clientApi.impl
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.repository.DataUtil
 import com.example.repository.GsonBean.UserJson
 import com.example.repository.callback.CallBack
@@ -18,6 +19,7 @@ class ClientLoginApiImpl : ClientLoginApi{
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<UserJson>{
                 override fun onComplete() {
+                    
                 }
 
                 override fun onSubscribe(d: Disposable) {
@@ -28,6 +30,7 @@ class ClientLoginApiImpl : ClientLoginApi{
                 }
 
                 override fun onError(e: Throwable) {
+                    
                 }
 
             })
