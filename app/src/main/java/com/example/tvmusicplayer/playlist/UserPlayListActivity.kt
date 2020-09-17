@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.adapter.UserPlayListAdapter
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.manager.LoginStatusManager
 
@@ -17,6 +19,8 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
     private lateinit var presenter : UserPlayListContract.Presenter
     private lateinit var toolbar: Toolbar
     private lateinit var listRecyclerView: RecyclerView
+    private lateinit var adapter : UserPlayListAdapter
+    private var playLists = mutableListOf<PlayList>()
     
     companion object{
         fun actionStart(context: Context){
@@ -44,10 +48,15 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
         UserPlayListPresenter(this)
         //获取用户的歌单数据
         LoginStatusManager.user?.id?.let { presenter.getUserPlayList(it) }
+        
+        //设置RecyclerView的数据
+        adapter = UserPlayListAdapter(playLists,R.layout.playlist_item)
+        listRecyclerView.layoutManager = LinearLayoutManager(this)
+        listRecyclerView.adapter = this.adapter
     }
     
     private fun setActionBar(){
-        toolbar.title = ""
+        toolbar.title = "我的歌单"
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
@@ -61,6 +70,7 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
     }
 
     override fun getUserPlayListSuccess(playLists: MutableList<PlayList>) {
+        
     }
 
     override fun setPresenter(presenter: UserPlayListContract.Presenter) {

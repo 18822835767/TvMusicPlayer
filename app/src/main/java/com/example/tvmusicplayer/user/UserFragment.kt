@@ -55,8 +55,7 @@ class UserFragment : Fragment(),BaseRecyclerViewAdapter.OnItemClickListener{
     }
 
     override fun onItemClick(v: View?, position: Int) {
-        val text = adapter.getItem(position)
-        when(text){
+        when(adapter.getItem(position)){
             //如果用户点击的是"我的歌单"
             Constant.MY_SONG_LIST ->{
                 //若已经登陆

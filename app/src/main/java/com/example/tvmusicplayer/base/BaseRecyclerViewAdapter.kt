@@ -69,6 +69,12 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private v
         notifyDataSetChanged()
     }
     
+
+
+    fun getItem(position : Int): T {
+        return data[position]
+    }
+    
     interface OnItemClickListener{
         fun onItemClick(v : View?,position : Int)
     }

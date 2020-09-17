@@ -20,7 +20,4 @@ class UserAdapter(data : List<String>,itemLayoutId : Int) : BaseRecyclerViewAdap
         }
     }
     
-    fun getItem(position : Int): String {
-        return data[position]
-    }
 }
