@@ -12,6 +12,4 @@ interface ObservableLoginApi {
     @GET("/login/cellphone")
     fun login(@Query("phone") username: String, @Query("password") password: String):
             Observable<UserJson>
-
-
 }

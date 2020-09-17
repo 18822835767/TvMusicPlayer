@@ -1,11 +1,10 @@
 package com.example.repository.clientApi.impl
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.example.repository.DataUtil
-import com.example.repository.GsonBean.UserJson
+import com.example.repository.GsonBean.UserPlayListJson
 import com.example.repository.callback.CallBack
-import com.example.repository.clientApi.ClientLoginApi
+import com.example.repository.clientApi.ClientMusicApi
 import com.example.repository.util.LogUtil
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,29 +12,29 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
-class ClientLoginApiImpl : ClientLoginApi{
-    private val TAG = "ClientLoginApiImpl"
-    
-    override fun login(username: String, password: String, callback : CallBack<UserJson>){
-        DataUtil.observableLoginApi.login(username, password)
+class ClientMusicApiImpl : ClientMusicApi {
+    private val TAG = "ClientMusicApiImpl"
+
+    override fun getUserPlayList(uid: Long, callback: CallBack<UserPlayListJson>) {
+        DataUtil.observableMusicApi.getUserPlayList(uid)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<UserJson>{
+            .subscribe(object : Observer<UserPlayListJson> {
                 override fun onComplete() {
-                    LogUtil.d(TAG,"onComplete")
+                    LogUtil.d(TAG, "onComplete")
                 }
 
                 override fun onSubscribe(d: Disposable) {
-                    LogUtil.d(TAG,"onSubscribe")
+                    LogUtil.d(TAG, "onSubscribe")
                 }
 
-                override fun onNext(t: UserJson) {
-                    LogUtil.d(TAG,"onNext")
+                override fun onNext(t: UserPlayListJson) {
+                    LogUtil.d(TAG, "onNext")
                     callback.callback(t)
                 }
 
                 override fun onError(e: Throwable) {
-                    LogUtil.d(TAG,"onError"+e.message)
+                    LogUtil.d(TAG, "onError" + e.message)
                     callback.error(e.message?:"UnKnown_error")
                 }
 
