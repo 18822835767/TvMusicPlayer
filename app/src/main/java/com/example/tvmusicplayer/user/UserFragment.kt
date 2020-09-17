@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.UserAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
+import com.example.tvmusicplayer.playlist.UserPlayListActivity
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.LoginStatusManager
 
@@ -61,7 +62,7 @@ class UserFragment : Fragment(),BaseRecyclerViewAdapter.OnItemClickListener{
             Constant.MY_SONG_LIST ->{
                 //若已经登陆
                 if(LoginStatusManager.alreadyLogin){
-                    // todo ...
+                    context?.let { UserPlayListActivity.actionStart(it) }
                 }else{
                   //还没登陆
                     Toast.makeText(context,"亲，请先登陆噢~",Toast.LENGTH_SHORT).show()

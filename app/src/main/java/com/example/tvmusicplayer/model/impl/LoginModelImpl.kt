@@ -21,7 +21,7 @@ class LoginModelImpl : LoginModel{
             }
 
             override fun error(errorMsg: String) {
-                listener.loginError(errorMsg)
+                listener.error(errorMsg)
             }
         })   
     }

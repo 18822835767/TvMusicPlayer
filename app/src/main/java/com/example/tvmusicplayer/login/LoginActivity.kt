@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
     
     companion object{
         fun actionStart(context : Context){
-            val intent : Intent = Intent(context,LoginActivity::class.java)
+            val intent = Intent(context,LoginActivity::class.java)
             context.startActivity(intent)
         }
     }
@@ -46,17 +46,20 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
         progressBar = findViewById(R.id.progress_bar)
     }
     
-    fun initData(){
+    private fun initData(){
         LoginPresenter(this)
     }
     
-    fun initEvent(){
+    private fun initEvent(){
         loginButton.setOnClickListener(this)
     }
     
     override fun loginSuccess(user: User) {
         LoginStatusManager.alreadyLogin = true
         LoginStatusManager.user = user
+
+        Toast.makeText(this,"登陆成功",Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     override fun loginFailure() {
@@ -69,8 +72,6 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
 
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
-        Toast.makeText(this,"登陆成功",Toast.LENGTH_SHORT).show()
-        finish()
     }
 
     override fun hideLoading() {
