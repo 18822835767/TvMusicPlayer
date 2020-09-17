@@ -1,14 +1,17 @@
 package com.example.tvmusicplayer.base
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 
-abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private var itemLayoutId: Int)
+abstract class BaseRecyclerViewAdapter<T>(protected var data: MutableList<T>, private var itemLayoutId: Int)
     : RecyclerView.Adapter<CommonViewHolder>() {
 
+    private val TAG = "BaseRecyclerViewAdapter"
+    
     companion object {
         private val TYPE_OTHER: Int = 1
         private val TYPE_BOTTOM : Int = 2
@@ -34,7 +37,7 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private v
 
     override fun onBindViewHolder(holder: CommonViewHolder, position: Int) {
         if(getItemViewType(position) != TYPE_BOTTOM){
-            initItemView(holder,position)  
+            initItemView(holder,position)
             //添加点击监听
             holder.itemView.setOnClickListener { v -> listener?.onItemClick(v,position) }
         }else{
@@ -64,13 +67,16 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: List<T>, private v
         this.listener = listener
     }
     
-    fun setDatas(datas : List<T>){
+    fun setDatas(datas : MutableList<T>){
         data = datas
         notifyDataSetChanged()
     }
     
-
-
+    fun addDatas(datas: MutableList<T>){
+        data.addAll(datas)
+        notifyDataSetChanged()
+    }
+    
     fun getItem(position : Int): T {
         return data[position]
     }
