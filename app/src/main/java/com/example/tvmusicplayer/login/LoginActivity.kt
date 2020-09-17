@@ -69,6 +69,8 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
 
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
+        Toast.makeText(this,"登陆成功",Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     override fun hideLoading() {
