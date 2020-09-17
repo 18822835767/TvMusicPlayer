@@ -39,11 +39,6 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
     }
     
     override fun getUserPlayListSuccess(playLists: MutableList<PlayList>) {
-        playLists.forEach{
-            it.name?.let {
-                Log.d(TAG,it)
-            }
-        }
     }
 
     override fun setPresenter(presenter: UserPlayListContract.Presenter) {

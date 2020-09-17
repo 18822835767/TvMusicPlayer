@@ -11,8 +11,7 @@ class User : Parcelable {
     /**
      * 用户id
      */
-    var id: Long = -1
-        private set
+    var id: Long? = null
 
     /**
      * 用户别名
@@ -20,7 +19,7 @@ class User : Parcelable {
     var nickName: String? = null
 
     constructor() {}
-    constructor(id: Long, nickName: String?) {
+    constructor(id: Long?, nickName: String?) {
         this.id = id
         this.nickName = nickName
     }
@@ -39,7 +38,7 @@ class User : Parcelable {
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeLong(id)
+        dest.writeLong(id ?: -1)
         dest.writeString(nickName)
     }
 
