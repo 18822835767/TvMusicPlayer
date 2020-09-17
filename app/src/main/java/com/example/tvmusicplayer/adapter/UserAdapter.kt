@@ -19,4 +19,8 @@ class UserAdapter(data : List<String>,itemLayoutId : Int) : BaseRecyclerViewAdap
             Constant.MY_SONG_LIST -> holder.setImageResource(R.id.image,R.drawable.song_list)
         }
     }
+    
+    fun getItem(position : Int): String {
+        return data[position]
+    }
 }

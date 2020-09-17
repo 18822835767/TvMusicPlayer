@@ -6,16 +6,20 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.UserAdapter
+import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.util.Constant
+import com.example.tvmusicplayer.util.LoginStatusManager
 
-class UserFragment : Fragment() {
+class UserFragment : Fragment(),BaseRecyclerViewAdapter.OnItemClickListener{
     
     private lateinit var mRecyclerView : RecyclerView
+    private lateinit var adapter : UserAdapter
     
     companion object {
         @JvmStatic
@@ -43,9 +47,26 @@ class UserFragment : Fragment() {
         userText.add(Constant.LOCAL_MUSIC)
         userText.add(Constant.MY_SONG_LIST)
         userText.add(Constant.DOWNLOAD_MANAGER)
-        val adapter : UserAdapter = UserAdapter(userText,R.layout.user_item)
+        adapter = UserAdapter(userText,R.layout.user_item)
+        adapter.setItemClickListener(this)
         mRecyclerView.adapter = adapter
         val manager = LinearLayoutManager(context)
         mRecyclerView.layoutManager = manager
+    }
+
+    override fun onItemClick(v: View?, position: Int) {
+        val text = adapter.getItem(position)
+        when(text){
+            //如果用户点击的是"我的歌单"
+            Constant.MY_SONG_LIST ->{
+                //若已经登陆
+                if(LoginStatusManager.alreadyLogin){
+                    // todo ...
+                }else{
+                  //还没登陆
+                    Toast.makeText(context,"亲，请先登陆噢~",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
