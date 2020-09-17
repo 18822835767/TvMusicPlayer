@@ -12,6 +12,7 @@ import android.view.View.VISIBLE
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
@@ -63,6 +64,8 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
         manager.orientation = LinearLayoutManager.VERTICAL
         listRecyclerView.layoutManager = manager
         listRecyclerView.adapter = this.adapter
+        //添加分割线
+        listRecyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
     }
     
     private fun setActionBar(){
