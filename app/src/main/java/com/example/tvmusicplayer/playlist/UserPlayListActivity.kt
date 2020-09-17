@@ -84,9 +84,6 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
 
     override fun getUserPlayListSuccess(playLists: MutableList<PlayList>) {
         adapter.addDatas(playLists)
-//        playLists.forEach{
-//            Log.d(TAG,"name: ${it.name} id:${it.id}  coverImgUrl:${it.coverImgUrl}")
-//        }
     }
 
     override fun setPresenter(presenter: UserPlayListContract.Presenter) {

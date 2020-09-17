@@ -17,6 +17,7 @@ class UserPlayListAdapter(data : MutableList<PlayList>, itemLayoutId : Int) : Ba
         holder.setText(R.id.song_list_name,playList.name?:"XXX")
         
         Picasso.get().load(data[position].coverImgUrl)
+            .resize(50,50)
             .placeholder(R.drawable.empty_photo)
             .error(R.drawable.load_error)
             .into(imageView as ImageView)
