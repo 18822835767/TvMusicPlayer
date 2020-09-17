@@ -1,4 +1,4 @@
-package com.example.tvmusicplayer.util
+package com.example.tvmusicplayer.manager
 
 import com.example.tvmusicplayer.bean.User
 

@@ -1,15 +1,8 @@
 package com.example.tvmusicplayer.main
 
-import android.content.ClipData
-import android.graphics.Canvas
-import android.graphics.Paint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Scroller
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -22,10 +15,9 @@ import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.login.LoginActivity
 import com.example.tvmusicplayer.recommend.RecommendFragment
 import com.example.tvmusicplayer.user.UserFragment
-import com.example.tvmusicplayer.util.LoginStatusManager
+import com.example.tvmusicplayer.manager.LoginStatusManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
-import java.util.concurrent.CopyOnWriteArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun initView() {
+    private fun initView() {
         toolbar = findViewById(R.id.main_toolbar)
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tab_layout)
@@ -56,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         navView = findViewById(R.id.nav_view)
     }
 
-    fun initData() {
+    private fun initData() {
         fragments.add(UserFragment())
         fragments.add(RecommendFragment())
 
@@ -95,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun setActionBar() {
+    private fun setActionBar() {
         toolbar?.title = ""
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar

@@ -3,7 +3,6 @@ package com.example.tvmusicplayer.user
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,7 +14,7 @@ import com.example.tvmusicplayer.adapter.UserAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.playlist.UserPlayListActivity
 import com.example.tvmusicplayer.util.Constant
-import com.example.tvmusicplayer.util.LoginStatusManager
+import com.example.tvmusicplayer.manager.LoginStatusManager
 
 class UserFragment : Fragment(),BaseRecyclerViewAdapter.OnItemClickListener{
     
