@@ -11,16 +11,16 @@ import android.net.Uri
  * */
 internal class ContextProvider : ContentProvider() {
 
-   private lateinit var applicationContext: Context
+    companion object{
+        internal lateinit var applicationContext: Context
+            private set
+    }
     
     override fun onCreate(): Boolean {
         applicationContext = this.context!!   
         return true
     }
     
-    fun context() : Context{
-        return applicationContext
-    }
     
     //下面是无关代码......
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {

@@ -1,10 +1,9 @@
 package com.example.repository.clientApi.impl
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.example.repository.DataUtil
 import com.example.repository.GsonBean.UserJson
-import com.example.repository.callback.CallBack
+import com.example.repository.callback.RequestCallBack
 import com.example.repository.clientApi.ClientLoginApi
 import com.example.repository.util.LogUtil
 import io.reactivex.Observer
@@ -16,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 class ClientLoginApiImpl : ClientLoginApi{
     private val TAG = "ClientLoginApiImpl"
     
-    override fun login(username: String, password: String, callback : CallBack<UserJson>){
+    override fun login(username: String, password: String, callback : RequestCallBack<UserJson>){
         DataUtil.observableLoginApi.login(username, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

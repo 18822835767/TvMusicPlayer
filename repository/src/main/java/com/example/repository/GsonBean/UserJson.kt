@@ -15,5 +15,6 @@ class UserJson {
     class Profile{
         var avatarUrl : String? = null
         var nickname : String? = null
+        var userId : Long? = null
     }
 }

@@ -18,6 +18,7 @@ import com.example.tvmusicplayer.user.UserFragment
 import com.example.tvmusicplayer.manager.LoginStatusManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
+import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
 

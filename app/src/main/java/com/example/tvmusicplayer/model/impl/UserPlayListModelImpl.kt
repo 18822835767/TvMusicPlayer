@@ -2,13 +2,13 @@ package com.example.tvmusicplayer.model.impl
 
 import com.example.repository.DataUtil
 import com.example.repository.GsonBean.UserPlayListJson
-import com.example.repository.callback.CallBack
+import com.example.repository.callback.RequestCallBack
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.model.UserPlayListModel
 
 class UserPlayListModelImpl : UserPlayListModel{
     override fun getUserPlayList(uid: Long, listener: UserPlayListModel.OnListener) {
-        DataUtil.clientMusicApi.getUserPlayList(uid,object : CallBack<UserPlayListJson>{
+        DataUtil.clientMusicApi.getUserPlayList(uid,object : RequestCallBack<UserPlayListJson>{
             override fun callback(data: UserPlayListJson) {
                 
                 //解析数据为所需的实体类
