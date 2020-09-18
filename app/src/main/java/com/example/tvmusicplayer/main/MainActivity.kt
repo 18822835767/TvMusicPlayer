@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.nav_login -> {
                         if (LoginStatusManager.alreadyLogin) {
-                            Toast.makeText(this@MainActivity, "已经登陆过啦", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "已经登陆过啦~~", Toast.LENGTH_SHORT).show()
                         } else {
                             LoginActivity.actionStart(this@MainActivity)
                         }
