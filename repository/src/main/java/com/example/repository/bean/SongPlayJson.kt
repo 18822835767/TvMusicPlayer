@@ -1,4 +1,4 @@
-package com.example.repository.GsonBean
+package com.example.repository.bean
 
 /**
  * 获取音乐url、码率等信息的接口:baseUrl/song/url?id=191528,191527

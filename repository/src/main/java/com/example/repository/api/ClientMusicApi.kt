@@ -1,4 +1,4 @@
-package com.example.repository.clientApi
+package com.example.repository.api
 
 import com.example.repository.GsonBean.SongDetailJson
 import com.example.repository.GsonBean.SongPlayJson

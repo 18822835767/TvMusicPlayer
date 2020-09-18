@@ -1,4 +1,4 @@
-package com.example.repository.GsonBean
+package com.example.repository.bean
 
 /**
  * User的GsonBean类
