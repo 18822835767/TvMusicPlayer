@@ -1,4 +1,4 @@
-package com.example.data.bean
+package com.example.repository.bean
 
 /**
  * baseUrl/search?keywords= 富士山下

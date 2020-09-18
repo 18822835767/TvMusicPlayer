@@ -1,4 +1,4 @@
-package com.example.data.bean
+package com.example.repository.bean
 
 /**
  * 获取用户的歌单时返回的Gson.

@@ -2,8 +2,8 @@ package com.example.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.data.api.ClientLoginApi
-import com.example.data.api.ClientMusicApi
+import com.example.repository.api.ClientLoginApi
+import com.example.repository.api.ClientMusicApi
 import com.example.data.clientApiImpl.ClientLoginApiImpl
 import com.example.data.clientApiImpl.ClientMusicApiImpl
 import com.example.data.observableApi.ObservableLoginApi
@@ -31,7 +31,7 @@ object DataUtil{
      * */
     val clientLoginApi : ClientLoginApi =
         ClientLoginApiImpl()
-    val clientMusicApi : ClientMusicApi=
+    val clientMusicApi : ClientMusicApi =
         ClientMusicApiImpl()
 
     init {

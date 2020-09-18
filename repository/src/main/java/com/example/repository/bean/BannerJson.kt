@@ -1,4 +1,4 @@
-package com.example.data.bean
+package com.example.repository.bean
 
 class BannerJson{
     var banners : MutableList<Banner>? = null

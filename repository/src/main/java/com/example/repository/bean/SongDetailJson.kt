@@ -1,4 +1,4 @@
-package com.example.data.bean
+package com.example.repository.bean
 
 /**
  * 获取歌曲详情，包括专辑图片等(无音乐url)：baseUrl/song/detail?ids=191528,191527

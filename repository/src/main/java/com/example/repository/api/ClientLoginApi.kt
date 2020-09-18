@@ -1,7 +1,7 @@
-package com.example.data.api
+package com.example.repository.api
 
-import com.example.data.RequestCallBack
-import com.example.data.bean.UserJson
+import com.example.repository.RequestCallBack
+import com.example.repository.bean.UserJson
 
 /**
  * 暴露给用户使用的Api.

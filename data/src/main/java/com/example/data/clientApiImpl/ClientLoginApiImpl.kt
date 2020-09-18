@@ -2,9 +2,9 @@ package com.example.data.clientApiImpl
 
 import android.annotation.SuppressLint
 import com.example.data.DataUtil
-import com.example.data.RequestCallBack
-import com.example.data.api.ClientLoginApi
-import com.example.data.bean.UserJson
+import com.example.repository.RequestCallBack
+import com.example.repository.api.ClientLoginApi
+import com.example.repository.bean.UserJson
 import com.example.data.util.LogUtil
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers

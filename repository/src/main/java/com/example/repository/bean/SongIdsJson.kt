@@ -1,4 +1,4 @@
-package com.example.data.bean
+package com.example.repository.bean
 
 /**
  * baseUrl/playlist/detail?id=2564780673

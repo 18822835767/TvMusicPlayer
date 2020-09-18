@@ -1,7 +1,7 @@
-package com.example.data.api
+package com.example.repository.api
 
-import com.example.data.RequestCallBack
-import com.example.data.bean.BannerJson
+import com.example.repository.RequestCallBack
+import com.example.repository.bean.BannerJson
 
 interface ClientImageApi {
     /**
