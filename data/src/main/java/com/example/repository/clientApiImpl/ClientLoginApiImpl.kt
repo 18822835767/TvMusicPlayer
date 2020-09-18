@@ -1,4 +1,4 @@
-package com.example.repository.clientApi.impl
+package com.example.repository.clientApiImpl
 
 import android.annotation.SuppressLint
 import com.example.repository.DataUtil

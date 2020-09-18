@@ -1,9 +1,10 @@
-package com.example.repository.clientApi.impl
+package com.example.repository.clientApiImpl
 
 import android.annotation.SuppressLint
 import com.example.repository.DataUtil
-import com.example.repository.GsonBean.UserPlayListJson
 import com.example.repository.RequestCallBack
+import com.example.repository.api.ClientMusicApi
+import com.example.repository.bean.UserPlayListJson
 import com.example.repository.util.LogUtil
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers

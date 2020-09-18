@@ -1,6 +1,6 @@
 package com.example.repository.observableApi
 
-import com.example.repository.GsonBean.UserPlayListJson
+import com.example.repository.bean.UserPlayListJson
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

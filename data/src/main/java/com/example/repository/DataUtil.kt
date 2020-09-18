@@ -2,17 +2,15 @@ package com.example.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.text.TextUtils
-import com.example.repository.clientApi.impl.ClientLoginApiImpl
-import com.example.repository.clientApi.impl.ClientMusicApiImpl
+import com.example.repository.api.ClientLoginApi
+import com.example.repository.api.ClientMusicApi
+import com.example.repository.clientApiImpl.ClientLoginApiImpl
+import com.example.repository.clientApiImpl.ClientMusicApiImpl
 import com.example.repository.observableApi.ObservableLoginApi
 import com.example.repository.observableApi.ObservableMusicApi
 import com.example.repository.util.Constant
 import com.example.repository.util.ContextProvider
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.util.concurrent.TimeUnit
@@ -31,8 +29,10 @@ object DataUtil{
     /**
      * 暴露给用户使用的...
      * */
-    val clientLoginApi = ClientLoginApiImpl()
-    val clientMusicApi = ClientMusicApiImpl()
+    val clientLoginApi : ClientLoginApi =
+        ClientLoginApiImpl()
+    val clientMusicApi : ClientMusicApi=
+        ClientMusicApiImpl()
 
     init {
         //初始化SharedPreferences
@@ -67,7 +67,7 @@ object DataUtil{
 //                    val memoryCookie = cookies.get(hostString)
 //                    //设置Request数据
 //                    
-////                    TODO("Not yet implemented")
+////                    
 //                }
 //
 //            })
