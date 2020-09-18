@@ -8,7 +8,7 @@ import com.example.repository.callback.RequestCallBack
  * */
 interface ClientLoginApi{
     fun login(username: String, password: String, callback : RequestCallBack<UserJson>)
-    fun refreshLogin()
-    fun getLoginStatus(callback : RequestCallBack<UserJson>)
-    fun logout()
+//    fun refreshLogin()
+//    fun getLoginStatus(callback : RequestCallBack<UserJson>)
+//    fun logout()
 }
