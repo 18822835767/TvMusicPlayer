@@ -1,8 +1,8 @@
 package com.example.tvmusicplayer.model.impl
 
-import com.example.repository.DataUtil
-import com.example.repository.RequestCallBack
-import com.example.repository.bean.UserJson
+import com.example.data.DataUtil
+import com.example.data.RequestCallBack
+import com.example.data.bean.UserJson
 import com.example.tvmusicplayer.bean.User
 import com.example.tvmusicplayer.model.LoginModel
 

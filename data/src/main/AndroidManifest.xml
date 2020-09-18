@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.repository">
+    package="com.example.data">
 
     <application>
         <provider
-            android:name=".util.ContextProvider"
-            android:authorities="com.example.repository.util.provider"
+            android:name="com.example.data.util.ContextProvider"
+            android:authorities="com.example.data.util.provider"
             android:enabled="true"
             android:exported="false" />
     </application>
