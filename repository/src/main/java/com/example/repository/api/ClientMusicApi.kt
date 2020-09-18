@@ -1,7 +1,6 @@
 package com.example.repository.api
 
 import com.example.repository.RequestCallBack
-import com.example.data.bean.*
 import com.example.repository.bean.UserPlayListJson
 
 /**
