@@ -23,7 +23,7 @@ class UserFragment : Fragment(),BaseRecyclerViewAdapter.OnItemClickListener{
     
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String): UserFragment {
+        fun newInstance(): UserFragment {
             return UserFragment()
         }
     }

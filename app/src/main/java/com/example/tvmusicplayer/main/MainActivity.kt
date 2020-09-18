@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        fragments.add(UserFragment())
-        fragments.add(RecommendFragment())
+        fragments.add(UserFragment.newInstance())
+        fragments.add(RecommendFragment.newInstance())
 
         viewPager.adapter = object : FragmentStatePagerAdapter(
             supportFragmentManager,

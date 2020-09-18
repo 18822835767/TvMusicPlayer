@@ -8,13 +8,14 @@ import com.example.repository.observableApi.ObservableMusicApi
 import com.example.repository.util.Constant
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.util.concurrent.TimeUnit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-object DataUtil {
+class DataUtil{
 
     private var client: OkHttpClient
     private var retrofit: Retrofit
@@ -29,9 +30,9 @@ object DataUtil {
 
     init {
         client = OkHttpClient.Builder()
-            .connectTimeout(8000, TimeUnit.MILLISECONDS)
-            .readTimeout(8000, TimeUnit.MILLISECONDS)
-            .writeTimeout(8000, TimeUnit.MILLISECONDS)
+            .connectTimeout(Constant.CONNECTION_TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(Constant.READ_TIME_OUT, TimeUnit.SECONDS)
+            .writeTimeout(Constant.WRITE_TIME_OUT, TimeUnit.SECONDS)
             .build()
 
         retrofit = Retrofit.Builder()
