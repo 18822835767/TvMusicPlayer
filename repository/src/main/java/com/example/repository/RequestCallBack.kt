@@ -1,4 +1,4 @@
-package com.example.repository.callback
+package com.example.repository
 
 interface RequestCallBack<T>{
     fun callback(data : T)

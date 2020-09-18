@@ -3,8 +3,7 @@ package com.example.repository.clientApi.impl
 import android.annotation.SuppressLint
 import com.example.repository.DataUtil
 import com.example.repository.GsonBean.UserPlayListJson
-import com.example.repository.callback.RequestCallBack
-import com.example.repository.clientApi.ClientMusicApi
+import com.example.repository.RequestCallBack
 import com.example.repository.util.LogUtil
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers

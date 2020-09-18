@@ -2,7 +2,6 @@ package com.example.tvmusicplayer.model.impl
 
 import com.example.repository.DataUtil
 import com.example.repository.GsonBean.UserJson
-import com.example.repository.callback.RequestCallBack
 import com.example.tvmusicplayer.bean.User
 import com.example.tvmusicplayer.model.LoginModel
 
