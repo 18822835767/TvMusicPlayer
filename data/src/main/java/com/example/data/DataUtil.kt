@@ -125,7 +125,7 @@ object DataUtil {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback.error(e.message ?: "error")
+                callback.error(e.message ?: "UnKnown_error")
             }
 
             override fun onResponse(call: Call, response: Response) {

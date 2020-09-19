@@ -12,4 +12,10 @@ interface ObservableLoginApi {
     @GET("/login/cellphone")
     fun login(@Query("phone") username: String, @Query("password") password: String):
             Observable<UserJson>
+
+    /**
+     * 获取登陆状态接口.
+     * */
+    @GET("/login/status")
+    fun getLoginStatus() : Observable<UserJson>
 }
