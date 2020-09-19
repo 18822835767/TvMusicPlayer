@@ -198,7 +198,7 @@ class LrcView : View {
         var j = 1
         if (currentLine != 0) {
             //画中间行上面的歌词
-            for (i in currentLine - 1..firstLine) {
+            for (i in currentLine - 1 downTo firstLine) {
                 //拿到歌词
                 val lrcText = lryList[i].text
                 val x = (viewWidth - normalPaint.measureText(lrcText)) / 2
