@@ -11,7 +11,7 @@ import com.example.tvmusicplayer.util.LogUtil
 class LoginModelImpl : LoginModel {
 
     private val TAG = "LoginModelImpl"
-    
+
     override fun login(username: String, password: String, listener: LoginModel.OnListener) {
         DataUtil.clientLoginApi.login(username, password, object :
             RequestCallBack<UserJson> {
@@ -30,23 +30,26 @@ class LoginModelImpl : LoginModel {
             }
 
             override fun error(errorMsg: String) {
-                LogUtil.d(TAG,errorMsg)
+                LogUtil.d(TAG, errorMsg)
                 listener.error(errorMsg)
             }
         })
     }
 
     override fun getLoginStatus() {
-        DataUtil.clientLoginApi.getLoginStatus(object  : RequestCallBack<UserJson>{
+        DataUtil.clientLoginApi.getLoginStatus(object : RequestCallBack<UserJson> {
             override fun callback(data: UserJson) {
-                val user = User(data.profile?.userId ?: -1, data.profile?.nickname)
-                //标记已经登陆成功
-                LoginStatusManager.alreadyLogin = true
-                LoginStatusManager.user = user
+                //不为null,说明可以获取得到登陆状态，自动登录；否则，说明无法完成自动登录，需要客户手动登陆.
+                data.profile?.let {
+                    val user = User(it.userId ?: -1, data.profile?.nickname)
+                    //标记已经登陆成功
+                    LoginStatusManager.alreadyLogin = true
+                    LoginStatusManager.user = user
+                }
             }
 
             override fun error(errorMsg: String) {
-                LogUtil.d(TAG,errorMsg)
+                LogUtil.d(TAG, errorMsg)
             }
 
         })

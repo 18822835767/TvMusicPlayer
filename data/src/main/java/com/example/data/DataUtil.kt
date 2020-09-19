@@ -61,16 +61,14 @@ object DataUtil {
                         //从磁盘里面获取cookie
                         val spCookie = sharedPreferences.getString(hostString, "")
                         //如果cookie不为空，长度不为0
-                        if (!TextUtils.isEmpty(spCookie)) {
-                            spCookie?.let {
-                                //将cookie放到内存中
-                                cookies.put(hostString, it)
-                            }
+                        if (spCookie != null && spCookie != "") {
+                            //将cookie放到内存中
+                            cookies[hostString] = spCookie
                         }
                     }
 
                     //获取内存中的cookie
-                    val memoryCookie = cookies.get(hostString)
+                    val memoryCookie = cookies[hostString]
                     //拦截网络请求数据
                     val request = originalRequest.newBuilder()
                         //设置请求头cookie
@@ -80,7 +78,7 @@ object DataUtil {
                     //拦截返回的数据
                     val originalResponse = chain.proceed(request)
                     //判断请求头里面是否有Set-Cookie值，更新Cookie
-                    if (!originalResponse.headers("Set-Cookie").isEmpty()) {
+                    if (originalResponse.headers("Set-Cookie").isNotEmpty()) {
                         //字符串集
                         val stringBuilder = StringBuilder()
                         originalResponse.headers("Set-Cookie").forEach {
@@ -91,7 +89,7 @@ object DataUtil {
                         val cookie = stringBuilder.toString()
 
                         //更新内存中Cookie值
-                        cookies.put(hostString, cookie)
+                        cookies[hostString] = cookie
                         //存储到本地磁盘中
                         val editor = sharedPreferences.edit()
                         editor.putString(hostString, cookie)
