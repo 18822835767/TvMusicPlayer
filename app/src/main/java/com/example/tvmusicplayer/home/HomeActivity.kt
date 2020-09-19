@@ -25,7 +25,7 @@ class HomeActivity : AppCompatActivity(),HomeContract.OnView {
     private var toolbar: Toolbar? = null
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
-    private lateinit var drawerLyout: DrawerLayout
+    private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private var fragments = mutableListOf<Fragment>()
     private lateinit var presenter : HomeContract.Presenter
@@ -46,7 +46,7 @@ class HomeActivity : AppCompatActivity(),HomeContract.OnView {
         toolbar = findViewById(R.id.main_toolbar)
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tab_layout)
-        drawerLyout = findViewById(R.id.drawer_layout)
+        drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
     }
 
@@ -121,7 +121,7 @@ class HomeActivity : AppCompatActivity(),HomeContract.OnView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search -> Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show()
-            android.R.id.home -> drawerLyout.openDrawer(GravityCompat.START)
+            android.R.id.home -> drawerLayout.openDrawer(GravityCompat.START)
         }
         return true
     }
