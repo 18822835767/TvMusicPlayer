@@ -17,11 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.UserPlayListAdapter
+import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.manager.LoginStatusManager
+import com.example.tvmusicplayer.playListDetail.PlayListDetailActivity
 import kotlinx.android.synthetic.main.activity_play_list.*
 
-class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
+class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView,
+    BaseRecyclerViewAdapter.OnItemClickListener{
 
     private val TAG = "UserPlayListActivity"
     private lateinit var presenter : UserPlayListContract.Presenter
@@ -60,6 +63,7 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
         
         //设置RecyclerView的数据
         adapter = UserPlayListAdapter(mutableListOf(),R.layout.playlist_item)
+        adapter.setItemClickListener(this)
         val manager = LinearLayoutManager(this)
         manager.orientation = LinearLayoutManager.VERTICAL
         listRecyclerView.layoutManager = manager
@@ -100,5 +104,10 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView{
 
     override fun showError(errorMessage: String) {
         Toast.makeText(this,"错误：$errorMessage",Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemClick(v: View?, position: Int) {
+        val playList = adapter.getItem(position)
+        PlayListDetailActivity.actionStart(playList,this)
     }
 }
