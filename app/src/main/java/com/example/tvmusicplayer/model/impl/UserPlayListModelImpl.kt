@@ -5,8 +5,11 @@ import com.example.repository.RequestCallBack
 import com.example.repository.bean.UserPlayListJson
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.model.UserPlayListModel
+import com.example.tvmusicplayer.util.LogUtil
 
 class UserPlayListModelImpl : UserPlayListModel{
+    private val TAG = "UserPlayListModelImpl"
+    
     override fun getUserPlayList(uid: Long, listener: UserPlayListModel.OnListener) {
         DataUtil.clientMusicApi.getUserPlayList(uid,object :
             RequestCallBack<UserPlayListJson> {
@@ -25,6 +28,7 @@ class UserPlayListModelImpl : UserPlayListModel{
             }
 
             override fun error(errorMsg: String) {
+                LogUtil.d(TAG,errorMsg)
                 listener.error(errorMsg)
             }
 

@@ -6,9 +6,12 @@ import com.example.repository.bean.UserJson
 import com.example.tvmusicplayer.bean.User
 import com.example.tvmusicplayer.manager.LoginStatusManager
 import com.example.tvmusicplayer.model.LoginModel
+import com.example.tvmusicplayer.util.LogUtil
 
 class LoginModelImpl : LoginModel {
 
+    private val TAG = "LoginModelImpl"
+    
     override fun login(username: String, password: String, listener: LoginModel.OnListener) {
         DataUtil.clientLoginApi.login(username, password, object :
             RequestCallBack<UserJson> {
@@ -27,8 +30,25 @@ class LoginModelImpl : LoginModel {
             }
 
             override fun error(errorMsg: String) {
+                LogUtil.d(TAG,errorMsg)
                 listener.error(errorMsg)
             }
+        })
+    }
+
+    override fun getLoginStatus() {
+        DataUtil.clientLoginApi.getLoginStatus(object  : RequestCallBack<UserJson>{
+            override fun callback(data: UserJson) {
+                val user = User(data.profile?.userId ?: -1, data.profile?.nickname)
+                //标记已经登陆成功
+                LoginStatusManager.alreadyLogin = true
+                LoginStatusManager.user = user
+            }
+
+            override fun error(errorMsg: String) {
+                LogUtil.d(TAG,errorMsg)
+            }
+
         })
     }
 
