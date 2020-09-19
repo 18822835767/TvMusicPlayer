@@ -53,9 +53,6 @@ class LoginActivity : AppCompatActivity(),LoginContract.OnView, View.OnClickList
     }
     
     override fun loginSuccess(user: User) {
-        LoginStatusManager.alreadyLogin = true
-        LoginStatusManager.user = user
-
         Toast.makeText(this,"登陆成功",Toast.LENGTH_SHORT).show()
         finish()
     }
