@@ -6,31 +6,29 @@ import android.os.Parcelable
 /**
  * 歌单的实体类.
  * */
-class PlayList : Parcelable{
-    var id : Long? = null
-    var name : String? = null
-    var coverImgUrl : String? = null
+class PlayList : Parcelable {
+    var id: Long? = null
+    var name: String? = null
+    var coverImgUrl: String? = null
 
-    constructor(parcel: Parcel) : this() {
-        id = parcel.readValue(Long::class.java.classLoader) as? Long
-        name = parcel.readString()
-        coverImgUrl = parcel.readString()
-    }
+    constructor() {}
 
-    constructor(){}
-    
-    constructor(id : Long?, name : String?, coverImgUrl : String?){
+    constructor(id: Long?, name: String?, coverImgUrl: String?) {
         this.id = id
         this.name = name
         this.coverImgUrl = coverImgUrl
     }
 
-    override fun writeToParcel(dest: Parcel?, flags: Int) {
-        dest?.let { 
-            it.writeLong(id?:-1)
-            it.writeString(name)
-            it.writeString(coverImgUrl)
-        }
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readLong()
+        name = parcel.readString()
+        coverImgUrl = parcel.readString()
+    }
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeLong(id ?: -1)
+        dest.writeString(name)
+        dest.writeString(coverImgUrl)
     }
 
     override fun describeContents(): Int {

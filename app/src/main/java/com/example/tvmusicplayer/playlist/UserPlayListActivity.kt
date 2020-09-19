@@ -107,7 +107,7 @@ class UserPlayListActivity : AppCompatActivity(),UserPlayListContract.OnView,
     }
 
     override fun onItemClick(v: View?, position: Int) {
-        val playList = adapter.getItem(position)
+        val playList : PlayList= adapter.getItem(position)
         PlayListDetailActivity.actionStart(playList,this)
     }
 }
