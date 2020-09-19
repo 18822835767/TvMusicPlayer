@@ -71,35 +71,31 @@ class MainActivity : AppCompatActivity() {
         tabLayout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(viewPager))
     }
 
-    fun initEvent() {
-        navView.setNavigationItemSelectedListener(object :
-            NavigationView.OnNavigationItemSelectedListener {
-            override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                when (item.itemId) {
-                    R.id.nav_login -> {
-                        if (LoginStatusManager.alreadyLogin) {
-                            Toast.makeText(this@MainActivity, "已经登陆过啦~~", Toast.LENGTH_SHORT).show()
-                        } else {
-                            LoginActivity.actionStart(this@MainActivity)
-                        }
+    private fun initEvent() {
+        navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_login -> {
+                    if (LoginStatusManager.alreadyLogin) {
+                        Toast.makeText(this@MainActivity, "已经登陆过啦~~", Toast.LENGTH_SHORT).show()
+                    } else {
+                        LoginActivity.actionStart(this@MainActivity)
                     }
-                    R.id.nav_logout -> {
-                        if(NetWorkUtil.isNetWorkConnected(this@MainActivity)){
-                            Toast.makeText(this@MainActivity, "有网络", Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(this@MainActivity, "无网络", Toast.LENGTH_SHORT).show()
-                        }
-//                        if(!LoginStatusManager.alreadyLogin){
-//                            Toast.makeText(this@MainActivity,"当前还没有登陆呢~~",Toast.LENGTH_SHORT).show()
-//                        }else{
-//
-//                        }
-                    }
-
                 }
-                return true
+                R.id.nav_logout -> {
+                    if(!LoginStatusManager.alreadyLogin){
+                        Toast.makeText(this@MainActivity,"当前还没有登陆呢~~",Toast.LENGTH_SHORT).show()
+                    }else{
+                        if(!NetWorkUtil.isNetWorkConnected(this@MainActivity)){
+                            Toast.makeText(this@MainActivity, "当前没有网络噢~~", Toast.LENGTH_SHORT).show()
+                        }else{
+
+                        }
+                    }
+                }
+
             }
-        })
+            true
+        }
     }
 
     private fun setActionBar() {

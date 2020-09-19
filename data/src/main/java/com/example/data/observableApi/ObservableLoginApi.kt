@@ -18,4 +18,7 @@ interface ObservableLoginApi {
      * */
     @GET("/login/status")
     fun getLoginStatus() : Observable<UserJson>
+    
+    @GET("/logout")
+    fun logout() : Observable<Unit>
 }
