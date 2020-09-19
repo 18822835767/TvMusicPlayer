@@ -16,6 +16,7 @@ import com.example.tvmusicplayer.login.LoginActivity
 import com.example.tvmusicplayer.recommend.RecommendFragment
 import com.example.tvmusicplayer.user.UserFragment
 import com.example.tvmusicplayer.manager.LoginStatusManager
+import com.example.tvmusicplayer.util.NetWorkUtil
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.squareup.picasso.Picasso
@@ -82,6 +83,19 @@ class MainActivity : AppCompatActivity() {
                             LoginActivity.actionStart(this@MainActivity)
                         }
                     }
+                    R.id.nav_logout -> {
+                        if(NetWorkUtil.isNetWorkConnected(this@MainActivity)){
+                            Toast.makeText(this@MainActivity, "有网络", Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(this@MainActivity, "无网络", Toast.LENGTH_SHORT).show()
+                        }
+//                        if(!LoginStatusManager.alreadyLogin){
+//                            Toast.makeText(this@MainActivity,"当前还没有登陆呢~~",Toast.LENGTH_SHORT).show()
+//                        }else{
+//
+//                        }
+                    }
+
                 }
                 return true
             }
