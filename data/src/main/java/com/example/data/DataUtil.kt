@@ -12,40 +12,39 @@ import com.example.data.observableApi.ObservableMusicApi
 import com.example.data.util.Constant
 import com.example.data.util.ContextProvider
 import com.example.data.util.LogUtil
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import com.example.repository.RequestCallBack
+import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.util.concurrent.TimeUnit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import java.lang.StringBuilder
 
 
-object DataUtil{
+object DataUtil {
 
     private const val TAG = "DataUtil"
     private var client: OkHttpClient
     private var retrofit: Retrofit
     internal var observableLoginApi: ObservableLoginApi
     internal var observableMusicApi: ObservableMusicApi
-    internal var sharedPreferences : SharedPreferences
-    private var cookies = HashMap<String,String>()
+    internal var sharedPreferences: SharedPreferences
+    private var cookies = HashMap<String, String>()
 
     /**
      * 暴露给用户使用的...
      * */
-    val clientLoginApi : ClientLoginApi =
+    val clientLoginApi: ClientLoginApi =
         ClientLoginApiImpl()
-    val clientMusicApi : ClientMusicApi =
+    val clientMusicApi: ClientMusicApi =
         ClientMusicApiImpl()
 
     init {
         //初始化SharedPreferences
         sharedPreferences = ContextProvider.applicationContext
-            .getSharedPreferences("Cookie_Pre",Context.MODE_PRIVATE)
-        
+            .getSharedPreferences("Cookie_Pre", Context.MODE_PRIVATE)
+
         client = OkHttpClient.Builder()
             .connectTimeout(Constant.CONNECTION_TIME_OUT, TimeUnit.SECONDS)
             .readTimeout(Constant.READ_TIME_OUT, TimeUnit.SECONDS)
@@ -58,14 +57,14 @@ object DataUtil{
                     val hostString = originalRequest.url.host
 
                     //如果当前内存里不含有hostString对应的cookie
-                    if(!cookies.containsKey(hostString)){
+                    if (!cookies.containsKey(hostString)) {
                         //从磁盘里面获取cookie
-                        val spCookie = sharedPreferences.getString(hostString,"")
+                        val spCookie = sharedPreferences.getString(hostString, "")
                         //如果cookie不为空，长度不为0
-                        if(!TextUtils.isEmpty(spCookie)){
+                        if (!TextUtils.isEmpty(spCookie)) {
                             spCookie?.let {
                                 //将cookie放到内存中
-                                cookies.put(hostString,it)
+                                cookies.put(hostString, it)
                             }
                         }
                     }
@@ -75,29 +74,29 @@ object DataUtil{
                     //拦截网络请求数据
                     val request = originalRequest.newBuilder()
                         //设置请求头cookie
-                        .addHeader("Cookie",memoryCookie?:"")
+                        .addHeader("Cookie", memoryCookie ?: "")
                         .build()
-                    
+
                     //拦截返回的数据
                     val originalResponse = chain.proceed(request)
                     //判断请求头里面是否有Set-Cookie值，更新Cookie
-                    if(!originalResponse.headers("Set-Cookie").isEmpty()){
+                    if (!originalResponse.headers("Set-Cookie").isEmpty()) {
                         //字符串集
                         val stringBuilder = StringBuilder()
-                        originalResponse.headers("Set-Cookie").forEach { 
+                        originalResponse.headers("Set-Cookie").forEach {
                             stringBuilder.append(it)
                             stringBuilder.append(";")
                         }
                         //拼接字符串
                         val cookie = stringBuilder.toString()
-                        
+
                         //更新内存中Cookie值
-                        cookies.put(hostString,cookie)
+                        cookies.put(hostString, cookie)
                         //存储到本地磁盘中
                         val editor = sharedPreferences.edit()
-                        editor.putString(hostString,cookie)
+                        editor.putString(hostString, cookie)
                         editor.apply()
-                        LogUtil.d("Set-Cookie","cookies: $cookie host: $hostString")
+                        LogUtil.d(TAG, "Set-Cookie->cookies: $cookie host: $hostString")
                     }
                     return originalResponse
                 }
@@ -116,6 +115,24 @@ object DataUtil{
         observableLoginApi = retrofit.create(ObservableLoginApi::class.java)
         observableMusicApi = retrofit.create(ObservableMusicApi::class.java)
     }
-    
-    
+
+    /**
+     * OkHttp解析，直接返回Json数据.
+     * */
+    fun getJsonData(url: String, callback: RequestCallBack<String>) {
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                callback.error(e.message ?: "error")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                callback.callback(response.body.toString())
+            }
+
+        })
+    }
+
 }
