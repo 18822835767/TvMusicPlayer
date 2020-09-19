@@ -55,4 +55,10 @@ class LoginModelImpl : LoginModel {
         })
     }
 
+    override fun logout() {
+        DataUtil.clientLoginApi.logout()
+        LoginStatusManager.alreadyLogin = false
+        LoginStatusManager.user = null
+    }
+
 }

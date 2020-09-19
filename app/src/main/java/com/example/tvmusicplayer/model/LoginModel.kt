@@ -12,6 +12,11 @@ interface LoginModel {
      * */
     fun getLoginStatus()
 
+    /**
+     * 退出登陆.
+     * */
+    fun logout()
+
     interface OnListener : BaseModelListener {
         fun loginSuccess(user: User)
         fun loginFailure()

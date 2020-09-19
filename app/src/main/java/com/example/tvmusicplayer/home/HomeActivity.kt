@@ -1,4 +1,4 @@
-package com.example.tvmusicplayer.main
+package com.example.tvmusicplayer.home
 
 import android.os.Bundle
 import android.view.Menu
@@ -19,9 +19,8 @@ import com.example.tvmusicplayer.manager.LoginStatusManager
 import com.example.tvmusicplayer.util.NetWorkUtil
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
-import com.squareup.picasso.Picasso
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(),HomeContract.OnView {
 
     private var toolbar: Toolbar? = null
     private lateinit var viewPager: ViewPager
@@ -29,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLyout: DrawerLayout
     private lateinit var navView: NavigationView
     private var fragments = mutableListOf<Fragment>()
+    private lateinit var presenter : HomeContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initData() {
+        HomePresenter(this)
+        
         fragments.add(UserFragment.newInstance())
         fragments.add(RecommendFragment.newInstance())
 
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
         ) {
             override fun getItem(position: Int): Fragment {
-                return fragments.get(position)
+                return fragments[position]
             }
 
             override fun getCount(): Int {
@@ -76,19 +78,24 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_login -> {
                     if (LoginStatusManager.alreadyLogin) {
-                        Toast.makeText(this@MainActivity, "已经登陆过啦~~", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@HomeActivity, "已经登陆过啦~~", 
+                            Toast.LENGTH_SHORT).show()
                     } else {
-                        LoginActivity.actionStart(this@MainActivity)
+                        LoginActivity.actionStart(this@HomeActivity)
                     }
                 }
                 R.id.nav_logout -> {
                     if(!LoginStatusManager.alreadyLogin){
-                        Toast.makeText(this@MainActivity,"当前还没有登陆呢~~",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@HomeActivity,"当前还没有登陆呢~~",
+                            Toast.LENGTH_SHORT).show()
                     }else{
-                        if(!NetWorkUtil.isNetWorkConnected(this@MainActivity)){
-                            Toast.makeText(this@MainActivity, "当前没有网络噢~~", Toast.LENGTH_SHORT).show()
+                        if(!NetWorkUtil.isNetWorkConnected(this@HomeActivity)){
+                            Toast.makeText(this@HomeActivity, "当前没有网络噢~~", 
+                                Toast.LENGTH_SHORT).show()
                         }else{
-
+                            presenter.logout()
+                            Toast.makeText(this@HomeActivity, "退出登陆成功",
+                                Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -117,5 +124,18 @@ class MainActivity : AppCompatActivity() {
             android.R.id.home -> drawerLyout.openDrawer(GravityCompat.START)
         }
         return true
+    }
+
+    override fun setPresenter(presenter: HomeContract.Presenter) {
+        this.presenter = presenter
+    }
+
+    override fun showLoading() {
+    }
+
+    override fun hideLoading() {
+    }
+
+    override fun showError(errorMessage: String) {
     }
 }
