@@ -7,6 +7,7 @@ import com.example.repository.api.ClientMusicApi
 import com.example.repository.bean.UserPlayListJson
 import com.example.data.util.LogUtil
 import com.example.repository.bean.SongIdsJson
+import com.example.repository.bean.SongPlayJson
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -16,7 +17,7 @@ import io.reactivex.schedulers.Schedulers
 class ClientMusicApiImpl : ClientMusicApi {
     private val TAG = "ClientMusicApiImpl"
 
-    override fun getUserPlayList(uid: Long, callback: RequestCallBack<UserPlayListJson>) {
+    override fun getUserPlayList(uid: Long, callBack: RequestCallBack<UserPlayListJson>) {
         DataUtil.observableMusicApi.getUserPlayList(uid)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -31,12 +32,12 @@ class ClientMusicApiImpl : ClientMusicApi {
 
                 override fun onNext(t: UserPlayListJson) {
                     LogUtil.d(TAG, "onNext")
-                    callback.callback(t)
+                    callBack.callback(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtil.d(TAG, "onError" + e.message)
-                    callback.error(e.message?:"UnKnown_error")
+                    callBack.error(e.message?:"UnKnown_error")
                 }
 
             })
@@ -65,6 +66,31 @@ class ClientMusicApiImpl : ClientMusicApi {
                     callBack.error(e.message?:"UnKnown_error")
                 }
 
+            })
+    }
+
+    override fun getSongsPlay(ids: String, callBack: RequestCallBack<SongPlayJson>) {
+        DataUtil.observableMusicApi.getSongsPlay(ids)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<SongPlayJson>{
+                override fun onComplete() {
+                    LogUtil.d(TAG, "onComplete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    LogUtil.d(TAG, "onSubscribe")
+                }
+
+                override fun onNext(t: SongPlayJson) {
+                    LogUtil.d(TAG, "onNext")
+                    callBack.callback(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    LogUtil.d(TAG, "onError" + e.message)
+                    callBack.error(e.message?:"UnKnown_error")
+                }
             })
     }
 
