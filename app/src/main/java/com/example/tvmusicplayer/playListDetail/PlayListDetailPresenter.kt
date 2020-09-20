@@ -16,6 +16,7 @@ class PlayListDetailPresenter(val onView: PlayListDetailContract.OnView) :
     }
 
     override fun getPlayListDetail(id: Long) {
+        onView.showLoading()
         model.getPlayListDetail(id,this)
     }
 
@@ -23,10 +24,12 @@ class PlayListDetailPresenter(val onView: PlayListDetailContract.OnView) :
     }
 
     override fun getPlayListDetailSuccess(list: MutableList<Song>) {
+        onView.hideLoading()
         onView.getPlayListDetailSuccess(list)
     }
 
     override fun error(msg: String) {
+        onView.hideLoading()
         onView.showError(msg)
     }
 

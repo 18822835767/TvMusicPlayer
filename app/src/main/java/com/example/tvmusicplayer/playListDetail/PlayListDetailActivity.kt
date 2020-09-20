@@ -5,6 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +30,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter : PlayListDetailAdapter
+    private lateinit var loadingLayout : FrameLayout
     
     companion object{
         const val PLAY_LIST_PARAMS = "play_list_params"
@@ -53,6 +57,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private fun initView(){
         toolbar = findViewById(R.id.toolbar)
         recyclerView = findViewById(R.id.recycler_view)
+        loadingLayout = findViewById(R.id.fl_loading)
     }
     
     private fun initData(){
@@ -98,11 +103,14 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     }
 
     override fun showLoading() {
+        loadingLayout.visibility = View.VISIBLE
     }
 
     override fun hideLoading() {
+        loadingLayout.visibility = View.GONE
     }
 
     override fun showError(errorMessage: String) {
+        Toast.makeText(this,"错误：$errorMessage",Toast.LENGTH_SHORT).show()
     }
 }
