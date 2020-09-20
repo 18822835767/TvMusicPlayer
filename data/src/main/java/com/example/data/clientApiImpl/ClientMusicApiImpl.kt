@@ -6,6 +6,7 @@ import com.example.repository.RequestCallBack
 import com.example.repository.api.ClientMusicApi
 import com.example.repository.bean.UserPlayListJson
 import com.example.data.util.LogUtil
+import com.example.repository.bean.SongIdsJson
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -36,6 +37,32 @@ class ClientMusicApiImpl : ClientMusicApi {
                 override fun onError(e: Throwable) {
                     LogUtil.d(TAG, "onError" + e.message)
                     callback.error(e.message?:"UnKnown_error")
+                }
+
+            })
+    }
+
+    override fun getSongListDetail(id: Long, callBack: RequestCallBack<SongIdsJson>) {
+        DataUtil.observableMusicApi.getSongListDetail(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<SongIdsJson>{
+                override fun onComplete() {
+                    LogUtil.d(TAG, "onComplete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    LogUtil.d(TAG, "onSubscribe")
+                }
+
+                override fun onNext(t: SongIdsJson) {
+                    LogUtil.d(TAG, "onNext")
+                    callBack.callback(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    LogUtil.d(TAG, "onError" + e.message)
+                    callBack.error(e.message?:"UnKnown_error")
                 }
 
             })

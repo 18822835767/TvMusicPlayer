@@ -1,6 +1,7 @@
 package com.example.repository.api
 
 import com.example.repository.RequestCallBack
+import com.example.repository.bean.SongIdsJson
 import com.example.repository.bean.UserPlayListJson
 
 /**
@@ -12,10 +13,10 @@ interface ClientMusicApi {
      * */
     fun getUserPlayList(uid: Long, callBack: RequestCallBack<UserPlayListJson>)
 
-//    /**
-//     * 传入歌单id，获取歌单包含的歌曲.
-//     * */
-//    fun getSongListDetail(id: Long, callBack: RequestCallBack<SongIdsJson>)
+    /**
+     * 传入歌单id，获取歌单包含的歌曲.
+     * */
+    fun getSongListDetail(id: Long, callBack: RequestCallBack<SongIdsJson>)
 //
 //    /**
 //     * 传入歌曲的id，获取歌曲详情.
