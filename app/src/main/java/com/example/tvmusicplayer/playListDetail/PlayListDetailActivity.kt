@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,6 +19,7 @@ import com.example.tvmusicplayer.adapter.PlayListDetailAdapter
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.LogUtil
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_deatil.*
 
 /**
@@ -31,6 +34,8 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter : PlayListDetailAdapter
     private lateinit var loadingLayout : FrameLayout
+    private lateinit var playListCoverIv : ImageView
+    private lateinit var playlistNameTv : TextView
     
     companion object{
         const val PLAY_LIST_PARAMS = "play_list_params"
@@ -58,6 +63,8 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         toolbar = findViewById(R.id.toolbar)
         recyclerView = findViewById(R.id.recycler_view)
         loadingLayout = findViewById(R.id.fl_loading)
+        playListCoverIv = findViewById(R.id.playlist_cover_iv)
+        playlistNameTv = findViewById(R.id.playlist_name_tv)
     }
     
     private fun initData(){
@@ -70,6 +77,18 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         recyclerView.adapter = adapter
         //添加分割线
         recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
+        
+        //设置歌单名字和图片在相应控件上
+        playList?.let { 
+            playlistNameTv.text = it.name 
+            Picasso.get().load(it.coverImgUrl)
+                .resize(100,100)
+                .placeholder(R.drawable.empty_photo)
+                .error(R.drawable.load_error)
+                .into(playListCoverIv)
+        }
+        
+        
         
         //获取歌单中的歌曲数据
         playList?.id?.let {presenter.getPlayListDetail(it)}
