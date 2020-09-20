@@ -2,6 +2,7 @@ package com.example.tvmusicplayer.model.impl
 
 import com.example.data.DataUtil
 import com.example.repository.RequestCallBack
+import com.example.repository.bean.SongDetailJson
 import com.example.repository.bean.SongIdsJson
 import com.example.repository.bean.SongPlayJson
 import com.example.tvmusicplayer.bean.Song
@@ -29,21 +30,49 @@ class PlayListDetailModelImpl : PlayListDetailModel {
                     }
                 }
 
-                DataUtil.clientMusicApi.getSongsPlay(builder.toString(),
-                    object : RequestCallBack<SongPlayJson> {
-                        override fun callback(data: SongPlayJson) {
-                            data.data?.let {
+//                DataUtil.clientMusicApi.getSongsPlay(builder.toString(),
+//                    object : RequestCallBack<SongPlayJson> {
+//                        override fun callback(data: SongPlayJson) {
+//                            data.data?.let {
+//                                val songList = mutableListOf<Song>()
+//                                for (i in 0 until it.size) {
+//                                    songList.add(
+//                                        Song(
+//                                            it[i].id, it[i].url, it[i].size,
+//                                            null, it[i].br, null, null
+//                                        )
+//                                    )
+//                                }
+//                                //回调出去
+//                                listener.getPlayListDetailSuccess(songList)
+//                            }
+//                        }
+//
+//                        override fun error(errorMsg: String) {
+//                            listener.error(errorMsg)
+//                        }
+//
+//                    })
+                DataUtil.clientMusicApi.getSongsDetail(builder.toString(),
+                    object : RequestCallBack<SongDetailJson> {
+                        override fun callback(data: SongDetailJson) {
+                            data.songs?.let {
                                 val songList = mutableListOf<Song>()
                                 for (i in 0 until it.size) {
-                                    songList.add(
-                                        Song(
-                                            it[i].id, it[i].url, it[i].size,
-                                            null, it[i].br, null, null
-                                        )
-                                    )
+                                    val name: String = it[i].name ?: ""
+                                    var picUrl: String = ""
+                                    var artistName: String = ""
+                                    it[i].al?.let { al ->
+                                        picUrl = al.picUrl ?: ""
+                                    }
+                                    val builder = StringBuilder() //用于拼接歌手的名字.
+                                    it[i].ar?.forEach { artist-> 
+                                        builder.append("${artist.name} ")
+                                    }
+                                    artistName = builder.toString()
+                                    songList.add(Song(null,null,null,name,null,artistName,picUrl))
                                 }
-                                //回调出去
-                                listener.getPlayListDetailSuccess(songList)
+                                listener.getPlayListDetailSuccess(songList)//回调出去
                             }
                         }
 

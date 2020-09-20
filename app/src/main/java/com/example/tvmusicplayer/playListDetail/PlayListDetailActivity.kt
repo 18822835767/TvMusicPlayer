@@ -6,19 +6,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.adapter.PlayListDetailAdapter
 import com.example.tvmusicplayer.bean.PlayList
+import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.LogUtil
 
 /**
  * 点击歌单时，展示歌单中的歌曲的活动.
  * */
-class PlayListDetailActivity : AppCompatActivity() {
+class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView {
     
     private val TAG = "PlayListDetailActivity"
     private var playList : PlayList? = null
     private lateinit var toolbar: Toolbar
-    
+    private lateinit var recyclerView : RecyclerView
+    private lateinit var adapter : PlayListDetailAdapter
     
     companion object{
         const val PLAY_LIST_PARAMS = "play_list_params"
@@ -44,9 +48,11 @@ class PlayListDetailActivity : AppCompatActivity() {
     
     private fun initView(){
         toolbar = findViewById(R.id.toolbar)
+        recyclerView = findViewById(R.id.recycler_view)
     }
     
     private fun initData(){
+        PlayListDetailPresenter(this)
         
     }
     
@@ -66,5 +72,20 @@ class PlayListDetailActivity : AppCompatActivity() {
             android.R.id.home -> finish()
         }
         return true
+    }
+
+    override fun getPlayListDetailSuccess(list: MutableList<Song>) {
+    }
+
+    override fun setPresenter(presenter: PlayListDetailContract.Presenter) {
+    }
+
+    override fun showLoading() {
+    }
+
+    override fun hideLoading() {
+    }
+
+    override fun showError(errorMessage: String) {
     }
 }
