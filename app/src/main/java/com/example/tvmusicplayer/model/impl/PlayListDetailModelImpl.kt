@@ -44,71 +44,7 @@ class PlayListDetailModelImpl : PlayListDetailModel {
                         )
                     )
                 }
-
-//                DataUtil.clientMusicApi.getSongsPlay(builder.toString(),
-//                    object : RequestCallBack<SongPlayJson> {
-//                        override fun callback(data: SongPlayJson) {
-//                            data.data?.let {
-//                                val songList = mutableListOf<Song>()
-//                                for (i in 0 until it.size) {
-//                                    songList.add(
-//                                        Song(
-//                                            it[i].id, it[i].url, it[i].size,
-//                                            null, it[i].br, null, null
-//                                        )
-//                                    )
-//                                }
-//                                //回调出去
-//                                listener.getPlayListDetailSuccess(songList)
-//                            }
-//                        }
-//
-//                        override fun error(errorMsg: String) {
-//                            listener.error(errorMsg)
-//                        }
-//
-//                    })
-
                 getSongDetail(listener)
-
-//                DataUtil.clientMusicApi.getSongsDetail(idsBuilder.toString(),
-//                    object : RequestCallBack<SongDetailJson> {
-//                        override fun callback(data: SongDetailJson) {
-//                            data.songs?.let {
-//                                for (i in 0 until it.size) {
-//                                    val name: String = it[i].name ?: ""
-//                                    var picUrl: String = ""
-//                                    var artistName: String = ""
-//                                    it[i].al?.let { al ->
-//                                        picUrl = al.picUrl ?: ""
-//                                    }
-//                                    val strBuilder = StringBuilder() //用于拼接歌手的名字.
-//                                    it[i].ar?.forEach { artist ->
-//                                        strBuilder.append("${artist.name} ")
-//                                    }
-//                                    artistName = strBuilder.toString()
-//                                    songList.add(
-//                                        Song(
-//                                            null,
-//                                            null,
-//                                            null,
-//                                            name,
-//                                            null,
-//                                            artistName,
-//                                            picUrl
-//                                        )
-//                                    )
-//                                }
-//                                listener.getPlayListDetailSuccess(songList)//回调出去
-//                            }
-//                        }
-//
-//                        override fun error(errorMsg: String) {
-//                            listener.error(errorMsg)
-//                        }
-//
-//                    })
-
             }
 
             override fun error(errorMsg: String) {
@@ -144,8 +80,8 @@ class PlayListDetailModelImpl : PlayListDetailModel {
                             song.artistName = artistName
                             song.picUrl = picUrl
                         }
-//                        listener.getPlayListDetailSuccess(songList)//回调出去
-                        getSongsPlayInfo(listener)
+                        listener.getPlayListDetailSuccess(songList)//回调出去
+//                        getSongsPlayInfo(listener)
                     }
                 }
 
@@ -158,6 +94,7 @@ class PlayListDetailModelImpl : PlayListDetailModel {
 
     /**
      * 获取音乐播放相关的信息，例如url、size等等.
+     * 这里接口有问题，获取的数据不全，最后一小部分数据不正常.
      * */
     private fun getSongsPlayInfo(listener: PlayListDetailModel.OnListener) {
         DataUtil.clientMusicApi.getSongsPlay(idsBuilder.toString(), object :
