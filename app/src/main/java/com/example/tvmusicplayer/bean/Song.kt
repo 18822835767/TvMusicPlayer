@@ -45,4 +45,8 @@ class Song {
         this.artistName = artistName
         this.picUrl = picUrl
     }
+
+    override fun toString(): String {
+        return "id:$id,url:$url,size:$size,name:$name,br:$br,artistName:$artistName,picUrl:$picUrl"
+    }
 }
