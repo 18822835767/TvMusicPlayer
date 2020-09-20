@@ -6,20 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.PlayListDetailAdapter
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.LogUtil
+import kotlinx.android.synthetic.main.activity_deatil.*
 
 /**
  * 点击歌单时，展示歌单中的歌曲的活动.
  * */
-class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView {
+class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView{
     
     private val TAG = "PlayListDetailActivity"
     private var playList : PlayList? = null
+    private lateinit var presenter : PlayListDetailContract.Presenter
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter : PlayListDetailAdapter
@@ -54,6 +58,17 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private fun initData(){
         PlayListDetailPresenter(this)
         
+        //设置RecyclerView的数据
+        adapter = PlayListDetailAdapter(mutableListOf<Song>(),R.layout.song_item)
+        val manager = LinearLayoutManager(this)
+        recyclerView.layoutManager = manager
+        recyclerView.adapter = adapter
+        //添加分割线
+        recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
+        
+        //获取歌单中的歌曲数据
+        playList?.id?.let {presenter.getPlayListDetail(it)}
+        
     }
     
     private fun setActionBar(){
@@ -75,9 +90,11 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     }
 
     override fun getPlayListDetailSuccess(list: MutableList<Song>) {
+        adapter.addDatas(list)
     }
 
     override fun setPresenter(presenter: PlayListDetailContract.Presenter) {
+        this.presenter = presenter
     }
 
     override fun showLoading() {
