@@ -64,6 +64,12 @@
             </LinearLayout>
             
         </androidx.core.widget.NestedScrollView>
+
+        <fragment
+            android:id="@+id/bottom_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.example.tvmusicplayer.bottomPlayer.BottomPlayerFragment"/>
         
     </LinearLayout>    
     
