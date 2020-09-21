@@ -32,7 +32,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:orientation="horizontal"
                     android:background="#CD5C5C">
                     
                     <ImageView
@@ -66,8 +65,6 @@
             
         </androidx.core.widget.NestedScrollView>
         
-
-
     </LinearLayout>    
     
     <FrameLayout
