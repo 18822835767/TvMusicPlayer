@@ -13,7 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".playListDetail.PlayListDetailActivity"></activity>
+        <service
+            android:name=".service.PlayService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote"/>
+
+        <activity android:name=".playListDetail.PlayListDetailActivity" />
         <activity android:name=".playlist.UserPlayListActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".detail.DetailActivity" />

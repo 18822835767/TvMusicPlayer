@@ -2,7 +2,7 @@ package com.example.data.util
 
 import android.util.Log
 
-object LogUtil {
+internal object LogUtil {
     private const val VERBOSE = 1
     private const val DEBUG = 2
     private const val INFO = 3
