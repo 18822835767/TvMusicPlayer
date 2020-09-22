@@ -51,7 +51,7 @@ class PlayService : Service() {
     /**
      * 当前的播放模式.
      * */
-    private var playMode = Constant.PlayMusicConstant.ORDER_PLAY
+    private var playMode = ORDER_PLAY
 
     /**
      * 标记是否开启了定时任务.
@@ -68,15 +68,61 @@ class PlayService : Service() {
     }
 
     private fun initMediaPlayer() {
-        mediaPlayer?.let {
-            this.mediaPlayer = MediaPlayer()
-            // todo 增加监听
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer()
         }
+        mediaPlayer?.let {
+            // todo 增加监听
+            it.setOnPreparedListener { mp ->
+                if (mp != null) {
+                    mp.start()
+                    currentState = PLAY_STATE_PLAY
+                    onPlayStateChange()
+                    if (!startTimer) {
+                        startTimer()
+                    }
+                }
+            }
+
+            it.setOnCompletionListener { mp ->
+                playNextSong()
+            }
+
+        }
+    }
+
+    override fun onDestroy() {
+        mediaPlayer?.let {
+            it.stop()
+            it.release()
+            mediaPlayer = null
+        }
+        super.onDestroy()
+    }
+
+    private fun onPlayStateChange() {
+        //遍历观察者，通知播放状态的改变.
+        val size = observers.beginBroadcast()
+        for (i in 0 until size) {
+            val observer = observers.getBroadcastItem(i)
+            observer.onPlayStateChange(currentState)
+        }
+        observers.finishBroadcast()
+    }
+
+    private fun onSeekChange() {
+        //遍历观察者
+        val size = observers.beginBroadcast()
+        for (i in 0 until size) {
+            val observer = observers.getBroadcastItem(i)
+            observer.onSeekChange(currentPosition)
+        }
+        observers.finishBroadcast()
     }
 
     private var binder = object : IPlayInterface.Stub() {
         override fun playSongs(songs: MutableList<Song>?, position: Int) {
-            this@PlayService.playSongs(songs,position)
+            this@PlayService.playSongs(songs, position)
         }
 
         override fun registerObserver(observer: IPlayObserver?) {
@@ -150,12 +196,7 @@ class PlayService : Service() {
             }
         }
         //遍历观察者，通知播放状态的改变.
-        val size = observers.beginBroadcast()
-        for (i in 0 until size) {
-            val observer = observers.getBroadcastItem(i)
-            observer.onPlayStateChange(currentState)
-        }
-        observers.finishBroadcast()
+        onPlayStateChange()
     }
 
     private fun performSong(dataSource: String) {
@@ -268,12 +309,7 @@ class PlayService : Service() {
                 //播放进度的百分比，用于控制进度条
                 val currentPosition = (currentTimePoint * 1.0f * 100 / it.duration).toInt()
                 //遍历观察者
-                val size = observers.beginBroadcast()
-                for (i in 0 until size) {
-                    val observer = observers.getBroadcastItem(i)
-                    observer.onSeekChange(currentPosition)
-                }
-                observers.finishBroadcast()
+                onSeekChange()
             }
         }
     }
