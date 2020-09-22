@@ -4,6 +4,8 @@ import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
+import android.os.RemoteCallbackList
+import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.Constant.PlayMusicConstant.PLAY_STATE_PAUSE
@@ -15,6 +17,7 @@ class PlayService : Service() {
     private var mediaPlayer: MediaPlayer? = null
     private var timer: Timer? = null
     private var songs = mutableListOf<Song>()
+    private var observers = RemoteCallbackList<IPlayObserver>()
 
     /**
      * 当前的播放状态.
@@ -88,7 +91,13 @@ class PlayService : Service() {
                 }
             }
         }
-        //todo 遍历观察者
+        //遍历观察者，通知播放状态的改变.
+        val size = observers.beginBroadcast()
+        for(i in 0 until size){
+            val observer = observers.getBroadcastItem(i)
+            observer.onPlayStateChange(currentState)
+        }
+        observers.finishBroadcast()
     }
 
     private fun startTimer() {

@@ -3,6 +3,7 @@ package com.example.tvmusicplayer;
 
 // Declare any non-default types here with import statements
 import com.example.tvmusicplayer.bean.Song;
+import com.example.tvmusicplayer.IPlayObserver;
 
 interface IPlayInterface {
     /**
@@ -32,4 +33,8 @@ interface IPlayInterface {
     int getPlayMode();
     
     int getPlayState();
+    
+    void registerObserver(in IPlayObserver observer);
+    
+    void unregisterObserver(in IPlayObserver observer);
 }
