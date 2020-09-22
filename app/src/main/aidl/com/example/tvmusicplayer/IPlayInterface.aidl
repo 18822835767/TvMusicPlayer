@@ -14,8 +14,6 @@ interface IPlayInterface {
     
     void playOrPause();
     
-    void performSong(String dataSource);
-    
     void playNext();
     
     void playPre();
@@ -28,7 +26,7 @@ interface IPlayInterface {
     
     int getCurrentPosition();
     
-    void setCurrentPosition();
+    void setCurrentPosition(int currentPosition);
     
     int getPlayMode();
     

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
 import android.os.RemoteCallbackList
+import com.example.tvmusicplayer.IPlayInterface
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.Constant
@@ -63,13 +64,67 @@ class PlayService : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder {
-        TODO("Return the communication channel to the service.")
+        return binder
     }
 
     private fun initMediaPlayer() {
         mediaPlayer?.let {
             this.mediaPlayer = MediaPlayer()
             // todo 增加监听
+        }
+    }
+
+    private var binder = object : IPlayInterface.Stub() {
+        override fun playSongs(songs: MutableList<Song>?, position: Int) {
+            this@PlayService.playSongs(songs,position)
+        }
+
+        override fun registerObserver(observer: IPlayObserver?) {
+            observers.register(observer)
+        }
+
+        override fun seekTo(seek: Int) {
+            this@PlayService.seekTo(seek)
+        }
+
+        override fun getCurrentPosition(): Int {
+            return this@PlayService.currentPosition
+        }
+
+        override fun getPlayState(): Int {
+            return this@PlayService.currentState
+        }
+
+        override fun unregisterObserver(observer: IPlayObserver?) {
+            observers.unregister(observer)
+        }
+
+        override fun playOrPause() {
+            this@PlayService.playOrPause()
+        }
+
+        override fun playPre() {
+            playPreSong()
+        }
+
+        override fun getQueueSongs(): MutableList<Song> {
+            return songs
+        }
+
+        override fun setCurrentPosition(currentPosition: Int) {
+            this@PlayService.currentPosition = currentPosition
+        }
+
+        override fun getPlayMode(): Int {
+            return this@PlayService.playMode
+        }
+
+        override fun playNext() {
+            playNextSong()
+        }
+
+        override fun setPlayMode(mode: Int) {
+            this@PlayService.playMode = mode
         }
     }
 
@@ -112,7 +167,7 @@ class PlayService : Service() {
         if (currentState == PLAY_STATE_PLAY && startTimer) {
             stopTimer()
         }
-        
+
         mediaPlayer?.let {
             hasReset = true
             it.reset()
@@ -123,7 +178,7 @@ class PlayService : Service() {
 
     }
 
-    private fun playNext() {
+    private fun playNextSong() {
         if (songs.size == 0) {
             //todo 给点没歌的提示
             return
@@ -141,7 +196,7 @@ class PlayService : Service() {
         performSong(songs[currentPosition].url ?: NULL_URL)
     }
 
-    private fun playPre(){
+    private fun playPreSong() {
         if (songs.size == 0) {
             //todo 给点没歌的提示
             return
@@ -162,44 +217,46 @@ class PlayService : Service() {
         }
         performSong(songs[currentPosition].url ?: NULL_URL)
     }
-    
-    private fun playSongs(songList : List<Song>,position : Int){
-        songs.clear()
-        songs.addAll(songList)
-        currentPosition = position
-        
-        performSong(songs[position].url?: NULL_URL)
+
+    private fun playSongs(songList: MutableList<Song>?, position: Int) {
+        songList?.let {
+            songs.clear()
+            songs.addAll(it)
+            currentPosition = position
+
+            performSong(songs[position].url ?: NULL_URL)
+        }
     }
-    
-    private fun seekTo(seek : Int){
-        mediaPlayer?.let { 
+
+    fun seekTo(seek: Int) {
+        mediaPlayer?.let {
             val currentProcess = (seek * 1.0f / 100 * it.duration).toInt()
             it.seekTo(currentProcess)
         }
     }
-    
+
     private fun startTimer() {
-        if(timer == null){
+        if (timer == null) {
             timer = Timer()
         }
-        if(seekTimerTask == null){
+        if (seekTimerTask == null) {
             seekTimerTask = SeekTimeTask()
         }
-        timer?.schedule(seekTimerTask,0,300)
+        timer?.schedule(seekTimerTask, 0, 300)
         startTimer = true
     }
 
     private fun stopTimer() {
-        timer?.let { 
+        timer?.let {
             it.cancel()
             timer = null
         }
-        
-        seekTimerTask?.let { 
+
+        seekTimerTask?.let {
             it.cancel()
             seekTimerTask = null
         }
-        
+
         startTimer = false
     }
 
@@ -212,7 +269,7 @@ class PlayService : Service() {
                 val currentPosition = (currentTimePoint * 1.0f * 100 / it.duration).toInt()
                 //遍历观察者
                 val size = observers.beginBroadcast()
-                for(i in 0 until size){
+                for (i in 0 until size) {
                     val observer = observers.getBroadcastItem(i)
                     observer.onSeekChange(currentPosition)
                 }
