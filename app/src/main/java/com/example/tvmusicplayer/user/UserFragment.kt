@@ -44,9 +44,9 @@ class UserFragment : Fragment(),BaseRecyclerViewAdapter.OnItemClickListener{
         super.onActivityCreated(savedInstanceState)
         
         val userText = mutableListOf<String>()
-        userText.add(Constant.LOCAL_MUSIC)
-        userText.add(Constant.MY_SONG_LIST)
-        userText.add(Constant.DOWNLOAD_MANAGER)
+        userText.add(Constant.UserFragmentConstant.LOCAL_MUSIC)
+        userText.add(Constant.UserFragmentConstant.MY_SONG_LIST)
+        userText.add(Constant.UserFragmentConstant.DOWNLOAD_MANAGER)
         adapter = UserAdapter(userText,R.layout.user_item)
         adapter.setItemClickListener(this)
         mRecyclerView.adapter = adapter
@@ -57,7 +57,7 @@ class UserFragment : Fragment(),BaseRecyclerViewAdapter.OnItemClickListener{
     override fun onItemClick(v: View?, position: Int) {
         when(adapter.getItem(position)){
             //如果用户点击的是"我的歌单"
-            Constant.MY_SONG_LIST ->{
+            Constant.UserFragmentConstant.MY_SONG_LIST ->{
                 //若已经登陆
                 if(LoginStatusManager.alreadyLogin){
                     context?.let { UserPlayListActivity.actionStart(it) }

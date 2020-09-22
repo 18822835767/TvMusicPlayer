@@ -14,9 +14,9 @@ class UserAdapter(data : MutableList<String>,itemLayoutId : Int) : BaseRecyclerV
         val str : String = data[position]
         holder.setText(R.id.text,str)
         when(str){
-            Constant.LOCAL_MUSIC -> holder.setImageResource(R.id.image,R.drawable.local_music)
-            Constant.DOWNLOAD_MANAGER -> holder.setImageResource(R.id.image,R.drawable.ic_download)
-            Constant.MY_SONG_LIST -> holder.setImageResource(R.id.image,R.drawable.song_list)
+            Constant.UserFragmentConstant.LOCAL_MUSIC -> holder.setImageResource(R.id.image,R.drawable.local_music)
+            Constant.UserFragmentConstant.DOWNLOAD_MANAGER -> holder.setImageResource(R.id.image,R.drawable.ic_download)
+            Constant.UserFragmentConstant.MY_SONG_LIST -> holder.setImageResource(R.id.image,R.drawable.song_list)
         }
     }
     
