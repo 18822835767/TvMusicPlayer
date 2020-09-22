@@ -10,4 +10,6 @@ interface IPlayObserver {
      * and return values in AIDL.
      */
     void onPlayStateChange(int playState);
+    
+    void onSeekChange(int currentPosition);
 }

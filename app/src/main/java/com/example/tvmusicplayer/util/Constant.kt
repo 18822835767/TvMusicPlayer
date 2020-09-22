@@ -21,5 +21,8 @@ class Constant{
         const val PLAY_STATE_PLAY = 10 //播放
         const val PLAY_STATE_PAUSE = 11 //暂停
         const val PLAY_STATE_STOP = 12 //停止
+        
+        //Null的url
+        const val NULL_URL = ""
     }
 }
