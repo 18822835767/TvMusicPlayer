@@ -24,5 +24,7 @@ class Constant{
         
         //Null的url
         const val NULL_URL = ""
+        
+        const val NULL_INT_FLAG = -1
     }
 }

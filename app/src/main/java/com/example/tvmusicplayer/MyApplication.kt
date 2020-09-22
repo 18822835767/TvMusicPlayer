@@ -9,6 +9,7 @@ import android.os.IBinder
 import com.example.tvmusicplayer.model.LoginModel
 import com.example.tvmusicplayer.model.impl.LoginModelImpl
 import com.example.tvmusicplayer.service.PlayService
+import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.LogUtil
 
 class MyApplication : Application() {
@@ -32,6 +33,7 @@ class MyApplication : Application() {
             LogUtil.d(TAG,"onServiceConnected: ")
             //获取IPlayInterface接口，给客户端调用
             this@MyApplication.service = IPlayInterface.Stub.asInterface(service)
+            PlayServiceManager.init(this@MyApplication.service)
         }
         
         override fun onServiceDisconnected(name: ComponentName?) {
