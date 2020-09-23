@@ -11,7 +11,7 @@ class Constant{
      * 这里的object 类名 相当于java 的 public static final class
      * 播放音乐对应的常量.
      */
-    object PlayMusicConstant {
+    object PlaySongConstant {
         //不同的播放模式
         const val ORDER_PLAY = 0 //列表循环播放
         const val RANDOM_PLAY = 1 //随机播放

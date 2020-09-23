@@ -3,7 +3,7 @@ package com.example.tvmusicplayer.service
 import com.example.tvmusicplayer.IPlayInterface
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
-import com.example.tvmusicplayer.util.Constant.PlayMusicConstant.NULL_INT_FLAG
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.NULL_INT_FLAG
 
 /**
  * 管理音乐播放相关的方法.

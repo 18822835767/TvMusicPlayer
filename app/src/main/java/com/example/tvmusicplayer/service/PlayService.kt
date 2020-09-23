@@ -9,11 +9,11 @@ import com.example.tvmusicplayer.IPlayInterface
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.Constant
-import com.example.tvmusicplayer.util.Constant.PlayMusicConstant.NULL_URL
-import com.example.tvmusicplayer.util.Constant.PlayMusicConstant.ORDER_PLAY
-import com.example.tvmusicplayer.util.Constant.PlayMusicConstant.PLAY_STATE_PAUSE
-import com.example.tvmusicplayer.util.Constant.PlayMusicConstant.PLAY_STATE_PLAY
-import com.example.tvmusicplayer.util.Constant.PlayMusicConstant.RANDOM_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.NULL_URL
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
 import java.util.*
 
 class PlayService : Service() {
@@ -26,7 +26,7 @@ class PlayService : Service() {
     /**
      * 当前的播放状态.
      * */
-    private var currentState = Constant.PlayMusicConstant.PLAY_STATE_STOP
+    private var currentState = Constant.PlaySongConstant.PLAY_STATE_STOP
 
     /**
      * 定时任务.
