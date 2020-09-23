@@ -7,7 +7,7 @@ interface SongInfoModel {
     /**
      * 传入歌曲的id和歌曲的实例，获取歌曲播放的url、size、码率等信息，设置在对象里面.
      * */
-    fun getSongPlayInfo(song: Song, id: Long,listener : OnListener)
+    fun getSongPlayInfo(song: Song,listener : OnListener)
     
     interface OnListener : BaseModelListener{
         fun getSongPlayInfoSuccess(song : Song)

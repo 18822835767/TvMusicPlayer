@@ -5,9 +5,12 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
 import android.os.RemoteCallbackList
+import android.widget.Toast
 import com.example.tvmusicplayer.IPlayInterface
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
+import com.example.tvmusicplayer.model.SongInfoModel
+import com.example.tvmusicplayer.model.impl.SongInfoModelImpl
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.NULL_URL
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
@@ -24,6 +27,7 @@ class PlayService : Service() {
     private var timer: Timer? = null
     private var songs = mutableListOf<Song>()
     private var observers = RemoteCallbackList<IPlayObserver>()
+    private var model : SongInfoModel = SongInfoModelImpl()
 
     /**
      * 当前的播放状态.
@@ -60,6 +64,17 @@ class PlayService : Service() {
      * */
     private var startTimer = false
 
+    private val listener : SongInfoModel.OnListener = object : SongInfoModel.OnListener{
+        override fun getSongPlayInfoSuccess(song: Song) {
+            performSong(song.url?: NULL_URL)
+        }
+
+        override fun error(msg: String) {
+            showText("歌曲无法播放，自动切换下一首")
+            playNextSong()
+        }
+    }
+    
     override fun onCreate() {
         super.onCreate()
         initMediaPlayer()
@@ -100,6 +115,19 @@ class PlayService : Service() {
         }
     }
 
+    private fun loadSong(song : Song){
+        //如果url是空，那么去请求url的数据
+        if(song.url == null){
+            model.getSongPlayInfo(song,listener)
+            return
+        }
+        
+        //如果url不为空，那么请求歌曲的播放
+        song.url?.let{
+            performSong(it)
+        }
+    }
+    
     override fun onDestroy() {
         mediaPlayer?.let {
             it.stop()
@@ -207,8 +235,14 @@ class PlayService : Service() {
         //遍历观察者，通知播放状态的改变.
         onPlayStateChange()
     }
-
+    
     private fun performSong(dataSource: String) {
+        if(dataSource == NULL_URL){
+            showText("歌曲无法播放，自动切换下一首")
+            playNextSong()
+            return
+        }
+        
         if (mediaPlayer == null) {
             initMediaPlayer()
         }
@@ -242,7 +276,8 @@ class PlayService : Service() {
             else -> {
             }
         }
-        performSong(songs[currentPosition].url ?: NULL_URL)
+        loadSong(songs[currentPosition])
+//        performSong(songs[currentPosition].url ?: NULL_URL)
     }
 
     private fun playPreSong() {
@@ -264,7 +299,8 @@ class PlayService : Service() {
             else -> {
             }
         }
-        performSong(songs[currentPosition].url ?: NULL_URL)
+        loadSong(songs[currentPosition])
+//        performSong(songs[currentPosition].url ?: NULL_URL)
     }
 
     private fun playSongs(songList: MutableList<Song>?, position: Int) {
@@ -273,7 +309,8 @@ class PlayService : Service() {
             songs.addAll(it)
             currentPosition = position
 
-            performSong(songs[position].url ?: NULL_URL)
+//            performSong(songs[position].url ?: NULL_URL)
+            loadSong(songs[currentPosition])
         }
     }
 
@@ -308,7 +345,11 @@ class PlayService : Service() {
 
         startTimer = false
     }
-
+    
+    private fun showText(msg : String){
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    }
+    
     private inner class SeekTimeTask : TimerTask() {
         override fun run() {
             mediaPlayer?.let {
