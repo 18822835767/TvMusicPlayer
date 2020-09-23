@@ -16,6 +16,11 @@ class HomePresenter(var onView : HomeContract.OnView) : HomeContract.Presenter{
         model.logout()
     }
 
+    override fun getLoginStatus() {
+        model.getLoginStatus()
+    }
+
+
     override fun start() {
     }
 

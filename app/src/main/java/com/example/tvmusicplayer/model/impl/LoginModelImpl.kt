@@ -41,6 +41,7 @@ class LoginModelImpl : LoginModel {
             override fun callback(data: UserJson) {
                 //不为null,说明可以获取得到登陆状态，自动登录；否则，说明无法完成自动登录，需要客户手动登陆.
                 data.profile?.let {
+                    LogUtil.d(TAG,"登录状态获取成功")
                     val user = User(it.userId ?: -1, data.profile?.nickname)
                     //标记已经登陆成功
                     LoginStatusManager.alreadyLogin = true

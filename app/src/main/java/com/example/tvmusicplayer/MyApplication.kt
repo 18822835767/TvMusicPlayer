@@ -13,15 +13,16 @@ import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.LogUtil
 
 class MyApplication : Application() {
-    private val loginModel: LoginModel = LoginModelImpl()
+//    private val loginModel: LoginModel = LoginModelImpl()
     private val TAG = "MyApplication"
     private var service : IPlayInterface? = null
     
     override fun onCreate() {
         super.onCreate()
 
-        //获取登陆的信息.
-        loginModel.getLoginStatus()
+        LogUtil.d(TAG,"MyApplication onCreate")
+//        //获取登陆的信息.
+//        loginModel.getLoginStatus()
         
         val intent = Intent(this,PlayService::class.java)
         startService(intent)
