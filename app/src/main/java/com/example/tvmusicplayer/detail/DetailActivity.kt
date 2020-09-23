@@ -1,6 +1,8 @@
 package com.example.tvmusicplayer.detail
 
 import android.animation.FloatEvaluator
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -36,6 +38,13 @@ class DetailActivity : AppCompatActivity() {
      * */
     private var userTouchProgress: Boolean = false
 
+    companion object{
+        fun actionStart(context : Context){
+            val intent = Intent(context,DetailActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
+    
     private var observer: SimplePlayObserver = object : SimplePlayObserver() {
         override fun onPlayStateChange(playState: Int) {
             super.onPlayStateChange(playState)

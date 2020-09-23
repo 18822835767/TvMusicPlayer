@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.bottomPlayer.BottomPlayerFragment
 import com.example.tvmusicplayer.login.LoginActivity
 import com.example.tvmusicplayer.recommend.RecommendFragment
 import com.example.tvmusicplayer.user.UserFragment
@@ -104,6 +105,7 @@ class HomeActivity : AppCompatActivity(),HomeContract.OnView {
             }
             true
         }
+        
     }
 
     private fun setActionBar() {
