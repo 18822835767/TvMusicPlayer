@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.PlayListDetailAdapter
+import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.LogUtil
@@ -25,7 +26,8 @@ import kotlinx.android.synthetic.main.activity_deatil.*
 /**
  * 点击歌单时，展示歌单中的歌曲的活动.
  * */
-class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView{
+class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView,
+    BaseRecyclerViewAdapter.OnItemClickListener{
     
     private val TAG = "PlayListDetailActivity"
     private var playList : PlayList? = null
@@ -72,6 +74,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         
         //设置RecyclerView的数据
         adapter = PlayListDetailAdapter(mutableListOf<Song>(),R.layout.song_item)
+        adapter.setItemClickListener(this)
         val manager = LinearLayoutManager(this)
         recyclerView.layoutManager = manager
         recyclerView.adapter = adapter
@@ -129,5 +132,9 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
 
     override fun showError(errorMessage: String) {
         Toast.makeText(this,"错误：$errorMessage",Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemClick(v: View?, position: Int) {
+        val song = adapter.getItem(position)
     }
 }
