@@ -8,10 +8,10 @@ import com.example.tvmusicplayer.bean.Song
  * */
 interface PlayListDetailModel {
     /**
-     * 传入歌单id，获取歌单中所有歌曲的url、id、码率等信息.
+     * 传入歌单id，获取歌单中所有歌曲的歌曲名字、歌手名字等信息.
      * */
     fun getPlayListDetail(id: Long, listener: OnListener)
-
+    
     interface OnListener : BaseModelListener {
         fun getPlayListDetailSuccess(list: MutableList<Song>)
     }

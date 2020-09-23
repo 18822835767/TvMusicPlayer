@@ -25,6 +25,10 @@ class Constant{
         //Null的url
         const val NULL_URL = ""
         
-        const val NULL_INT_FLAG = -1
+        //Int数据为NULL的标志
+        const val NULL_INT_FLAG : Int= -1
+
+        //Long数据为NULL的标志
+        const val NULL_LONG_FLAG : Long= -2
     }
 }
