@@ -21,4 +21,7 @@ interface ObservableMusicApi {
 
     @GET("/song/detail")
     fun getSongsDetail(@Query("ids")ids: String) : Observable<SongDetailJson>
+    
+    @GET("/song/url")
+    fun getSongPlay(@Query("id")id : Long) : Observable<SongPlayJson>
 }
