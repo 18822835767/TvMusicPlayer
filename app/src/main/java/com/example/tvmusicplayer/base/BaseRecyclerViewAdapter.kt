@@ -81,6 +81,10 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: MutableList<T>, pr
         return data[position]
     }
     
+    fun getItems(): MutableList<T> {
+        return data
+    }
+    
     interface OnItemClickListener{
         fun onItemClick(v : View?,position : Int)
     }
