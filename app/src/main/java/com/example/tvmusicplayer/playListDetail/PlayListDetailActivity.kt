@@ -88,11 +88,8 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
                 .into(playListCoverIv)
         }
         
-        
-        
         //获取歌单中的歌曲数据
         playList?.id?.let {presenter.getPlayListDetail(it)}
-        
     }
     
     private fun setActionBar(){

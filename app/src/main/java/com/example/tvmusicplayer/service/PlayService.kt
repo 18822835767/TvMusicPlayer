@@ -95,10 +95,8 @@ class PlayService : Service() {
                 true
             }
 
-            //todo 测试用
-            it.setDataSource("http://m7.music.126.net/20200915234252/d5cc67998d2177181bec7baa" +
-                    "997c6a78/ymusic/9aaf/4d9f/d448/379b8b6085228dd5258fda3035313546.mp3")
-            it.prepareAsync()
+//            it.setDataSource("http://m7.music.126.net/20200923214555/305d3b56a7dcdb862fb487a4f6584f07/ymusic/071d/ca5f/ab5b/97adc83065f23caf6f4b409e961f0f0c.mp3")
+//            it.prepareAsync()
         }
     }
 
@@ -227,7 +225,6 @@ class PlayService : Service() {
             it.prepareAsync()
             //todo 这里少了个pause()
         }
-
     }
 
     private fun playNextSong() {
