@@ -14,10 +14,12 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
+import com.example.tvmusicplayer.util.LogUtil
 import java.util.*
 
 class PlayService : Service() {
 
+    private val TAG ="PlayService"
     private var mediaPlayer: MediaPlayer? = null
     private var timer: Timer? = null
     private var songs = mutableListOf<Song>()
@@ -87,14 +89,17 @@ class PlayService : Service() {
             it.setOnCompletionListener { _ ->
                 playNextSong()
             }
+            
+            it.setOnErrorListener { mp, what, extra -> 
+                LogUtil.d(TAG,"onError")   
+                true
+            }
 
             //todo 测试用
             it.setDataSource("http://m7.music.126.net/20200915234252/d5cc67998d2177181bec7baa" +
                     "997c6a78/ymusic/9aaf/4d9f/d448/379b8b6085228dd5258fda3035313546.mp3")
             it.prepareAsync()
         }
-        
-
     }
 
     override fun onDestroy() {
@@ -275,7 +280,7 @@ class PlayService : Service() {
         }
     }
 
-    fun seekTo(seek: Int) {
+    private fun seekTo(seek: Int) {
         mediaPlayer?.let {
             val currentProcess = (seek * 1.0f / 100 * it.duration).toInt()
             it.seekTo(currentProcess)

@@ -14,13 +14,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.service.SimplePlayObserver
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
+import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
 
 /**
  * 歌曲播放的详情页.
  * */
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
+    private val TAG = "DetailActivity"
     private lateinit var backIv: ImageView
     private lateinit var songNameTv: TextView
     private lateinit var singerNameTv: TextView
@@ -38,21 +42,26 @@ class DetailActivity : AppCompatActivity() {
      * */
     private var userTouchProgress: Boolean = false
 
-    companion object{
-        fun actionStart(context : Context){
-            val intent = Intent(context,DetailActivity::class.java)
+    companion object {
+        fun actionStart(context: Context) {
+            val intent = Intent(context, DetailActivity::class.java)
             context.startActivity(intent)
         }
     }
-    
+
     private var observer: SimplePlayObserver = object : SimplePlayObserver() {
         override fun onPlayStateChange(playState: Int) {
-            super.onPlayStateChange(playState)
+            ThreadUtil.runOnUi(Runnable {
+                when (playState) {
+                    PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
+                    PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_play_white)
+                }
+            })
         }
 
         override fun onSeekChange(currentPosition: Int) {
-            if(!userTouchProgress){
-                ThreadUtil.runOnUi(Runnable {seekBar.progress = currentPosition})
+            if (!userTouchProgress) {
+                ThreadUtil.runOnUi(Runnable { seekBar.progress = currentPosition })
             }
         }
     }
@@ -92,8 +101,13 @@ class DetailActivity : AppCompatActivity() {
         PlayServiceManager.registerObserver(observer)
     }
 
-    private fun initEvent(){
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+    override fun onResume() {
+        super.onResume()
+        setUIInfo()
+    }
+
+    private fun initEvent() {
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 //进度条发生改变时
             }
@@ -103,17 +117,38 @@ class DetailActivity : AppCompatActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                seekBar?.let { 
-                    val touchProgress : Int = it.progress
+                seekBar?.let {
+                    val touchProgress: Int = it.progress
                     PlayServiceManager.seekTo(touchProgress)
                 }
                 userTouchProgress = false
             }
         })
+
+        playOrPauseIv.setOnClickListener(this)
     }
-    
+
     override fun onDestroy() {
         PlayServiceManager.unregisterObserver(observer)
         super.onDestroy()
+    }
+
+    /**
+     * 设置播放栏的UI信息.
+     * */
+    private fun setUIInfo() {
+        //设置播放状态的按钮.
+        when (PlayServiceManager.getPlayState()) {
+            PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
+            PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_play_white)
+        }
+    }
+
+    override fun onClick(v: View?) {
+        v?.let {
+            when (it.id) {
+                R.id.play_or_pause -> PlayServiceManager.playOrPause()
+            }
+        }
     }
 }
