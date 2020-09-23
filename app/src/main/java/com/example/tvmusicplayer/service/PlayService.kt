@@ -84,11 +84,17 @@ class PlayService : Service() {
                 }
             }
 
-            it.setOnCompletionListener { mp ->
+            it.setOnCompletionListener { _ ->
                 playNextSong()
             }
 
+            //todo 测试用
+            it.setDataSource("http://m7.music.126.net/20200915234252/d5cc67998d2177181bec7baa" +
+                    "997c6a78/ymusic/9aaf/4d9f/d448/379b8b6085228dd5258fda3035313546.mp3")
+            it.prepareAsync()
         }
+        
+
     }
 
     override fun onDestroy() {
@@ -307,7 +313,7 @@ class PlayService : Service() {
                 //当前播放到的时间
                 val currentTimePoint = it.currentPosition
                 //播放进度的百分比，用于控制进度条
-                val currentPosition = (currentTimePoint * 1.0f * 100 / it.duration).toInt()
+                currentPosition = (currentTimePoint * 1.0f * 100 / it.duration).toInt()
                 //遍历观察者
                 onSeekChange()
             }
