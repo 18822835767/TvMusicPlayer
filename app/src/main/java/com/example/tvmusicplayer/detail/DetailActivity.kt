@@ -70,6 +70,7 @@ class DetailActivity : AppCompatActivity() {
 
         initView()
         initData()
+        initEvent()
     }
 
     private fun initView() {
@@ -87,9 +88,30 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun initData() {
+        //注册观察者
         PlayServiceManager.registerObserver(observer)
     }
 
+    private fun initEvent(){
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                //进度条发生改变时
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                userTouchProgress = true
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                seekBar?.let { 
+                    val touchProgress : Int = it.progress
+                    PlayServiceManager.seekTo(touchProgress)
+                }
+                userTouchProgress = false
+            }
+        })
+    }
+    
     override fun onDestroy() {
         PlayServiceManager.unregisterObserver(observer)
         super.onDestroy()
