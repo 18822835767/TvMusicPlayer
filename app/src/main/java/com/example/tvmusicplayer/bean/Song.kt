@@ -29,11 +29,11 @@ class Song : Parcelable{
     var picUrl: String? = null
 
     constructor(parcel: Parcel){
-        id = parcel.readLong()
+        id = parcel.readValue(Long::class.java.classLoader) as? Long
         url = parcel.readString()
-        size = parcel.readLong()
+        size = parcel.readValue(Long::class.java.classLoader) as? Long
         name = parcel.readString()
-        br = parcel.readLong()
+        br = parcel.readValue(Long::class.java.classLoader) as? Long
         artistName = parcel.readString()
         picUrl = parcel.readString()
     }

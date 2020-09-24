@@ -18,6 +18,7 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
 import com.example.tvmusicplayer.util.LogUtil
+import com.example.tvmusicplayer.util.ThreadUtil
 import java.util.*
 
 class PlayService : Service() {
@@ -238,7 +239,7 @@ class PlayService : Service() {
     
     private fun performSong(dataSource: String) {
         if(dataSource == NULL_URL){
-            showText("歌曲无法播放，自动切换下一首")
+            ThreadUtil.runOnUi(Runnable { showText("歌曲无法播放，自动切换下一首") })
             playNextSong()
             return
         }
@@ -304,6 +305,7 @@ class PlayService : Service() {
     }
 
     private fun playSongs(songList: MutableList<Song>?, position: Int) {
+//        LogUtil.d(TAG,"$position")
         songList?.let {
             songs.clear()
             songs.addAll(it)
