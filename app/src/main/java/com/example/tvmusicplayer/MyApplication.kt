@@ -8,13 +8,14 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Process
+import com.example.tvmusicplayer.model.LoginModel
+import com.example.tvmusicplayer.model.impl.LoginModelImpl
 import com.example.tvmusicplayer.service.PlayService
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.LogUtil
 
 
 class MyApplication : Application() {
-//    private val loginModel: LoginModel = LoginModelImpl()
     private val TAG = "MyApplication"
     private var service : IPlayInterface? = null
     private val MAIN_PROCESS_NAME = "com.example.tvmusicplayer"
@@ -22,10 +23,10 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         
-//        //获取登陆的信息.
-//        loginModel.getLoginStatus()
-        
         if(isAppMainProcess()){
+            val loginModel : LoginModel = LoginModelImpl()
+            loginModel.getLoginStatus()
+            
             val intent = Intent(this,PlayService::class.java)
             startService(intent)
             bindService(intent,connection, Context.BIND_AUTO_CREATE)

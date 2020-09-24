@@ -53,7 +53,7 @@ class HomeActivity : AppCompatActivity(),HomeContract.OnView {
 
     private fun initData() {
         HomePresenter(this)
-        presenter.getLoginStatus()//获取登录状态
+//        presenter.getLoginStatus()//获取登录状态
         
         fragments.add(UserFragment.newInstance())
         fragments.add(RecommendFragment.newInstance())

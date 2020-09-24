@@ -83,14 +83,16 @@ object DataUtil {
                             .addHeader("Cookie", memoryCookie ?: "")
                             .build()
 
+                        LogUtil.d(TAG, "CookieHeader: $memoryCookie")
+                        
                         //拦截返回的数据
                         val originalResponse = chain.proceed(request)
                         //判断请求头里面是否有Set-Cookie值，更新Cookie
                         if (originalResponse.headers("Set-Cookie").isNotEmpty()) {
                             //字符串集
                             val stringBuilder = StringBuilder()
-                            originalResponse.headers("Set-Cookie").forEach {
-                                stringBuilder.append(it)
+                            originalResponse.headers("Set-Cookie").forEach {str->
+                                stringBuilder.append(str)
                                 stringBuilder.append(";")
                             }
                             //拼接字符串
