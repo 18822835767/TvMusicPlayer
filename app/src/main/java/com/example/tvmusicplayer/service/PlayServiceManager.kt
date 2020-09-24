@@ -4,11 +4,13 @@ import com.example.tvmusicplayer.IPlayInterface
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.NULL_INT_FLAG
+import com.example.tvmusicplayer.util.LogUtil
 
 /**
  * 管理音乐播放相关的方法.
  * */
 object PlayServiceManager {
+    private val TAG = "PlayServiceManager"
     private var service : IPlayInterface? = null
     
     fun init(service : IPlayInterface?){
@@ -16,6 +18,7 @@ object PlayServiceManager {
     }
     
     fun playSongs(songs : List<Song>,position : Int){
+        LogUtil.d(TAG,"$position")
         service?.playSongs(songs, position)
     }
     

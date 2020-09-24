@@ -21,6 +21,7 @@ import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.LogUtil
+import com.example.tvmusicplayer.util.ThreadUtil
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_deatil.*
 
@@ -136,7 +137,6 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     }
 
     override fun onItemClick(v: View?, position: Int) {
-        val song = adapter.getItem(position)
-        PlayServiceManager.playSongs(adapter.getItems(),position)
+        ThreadUtil.runOnThreadPool(Runnable {PlayServiceManager.playSongs(adapter.getItems(),position)})
     }
 }

@@ -310,7 +310,7 @@ class PlayService : Service() {
     }
 
     private fun playSongs(songList: MutableList<Song>?, position: Int) {
-//        LogUtil.d(TAG,"$position")
+        LogUtil.d(TAG,"$position")
         songList?.let {
             songs.clear()
             songs.addAll(it)

@@ -29,11 +29,11 @@ class Song : Parcelable{
     var picUrl: String? = null
 
     constructor(parcel: Parcel){
-        id = parcel.readValue(Long::class.java.classLoader) as? Long
+        id = parcel.readLong()
         url = parcel.readString()
-        size = parcel.readValue(Long::class.java.classLoader) as? Long
+        size = parcel.readLong()
         name = parcel.readString()
-        br = parcel.readValue(Long::class.java.classLoader) as? Long
+        br = parcel.readLong()
         artistName = parcel.readString()
         picUrl = parcel.readString()
     }
@@ -64,13 +64,10 @@ class Song : Parcelable{
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-//        parcel.writeValue(id)
         parcel.writeLong(id?:-1)
         parcel.writeString(url)
-//        parcel.writeValue(size)
         parcel.writeLong(size?:-1)
         parcel.writeString(name)
-//        parcel.writeValue(br)
         parcel.writeLong(br?:-1)
         parcel.writeString(artistName)
         parcel.writeString(picUrl)
