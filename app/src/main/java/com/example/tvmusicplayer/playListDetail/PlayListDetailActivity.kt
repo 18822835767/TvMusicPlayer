@@ -20,10 +20,8 @@ import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
-import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_deatil.*
 
 /**
  * 点击歌单时，展示歌单中的歌曲的活动.
@@ -44,9 +42,9 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     companion object{
         const val PLAY_LIST_PARAMS = "play_list_params"
         
-        fun actionStart(platList : PlayList,context: Context){
+        fun actionStart(playList : PlayList, context: Context){
             val intent = Intent(context,PlayListDetailActivity::class.java)
-            intent.putExtra(PLAY_LIST_PARAMS,platList)
+            intent.putExtra(PLAY_LIST_PARAMS,playList)
             context.startActivity(intent)
         }
     }
