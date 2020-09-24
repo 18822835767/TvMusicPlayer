@@ -23,12 +23,12 @@ import java.util.*
 
 class PlayService : Service() {
 
-    private val TAG ="PlayService"
+    private val TAG = "PlayService"
     private var mediaPlayer: MediaPlayer? = null
     private var timer: Timer? = null
     private var songs = mutableListOf<Song>()
     private var observers = RemoteCallbackList<IPlayObserver>()
-    private var model : SongInfoModel = SongInfoModelImpl()
+    private var model: SongInfoModel = SongInfoModelImpl()
 
     /**
      * 当前的播放状态.
@@ -65,9 +65,14 @@ class PlayService : Service() {
      * */
     private var startTimer = false
 
-    private val listener : SongInfoModel.OnListener = object : SongInfoModel.OnListener{
+    /**
+     * 当前歌曲播放的位置.
+     * */
+    private var currentTimePoint = 0
+
+    private val listener: SongInfoModel.OnListener = object : SongInfoModel.OnListener {
         override fun getSongPlayInfoSuccess(song: Song) {
-            performSong(song.url?: NULL_URL)
+            performSong(song.url ?: NULL_URL)
         }
 
         override fun error(msg: String) {
@@ -75,7 +80,7 @@ class PlayService : Service() {
             playNextSong()
         }
     }
-    
+
     override fun onCreate() {
         super.onCreate()
         initMediaPlayer()
@@ -105,9 +110,9 @@ class PlayService : Service() {
             it.setOnCompletionListener { _ ->
                 playNextSong()
             }
-            
-            it.setOnErrorListener { mp, what, extra -> 
-                LogUtil.d(TAG,"onError")   
+
+            it.setOnErrorListener { mp, what, extra ->
+                LogUtil.d(TAG, "onError")
                 true
             }
 
@@ -116,19 +121,19 @@ class PlayService : Service() {
         }
     }
 
-    private fun loadSong(song : Song){
+    private fun loadSong(song: Song) {
         //如果url是空，那么去请求url的数据
-        if(song.url == null){
-            model.getSongPlayInfo(song,listener)
+        if (song.url == null) {
+            model.getSongPlayInfo(song, listener)
             return
         }
-        
+
         //如果url不为空，那么请求歌曲的播放
-        song.url?.let{
+        song.url?.let {
             performSong(it)
         }
     }
-    
+
     override fun onDestroy() {
         mediaPlayer?.let {
             it.stop()
@@ -153,7 +158,7 @@ class PlayService : Service() {
         val size = observers.beginBroadcast()
         for (i in 0 until size) {
             val observer = observers.getBroadcastItem(i)
-            observer.onSeekChange(currentPosition)
+            observer.onSeekChange(currentTimePoint)
         }
         observers.finishBroadcast()
     }
@@ -236,14 +241,14 @@ class PlayService : Service() {
         //遍历观察者，通知播放状态的改变.
         onPlayStateChange()
     }
-    
+
     private fun performSong(dataSource: String) {
-        if(dataSource == NULL_URL){
+        if (dataSource == NULL_URL) {
             ThreadUtil.runOnUi(Runnable { showText("歌曲无法播放，自动切换下一首") })
             playNextSong()
             return
         }
-        
+
         if (mediaPlayer == null) {
             initMediaPlayer()
         }
@@ -347,18 +352,16 @@ class PlayService : Service() {
 
         startTimer = false
     }
-    
-    private fun showText(msg : String){
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+
+    private fun showText(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
-    
+
     private inner class SeekTimeTask : TimerTask() {
         override fun run() {
             mediaPlayer?.let {
-                //当前播放到的时间
-                val currentTimePoint = it.currentPosition
                 //播放进度的百分比，用于控制进度条
-                currentPosition = (currentTimePoint * 1.0f * 100 / it.duration).toInt()
+                currentTimePoint = (it.currentPosition * 1.0f * 100 / it.duration).toInt()
                 //遍历观察者
                 onSeekChange()
             }
