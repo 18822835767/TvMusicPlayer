@@ -18,6 +18,7 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
+import com.squareup.picasso.Picasso
 
 /**
  * 歌曲播放的详情页.
@@ -141,6 +142,16 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         when (PlayServiceManager.getPlayState()) {
             PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
             PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_play_white)
+        }
+        
+        PlayServiceManager.getCurrentSong()?.let { 
+            songNameTv.text = it.name
+            singerNameTv.text = it.artistName
+            Picasso.get().load(it.picUrl)
+                .resize(250,250)
+                .placeholder(R.drawable.album_default_view)
+                .error(R.drawable.load_error)
+                .into(coverIv)
         }
     }
 

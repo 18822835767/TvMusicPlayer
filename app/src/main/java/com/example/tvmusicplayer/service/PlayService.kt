@@ -53,7 +53,7 @@ class PlayService : Service() {
     /**
      * 记录当前播放的歌曲在list中的位置.
      * */
-    private var currentPosition = 0
+    private var currentPosition = -1
 
     /**
      * 当前的播放模式.
@@ -190,6 +190,14 @@ class PlayService : Service() {
 
         override fun playOrPause() {
             this@PlayService.playOrPause()
+        }
+
+        override fun getCurrentSong(): Song? {
+            return if(currentPosition >= 0 && currentPosition < songs.size){
+                songs[currentPosition]
+            }else{
+                null
+            }
         }
 
         override fun playPre() {

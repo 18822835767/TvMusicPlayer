@@ -71,5 +71,9 @@ object PlayServiceManager {
         service?.unregisterObserver(observer)
     }
     
+    fun getCurrentSong() : Song?{
+        return service?.currentSong
+    }
+    
     
 }

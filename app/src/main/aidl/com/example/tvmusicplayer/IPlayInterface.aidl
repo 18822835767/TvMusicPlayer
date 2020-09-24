@@ -32,6 +32,8 @@ interface IPlayInterface {
     
     int getPlayState();
     
+    Song getCurrentSong();
+    
     void registerObserver(in IPlayObserver observer);
     
     void unregisterObserver(in IPlayObserver observer);
