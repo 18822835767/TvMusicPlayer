@@ -116,7 +116,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
 
     override fun getPlayListDetailSuccess(list: MutableList<Song>) {
         adapter.addDatas(list)
-        list.forEach { song -> LogUtil.d(TAG,song.toString()) }
+//        list.forEach { song -> LogUtil.d(TAG,song.toString()) }
     }
 
     override fun setPresenter(presenter: PlayListDetailContract.Presenter) {

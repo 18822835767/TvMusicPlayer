@@ -64,11 +64,14 @@ class Song : Parcelable{
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(id)
+//        parcel.writeValue(id)
+        parcel.writeLong(id?:-1)
         parcel.writeString(url)
-        parcel.writeValue(size)
+//        parcel.writeValue(size)
+        parcel.writeLong(size?:-1)
         parcel.writeString(name)
-        parcel.writeValue(br)
+//        parcel.writeValue(br)
+        parcel.writeLong(br?:-1)
         parcel.writeString(artistName)
         parcel.writeString(picUrl)
     }
