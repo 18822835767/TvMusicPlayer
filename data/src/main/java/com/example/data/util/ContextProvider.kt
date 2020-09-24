@@ -11,13 +11,15 @@ import android.net.Uri
  * */
 internal class ContextProvider : ContentProvider() {
 
+    private val TAG = "ContextProvider"
+    
     companion object{
-        internal lateinit var applicationContext: Context
-            private set
+        internal var applicationContext: Context? = null
     }
     
     override fun onCreate(): Boolean {
-        applicationContext = this.context!!   
+        LogUtil.d(TAG,"onCreate:")
+        applicationContext = this.context   
         return true
     }
     

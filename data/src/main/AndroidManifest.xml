@@ -7,7 +7,7 @@
             android:name="com.example.data.util.ContextProvider"
             android:authorities="com.example.data.util.provider"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
     </application>
 
 </manifest>
