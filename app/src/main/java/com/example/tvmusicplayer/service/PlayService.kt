@@ -20,6 +20,7 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayService : Service() {
 
@@ -29,7 +30,8 @@ class PlayService : Service() {
     private var songs = mutableListOf<Song>()
     private var observers = RemoteCallbackList<IPlayObserver>()
     private var model: SongInfoModel = SongInfoModelImpl()
-
+    private var broadcastIng : AtomicBoolean = AtomicBoolean(false)
+    
     /**
      * 当前的播放状态.
      * */
@@ -145,6 +147,12 @@ class PlayService : Service() {
     }
 
     private fun onPlayStateChange() {
+        //如果当前正在广播
+        if(broadcastIng.get()){
+            return
+        }
+        //当前没有在广播
+        broadcastIng.set(true)
         //遍历观察者，通知播放状态的改变.
         val size = observers.beginBroadcast()
         for (i in 0 until size) {
@@ -152,9 +160,16 @@ class PlayService : Service() {
             observer.onPlayStateChange(currentState)
         }
         observers.finishBroadcast()
+        broadcastIng.set(false)
     }
 
     private fun onSeekChange() {
+        //如果当前正在广播
+        if(broadcastIng.get()){
+            return
+        }
+        //当前没有在广播
+        broadcastIng.set(true)
         //遍历观察者
         val size = observers.beginBroadcast()
         for (i in 0 until size) {
@@ -162,9 +177,16 @@ class PlayService : Service() {
             observer.onSeekChange(currentTimePoint)
         }
         observers.finishBroadcast()
+        broadcastIng.set(false)
     }
-    
+
     private fun onSongChange(){
+        //如果当前正在广播
+        if(broadcastIng.get()){
+            return
+        }
+        //当前没有在广播
+        broadcastIng.set(true)
         //遍历观察者
         val size = observers.beginBroadcast()
         for (i in 0 until size) {
@@ -172,6 +194,7 @@ class PlayService : Service() {
             observer.onSongChange(songs[currentPosition])
         }
         observers.finishBroadcast()
+        broadcastIng.set(false)
     }
 
     private var binder = object : IPlayInterface.Stub() {
