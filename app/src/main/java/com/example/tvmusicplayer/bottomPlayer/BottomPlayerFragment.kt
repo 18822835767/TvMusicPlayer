@@ -16,12 +16,14 @@ import com.example.tvmusicplayer.service.SimplePlayObserver
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
 import com.example.tvmusicplayer.util.ThreadUtil
+import com.squareup.picasso.Picasso
 
 class BottomPlayerFragment : Fragment() {
 
     private lateinit var bottomRl: RelativeLayout
-    private lateinit var playOrPauseIv : ImageView
-    
+    private lateinit var playOrPauseIv: ImageView
+    private lateinit var musicCovIv: ImageView
+
 
     companion object {
         @JvmStatic
@@ -30,12 +32,12 @@ class BottomPlayerFragment : Fragment() {
         }
     }
 
-    private var observer : SimplePlayObserver = object : SimplePlayObserver(){
+    private var observer: SimplePlayObserver = object : SimplePlayObserver() {
         override fun onPlayStateChange(playState: Int) {
             ThreadUtil.runOnUi(Runnable {
                 when (playState) {
                     PLAY_STATE_PLAY -> {
-                       playOrPauseIv.setImageResource(R.drawable.ic_black_pause)
+                        playOrPauseIv.setImageResource(R.drawable.ic_black_pause)
                     }
                     PLAY_STATE_PAUSE -> {
                         playOrPauseIv.setImageResource(R.drawable.ic_black_play)
@@ -45,13 +47,21 @@ class BottomPlayerFragment : Fragment() {
         }
 
         override fun onSongChange(song: Song?) {
-            
+            song?.let {
+                ThreadUtil.runOnUi(Runnable {
+                    Picasso.get().load(it.picUrl)
+                        .resize(250, 250)
+                        .placeholder(R.drawable.album_default_view)
+                        .error(R.drawable.load_error)
+                        .into(musicCovIv)
+                })
+            }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         //注册观察者
         PlayServiceManager.registerObserver(observer)
     }
@@ -67,6 +77,7 @@ class BottomPlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bottomRl = view.findViewById(R.id.bottom_rl)
         playOrPauseIv = view.findViewById(R.id.play_or_pause_iv)
+        musicCovIv = view.findViewById(R.id.music_picture)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -77,12 +88,40 @@ class BottomPlayerFragment : Fragment() {
                 DetailActivity.actionStart(it)
             }
         }
+
+        //播放或者暂停按钮被点击时
+        playOrPauseIv.setOnClickListener {
+            PlayServiceManager.playOrPause()
+        }
     }
 
+    override fun onResume() {
+        super.onResume()
+        resumeUIInfo()
+    }
+
+    private fun resumeUIInfo() {
+        //设置播放状态的按钮.
+        when (PlayServiceManager.getPlayState()) {
+            PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_black_pause)
+            PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_black_play)
+        }
+
+        PlayServiceManager.getCurrentSong()?.let {
+            Picasso.get().load(it.picUrl)
+                .resize(250, 250)
+                .placeholder(R.drawable.album_default_view)
+                .error(R.drawable.load_error)
+                .into(musicCovIv)
+        }
+    }
+
+    
+    
     override fun onDestroy() {
         //取消注册
         PlayServiceManager.unregisterObserver(observer)
-        
+
         super.onDestroy()
     }
 }
