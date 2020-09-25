@@ -12,4 +12,6 @@ interface IPlayObserver {
     void onPlayStateChange(int playState);
     
     void onSeekChange(int currentPosition);
+    
+    void onSongChange(in Song song);
 }

@@ -98,6 +98,7 @@ class PlayService : Service() {
             // todo 增加监听
             it.setOnPreparedListener { mp ->
                 if (mp != null) {
+                    onSongChange()
                     mp.start()
                     currentState = PLAY_STATE_PLAY
                     onPlayStateChange()
@@ -159,6 +160,16 @@ class PlayService : Service() {
         for (i in 0 until size) {
             val observer = observers.getBroadcastItem(i)
             observer.onSeekChange(currentTimePoint)
+        }
+        observers.finishBroadcast()
+    }
+    
+    private fun onSongChange(){
+        //遍历观察者
+        val size = observers.beginBroadcast()
+        for (i in 0 until size) {
+            val observer = observers.getBroadcastItem(i)
+            observer.onSongChange(songs[currentPosition])
         }
         observers.finishBroadcast()
     }

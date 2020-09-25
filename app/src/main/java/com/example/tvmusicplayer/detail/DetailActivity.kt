@@ -1,6 +1,5 @@
 package com.example.tvmusicplayer.detail
 
-import android.animation.FloatEvaluator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -12,12 +11,13 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.service.SimplePlayObserver
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
-import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
+import com.example.tvmusicplayer.widget.RotationCircleImage
 import com.squareup.picasso.Picasso
 
 /**
@@ -29,7 +29,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var backIv: ImageView
     private lateinit var songNameTv: TextView
     private lateinit var singerNameTv: TextView
-    private lateinit var coverIv: ImageView
+    private lateinit var coverIv: RotationCircleImage
     private lateinit var endTimeTv: TextView
     private lateinit var playModeIv: ImageView
     private lateinit var preOneIv: ImageView
@@ -54,8 +54,14 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         override fun onPlayStateChange(playState: Int) {
             ThreadUtil.runOnUi(Runnable {
                 when (playState) {
-                    PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
-                    PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_play_white)
+                    PLAY_STATE_PLAY -> {
+                        playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
+//                        coverIv.setRotation(true)
+                    }
+                    PLAY_STATE_PAUSE -> {
+                        playOrPauseIv.setImageResource(R.drawable.ic_play_white)
+//                        coverIv.setRotation(false)
+                    }
                 }
             })
         }
@@ -63,6 +69,14 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         override fun onSeekChange(currentPosition: Int) {
             if (!userTouchProgress) {
                 ThreadUtil.runOnUi(Runnable { seekBar.progress = currentPosition })
+            }
+        }
+
+        override fun onSongChange(song: Song?) {
+            song?.let {
+                ThreadUtil.runOnUi(Runnable {
+                    setSongInfo(it)
+                })
             }
         }
     }
@@ -104,7 +118,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        setUIInfo()
+        resumeUIInfo()
     }
 
     private fun initEvent() {
@@ -127,6 +141,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         playOrPauseIv.setOnClickListener(this)
+        nextOneIv.setOnClickListener(this)
+
     }
 
     override fun onDestroy() {
@@ -137,7 +153,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 设置播放栏的UI信息.
      * */
-    private fun setUIInfo() {
+    private fun resumeUIInfo() {
         //设置播放状态的按钮.
         when (PlayServiceManager.getPlayState()) {
             PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
@@ -145,20 +161,26 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         }
         
         PlayServiceManager.getCurrentSong()?.let { 
-            songNameTv.text = it.name
-            singerNameTv.text = it.artistName
-            Picasso.get().load(it.picUrl)
-                .resize(250,250)
-                .placeholder(R.drawable.album_default_view)
-                .error(R.drawable.load_error)
-                .into(coverIv)
+            setSongInfo(it)
         }
     }
+    
+    private fun setSongInfo(song : Song){
+        songNameTv.text = song.name
+        singerNameTv.text = song.artistName
+        Picasso.get().load(song.picUrl)
+            .resize(250,250)
+            .placeholder(R.drawable.album_default_view)
+            .error(R.drawable.load_error)
+            .into(coverIv)
+    }
+    
 
     override fun onClick(v: View?) {
         v?.let {
             when (it.id) {
                 R.id.play_or_pause -> PlayServiceManager.playOrPause()
+                R.id.next_one -> PlayServiceManager.playNext()
             }
         }
     }

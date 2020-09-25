@@ -30,7 +30,7 @@ class RotationCircleImage : CircleImageView {
     /**
      * 初始化.
      * */
-    fun initView(){
+    private fun initView(){
         animator = ObjectAnimator.ofFloat(this,"rotation",0f,360f)
         animator.duration = 20000
         animator.repeatCount = ValueAnimator.INFINITE
