@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.detail.DetailActivity
+import com.example.tvmusicplayer.service.SimplePlayObserver
 
 class BottomPlayerFragment : Fragment() {
 
@@ -21,6 +22,10 @@ class BottomPlayerFragment : Fragment() {
         }
     }
 
+//    private var observer : SimplePlayObserver = object : SimplePlayObserver(){
+//        
+//    }
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

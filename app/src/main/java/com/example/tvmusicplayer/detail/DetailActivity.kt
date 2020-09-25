@@ -64,11 +64,11 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                 when (playState) {
                     PLAY_STATE_PLAY -> {
                         playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
-//                        coverIv.setRotation(true)
+                        coverIv.setRotation(true)
                     }
                     PLAY_STATE_PAUSE -> {
                         playOrPauseIv.setImageResource(R.drawable.ic_play_white)
-//                        coverIv.setRotation(false)
+                        coverIv.setRotation(false)
                     }
                 }
             })
@@ -78,7 +78,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             if (!userTouchProgress) {
                 ThreadUtil.runOnUi(Runnable { 
                     seekBar.progress = currentPosition
-//                    nowPointTv.text = TextUtil.getTimeStr(currentPosition.toLong())
                 })
             }
         }

@@ -44,7 +44,7 @@ class RotationCircleImage : CircleImageView {
         if(this.rotation != rotation){
             this.rotation = rotation
             
-            if(rotation == true){
+            if(rotation){
                 animator.resume()
             }else{
                 animator.pause()
