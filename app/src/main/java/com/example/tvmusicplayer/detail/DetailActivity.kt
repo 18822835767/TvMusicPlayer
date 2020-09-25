@@ -78,8 +78,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             if (!userTouchProgress) {
                 ThreadUtil.runOnUi(Runnable { 
                     seekBar.progress = currentPosition
-                    nowPointTv.text = TextUtil.getTimeStr(((currentPosition * 1.0/ 100) * 
-                            PlayServiceManager.getDuration()).toLong())
+                    nowPointTv.text = TextUtil.getTimeStr(currentPosition.toLong())
                 })
             }
         }
@@ -189,7 +188,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private fun setSongInfo(song : Song){
         songNameTv.text = song.name
         singerNameTv.text = song.artistName
-        endTimeTv.text = TextUtil.getTimeStr(PlayServiceManager.getDuration().toLong())
+        val duration = PlayServiceManager.getDuration()
+        seekBar.max = duration
+        endTimeTv.text = TextUtil.getTimeStr(duration.toLong())
         Picasso.get().load(song.picUrl)
             .resize(250,250)
             .placeholder(R.drawable.album_default_view)

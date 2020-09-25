@@ -98,8 +98,8 @@ class PlayService : Service() {
             // todo 增加监听
             it.setOnPreparedListener { mp ->
                 if (mp != null) {
-                    onSongChange()
                     mp.start()
+                    onSongChange()
                     currentState = PLAY_STATE_PLAY
                     onPlayStateChange()
                     if (!startTimer) {
@@ -349,8 +349,7 @@ class PlayService : Service() {
 
     private fun seekTo(seek: Int) {
         mediaPlayer?.let {
-            val currentProcess = (seek * 1.0f / 100 * it.duration).toInt()
-            it.seekTo(currentProcess)
+            it.seekTo(seek)
         }
     }
 
@@ -386,8 +385,8 @@ class PlayService : Service() {
     private inner class SeekTimeTask : TimerTask() {
         override fun run() {
             mediaPlayer?.let {
-                //播放进度的百分比，用于控制进度条
-                currentTimePoint = (it.currentPosition * 1.0f * 100 / it.duration).toInt()
+                //播放进度，用于控制进度条
+                currentTimePoint = it.currentPosition
                 //遍历观察者
                 onSeekChange()
             }
