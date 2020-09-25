@@ -75,5 +75,7 @@ object PlayServiceManager {
         return service?.currentSong
     }
     
-    
+    fun getDuration() : Int{
+        return service?.duration?:0
+    }
 }

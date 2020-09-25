@@ -21,6 +21,8 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
+import com.example.tvmusicplayer.util.LogUtil
+import com.example.tvmusicplayer.util.TextUtil
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.example.tvmusicplayer.widget.RotationCircleImage
 import com.squareup.picasso.Picasso
@@ -181,6 +183,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private fun setSongInfo(song : Song){
         songNameTv.text = song.name
         singerNameTv.text = song.artistName
+        endTimeTv.text = TextUtil.getTimeStr(PlayServiceManager.getDuration().toLong())
         Picasso.get().load(song.picUrl)
             .resize(250,250)
             .placeholder(R.drawable.album_default_view)

@@ -179,6 +179,13 @@ class PlayService : Service() {
             this@PlayService.playSongs(songs, position)
         }
 
+        override fun getDuration(): Int {
+            mediaPlayer?.let { 
+                return it.duration
+            }
+            return 0
+        }
+
         override fun registerObserver(observer: IPlayObserver?) {
             observers.register(observer)
         }
