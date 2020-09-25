@@ -41,15 +41,14 @@
             android:text="@string/singer"/>
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/play_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/play_button"
+    <ImageView
+        android:id="@+id/play_or_pause_iv"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:background="@drawable/ic_black_play"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="7dp"
-        android:layout_marginTop="2dp"
-        android:foreground="?android:attr/selectableItemBackground"/>
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="2dp" />
 
 </RelativeLayout>
