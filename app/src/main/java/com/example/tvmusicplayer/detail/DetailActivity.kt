@@ -9,13 +9,17 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.service.SimplePlayObserver
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.LOOP_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.example.tvmusicplayer.widget.RotationCircleImage
 import com.squareup.picasso.Picasso
@@ -143,6 +147,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         playOrPauseIv.setOnClickListener(this)
         nextOneIv.setOnClickListener(this)
         preOneIv.setOnClickListener(this)
+        playModeIv.setOnClickListener(this)
 
     }
 
@@ -159,6 +164,12 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         when (PlayServiceManager.getPlayState()) {
             PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
             PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_play_white)
+        }
+        
+        when(PlayServiceManager.getPlayMode()){
+            ORDER_PLAY -> playModeIv.setImageResource(R.drawable.ic_order_play)
+            RANDOM_PLAY -> playModeIv.setImageResource(R.drawable.ic_random_play)
+            LOOP_PLAY -> playModeIv.setImageResource(R.drawable.ic_loop_play)
         }
         
         PlayServiceManager.getCurrentSong()?.let { 
@@ -183,7 +194,30 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.play_or_pause -> PlayServiceManager.playOrPause()
                 R.id.next_one -> PlayServiceManager.playNext()
                 R.id.pre_one -> PlayServiceManager.playPre()
+                R.id.play_mode -> {
+                    when(PlayServiceManager.getPlayMode()){
+                        ORDER_PLAY -> {
+                            playModeIv.setImageResource(R.drawable.ic_random_play)
+                            showText("随机播放")
+                            PlayServiceManager.setPlayMode(RANDOM_PLAY)
+                        }
+                        RANDOM_PLAY -> {
+                            playModeIv.setImageResource(R.drawable.ic_loop_play)
+                            showText("单曲循环")
+                            PlayServiceManager.setPlayMode(LOOP_PLAY)
+                        }
+                        LOOP_PLAY -> {
+                            playModeIv.setImageResource(R.drawable.ic_order_play)
+                            showText("列表播放")
+                            PlayServiceManager.setPlayMode(ORDER_PLAY)
+                        }
+                    }
+                }
             }
         }
+    }
+    
+    private fun showText(msg : String){
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
     }
 }

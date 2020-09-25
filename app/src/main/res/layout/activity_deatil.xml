@@ -71,7 +71,7 @@
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center"
-                android:src="@drawable/test"
+                android:src="@drawable/album_default_view"
                 android:scaleType="centerCrop"
                 app:civ_border_width="35dp"
                 app:civ_border_color="@color/black"/>
@@ -119,7 +119,7 @@
                     android:id="@+id/play_mode"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/ic_loop_play"
+                    android:src="@drawable/ic_order_play"
                     android:layout_toStartOf="@id/pre_one"
                     android:layout_marginEnd="29dp"
                     android:layout_marginTop="9dp"/>
