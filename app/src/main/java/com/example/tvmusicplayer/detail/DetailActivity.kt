@@ -157,7 +157,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         nextOneIv.setOnClickListener(this)
         preOneIv.setOnClickListener(this)
         playModeIv.setOnClickListener(this)
-
+        backIv.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -225,6 +225,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                 }
+                R.id.ic_back -> finish()
             }
         }
     }
