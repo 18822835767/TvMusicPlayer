@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Song
@@ -23,6 +24,8 @@ class BottomPlayerFragment : Fragment() {
     private lateinit var bottomRl: RelativeLayout
     private lateinit var playOrPauseIv: ImageView
     private lateinit var musicCovIv: ImageView
+    private lateinit var songNameTv: TextView
+    private lateinit var singerNameTv: TextView
 
 
     companion object {
@@ -49,11 +52,7 @@ class BottomPlayerFragment : Fragment() {
         override fun onSongChange(song: Song?) {
             song?.let {
                 ThreadUtil.runOnUi(Runnable {
-                    Picasso.get().load(it.picUrl)
-                        .resize(250, 250)
-                        .placeholder(R.drawable.album_default_view)
-                        .error(R.drawable.load_error)
-                        .into(musicCovIv)
+                    setSongInfo(it)
                 })
             }
         }
@@ -78,6 +77,8 @@ class BottomPlayerFragment : Fragment() {
         bottomRl = view.findViewById(R.id.bottom_rl)
         playOrPauseIv = view.findViewById(R.id.play_or_pause_iv)
         musicCovIv = view.findViewById(R.id.music_picture)
+        songNameTv = view.findViewById(R.id.song_name_tv)
+        singerNameTv = view.findViewById(R.id.singer_name_tv)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -108,16 +109,20 @@ class BottomPlayerFragment : Fragment() {
         }
 
         PlayServiceManager.getCurrentSong()?.let {
-            Picasso.get().load(it.picUrl)
-                .resize(250, 250)
-                .placeholder(R.drawable.album_default_view)
-                .error(R.drawable.load_error)
-                .into(musicCovIv)
+            setSongInfo(it)
         }
     }
 
-    
-    
+    private fun setSongInfo(song: Song) {
+        songNameTv.text = song.name
+        singerNameTv.text = song.artistName
+        Picasso.get().load(song.picUrl)
+            .resize(250, 250)
+            .placeholder(R.drawable.album_default_view)
+            .error(R.drawable.load_error)
+            .into(musicCovIv)
+    }
+
     override fun onDestroy() {
         //取消注册
         PlayServiceManager.unregisterObserver(observer)
