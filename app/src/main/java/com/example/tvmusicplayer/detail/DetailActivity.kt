@@ -142,6 +142,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         playOrPauseIv.setOnClickListener(this)
         nextOneIv.setOnClickListener(this)
+        preOneIv.setOnClickListener(this)
 
     }
 
@@ -181,6 +182,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             when (it.id) {
                 R.id.play_or_pause -> PlayServiceManager.playOrPause()
                 R.id.next_one -> PlayServiceManager.playNext()
+                R.id.pre_one -> PlayServiceManager.playPre()
             }
         }
     }
