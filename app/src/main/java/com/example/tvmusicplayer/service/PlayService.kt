@@ -225,6 +225,13 @@ class PlayService : Service() {
             return this@PlayService.currentState
         }
 
+        override fun getCurrenPoint(): Int {
+            mediaPlayer?.let { 
+                return it.currentPosition
+            }
+            return 0
+        }
+
         override fun unregisterObserver(observer: IPlayObserver?) {
             observers.unregister(observer)
         }

@@ -36,6 +36,8 @@ interface IPlayInterface {
     
     int getDuration();
     
+    int getCurrenPoint();
+    
     void registerObserver(in IPlayObserver observer);
     
     void unregisterObserver(in IPlayObserver observer);

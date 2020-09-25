@@ -184,6 +184,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         PlayServiceManager.getCurrentSong()?.let { 
             setSongInfo(it)
         }
+        
+        
     }
     
     private fun setSongInfo(song : Song){
@@ -191,6 +193,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         singerNameTv.text = song.artistName
         val duration = PlayServiceManager.getDuration()
         seekBar.max = duration
+        seekBar.progress = PlayServiceManager.getCurrentPoint()
         endTimeTv.text = TextUtil.getTimeStr(duration.toLong())
         Picasso.get().load(song.picUrl)
             .resize(250,250)

@@ -78,4 +78,8 @@ object PlayServiceManager {
     fun getDuration() : Int{
         return service?.duration?:0
     }
+    
+    fun getCurrentPoint() : Int{
+        return service?.currenPoint?:0
+    }
 }
