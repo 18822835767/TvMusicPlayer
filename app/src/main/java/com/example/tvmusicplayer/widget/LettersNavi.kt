@@ -89,12 +89,12 @@ class LettersNavi : View {
                 //选中字母高亮
                 choose = index
                 //出现中间文字
-                textView!!.visibility = VISIBLE
-                textView!!.text = s[choose]
-                //调用接口
-                if (listener != null) {
-                    listener!!.touchLetterListener(s[choose])
+                textView?.let{
+                    it.visibility = VISIBLE
+                    it.text = s[choose]
                 }
+                //调用接口
+                listener?.touchLetterListener(s[choose])
                 //重绘
                 invalidate()
             }
@@ -103,7 +103,7 @@ class LettersNavi : View {
                 //取消选中字母高量
                 choose = -1
                 //隐藏中间文字
-                textView!!.visibility = GONE
+                textView?.visibility = GONE
                 //重绘
                 invalidate()
             }
