@@ -11,7 +11,7 @@ import de.hdodenhof.circleimageview.CircleImageView
  * */
 class RotationCircleImage : CircleImageView {
 
-    private var rotation : Boolean = false
+    private var rotation : Boolean = true
     private lateinit var animator : ObjectAnimator
     
     constructor(context: Context?) : super(context) {

@@ -183,8 +183,10 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         PlayServiceManager.getCurrentSong()?.let { 
             setSongInfo(it)
         }
-        
-        
+
+        if(PlayServiceManager.getPlayState() != PLAY_STATE_PLAY){
+            coverIv.setRotation(false)
+        }
     }
     
     private fun setSongInfo(song : Song){
