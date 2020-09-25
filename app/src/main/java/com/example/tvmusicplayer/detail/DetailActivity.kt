@@ -78,7 +78,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             if (!userTouchProgress) {
                 ThreadUtil.runOnUi(Runnable { 
                     seekBar.progress = currentPosition
-                    nowPointTv.text = TextUtil.getTimeStr(currentPosition.toLong())
+//                    nowPointTv.text = TextUtil.getTimeStr(currentPosition.toLong())
                 })
             }
         }
@@ -137,6 +137,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 //进度条发生改变时
+                nowPointTv.text = TextUtil.getTimeStr(progress.toLong())
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
