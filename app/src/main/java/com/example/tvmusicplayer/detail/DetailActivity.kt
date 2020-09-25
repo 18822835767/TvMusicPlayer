@@ -38,6 +38,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var singerNameTv: TextView
     private lateinit var coverIv: RotationCircleImage
     private lateinit var endTimeTv: TextView
+    private lateinit var nowPointTv : TextView
     private lateinit var playModeIv: ImageView
     private lateinit var preOneIv: ImageView
     private lateinit var playOrPauseIv: ImageView
@@ -75,7 +76,11 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         override fun onSeekChange(currentPosition: Int) {
             if (!userTouchProgress) {
-                ThreadUtil.runOnUi(Runnable { seekBar.progress = currentPosition })
+                ThreadUtil.runOnUi(Runnable { 
+                    seekBar.progress = currentPosition
+                    nowPointTv.text = TextUtil.getTimeStr(((currentPosition * 1.0/ 100) * 
+                            PlayServiceManager.getDuration()).toLong())
+                })
             }
         }
 
@@ -110,6 +115,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         singerNameTv = findViewById(R.id.singer_name_tv)
         coverIv = findViewById(R.id.cover_iv)
         endTimeTv = findViewById(R.id.end_time_tv)
+        nowPointTv = findViewById(R.id.now_point_tv)
         playModeIv = findViewById(R.id.play_mode)
         preOneIv = findViewById(R.id.pre_one)
         playOrPauseIv = findViewById(R.id.play_or_pause)

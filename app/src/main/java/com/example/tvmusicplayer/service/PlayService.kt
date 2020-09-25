@@ -361,7 +361,7 @@ class PlayService : Service() {
         if (seekTimerTask == null) {
             seekTimerTask = SeekTimeTask()
         }
-        timer?.schedule(seekTimerTask, 0, 300)
+        timer?.schedule(seekTimerTask, 0, 100)
         startTimer = true
     }
 
