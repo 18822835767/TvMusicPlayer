@@ -39,6 +39,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private lateinit var loadingLayout : FrameLayout
     private lateinit var playListCoverIv : ImageView
     private lateinit var playlistNameTv : TextView
+    private lateinit var manager : LinearLayoutManager
     
     companion object{
         const val PLAY_LIST_PARAMS = "play_list_params"
@@ -76,7 +77,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         //设置RecyclerView的数据
         adapter = PlayListDetailAdapter(mutableListOf<Song>(),R.layout.song_item)
         adapter.setItemClickListener(this)
-        val manager = LinearLayoutManager(this)
+        manager = LinearLayoutManager(this)
         recyclerView.layoutManager = manager
         recyclerView.adapter = adapter
         //添加分割线
