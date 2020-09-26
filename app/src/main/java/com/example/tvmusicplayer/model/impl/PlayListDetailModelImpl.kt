@@ -79,6 +79,10 @@ class PlayListDetailModelImpl : PlayListDetailModel {
                             song.name = name
                             song.artistName = artistName
                             song.picUrl = picUrl
+                            
+                            if(name.isNotEmpty()){
+                                song.firstLetter = name.first()
+                            }
                         }
                         listener.getPlayListDetailSuccess(songList)//回调出去
 //                        getSongsPlayInfo(listener)
