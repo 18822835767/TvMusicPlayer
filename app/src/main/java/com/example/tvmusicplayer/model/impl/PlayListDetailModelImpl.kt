@@ -7,6 +7,7 @@ import com.example.repository.bean.SongIdsJson
 import com.example.repository.bean.SongPlayJson
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.model.PlayListDetailModel
+import com.example.tvmusicplayer.util.PinyinUtil
 import java.lang.StringBuilder
 
 class PlayListDetailModelImpl : PlayListDetailModel {
@@ -81,7 +82,9 @@ class PlayListDetailModelImpl : PlayListDetailModel {
                             song.picUrl = picUrl
                             
                             if(name.isNotEmpty()){
-                                song.firstLetter = name.first()
+                                song.firstLetter = PinyinUtil.getHeaderLetter(name)
+                            }else{
+                                song.firstLetter = '#'
                             }
                         }
                         listener.getPlayListDetailSuccess(songList)//回调出去

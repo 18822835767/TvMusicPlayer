@@ -19,9 +19,9 @@ class PinyinUtil {
             format.vCharType = HanyuPinyinVCharType.WITH_V
 
             //如果长度大于0
-            if (s.length > 0) {
+            if (s.isNotEmpty()) {
                 //如果首个字符是字母
-                if (s[0] >= 'a' && s[0] <= 'z' || s[0] >= 'A' && s[0] <= 'Z') {
+                if (s[0] in 'a'..'z' || s[0] in 'A'..'Z') {
                     return Character.toUpperCase(s[0])
                     //如果首个字符是汉字
                 } else if (s.substring(0, 1).matches(Regex("[\\u4E00-\\u9FA5]+"))) {
