@@ -3,7 +3,7 @@ package com.example.tvmusicplayer.bean
 import android.os.Parcel
 import android.os.Parcelable
 
-class Song : Parcelable{
+class Song : Parcelable {
     var id: Long? = null
     var url: String? = null
     var size: Long? = null
@@ -28,7 +28,12 @@ class Song : Parcelable{
      * */
     var picUrl: String? = null
 
-    constructor(parcel: Parcel){
+    /**
+     * 歌曲名字的第一个字母.
+     * */
+    var firstLetter: Char = ' '
+
+    constructor(parcel: Parcel) {
         id = parcel.readLong()
         url = parcel.readString()
         size = parcel.readLong()
@@ -36,6 +41,7 @@ class Song : Parcelable{
         br = parcel.readLong()
         artistName = parcel.readString()
         picUrl = parcel.readString()
+        firstLetter = parcel.readInt().toChar()
     }
 
     constructor() {
@@ -64,13 +70,14 @@ class Song : Parcelable{
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(id?:-1)
+        parcel.writeLong(id ?: -1)
         parcel.writeString(url)
-        parcel.writeLong(size?:-1)
+        parcel.writeLong(size ?: -1)
         parcel.writeString(name)
-        parcel.writeLong(br?:-1)
+        parcel.writeLong(br ?: -1)
         parcel.writeString(artistName)
         parcel.writeString(picUrl)
+        parcel.writeInt(firstLetter.toInt())
     }
 
     override fun describeContents(): Int {
@@ -86,4 +93,13 @@ class Song : Parcelable{
             return arrayOfNulls(size)
         }
     }
+
+//    override fun compareTo(other: Song): Int {
+//        if(this.firstLetter == '#'){
+//            return 1;
+//        } else if(o.getFirstLetter() == '#'){
+//            return -1;
+//        }
+//        return Character.compare(this.firstLetter,o.firstLetter);
+//    }
 }
