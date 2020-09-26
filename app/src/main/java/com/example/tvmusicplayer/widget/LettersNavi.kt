@@ -1,6 +1,7 @@
 package com.example.tvmusicplayer.widget
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -8,6 +9,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.util.LogUtil
 
 class LettersNavi : View {
     private val textPaint = Paint()
@@ -22,22 +25,35 @@ class LettersNavi : View {
      */
     private var choose = -1
 
+    private var textSize = 20
+    
     /**
      * 中间显示的字母.
      */
     private var textView: TextView? = null
     private var listener: OnTouchLetterListener? = null
 
-    constructor(context: Context?) : super(context) {}
+    constructor(context: Context?) : this(context,null) {
+        
+    }
    
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs,0) {
+        
+    }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
             super(context, attrs, defStyleAttr) {
+        
+        //获取xml布局中的属性值
+        context?.let {
+            val typedArray : TypedArray = it.obtainStyledAttributes(attrs,R.styleable.LettersNavi)
+            textSize = typedArray.getDimensionPixelSize(R.styleable.LettersNavi_textSize,20)
+            typedArray.recycle()
+        }
     }
 
     private fun initPaint() {
-        textPaint.textSize = 20f
+        textPaint.textSize = this.textSize.toFloat()
         textPaint.isAntiAlias = true //开启锯齿
         textPaint.color = Color.BLACK
     }

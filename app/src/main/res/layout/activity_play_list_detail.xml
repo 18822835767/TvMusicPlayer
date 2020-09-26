@@ -77,7 +77,8 @@
                 <com.example.tvmusicplayer.widget.LettersNavi
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"/>
+                    android:layout_alignParentEnd="true"
+                    app:textSize="15sp"/>
                 
             </RelativeLayout>
             
