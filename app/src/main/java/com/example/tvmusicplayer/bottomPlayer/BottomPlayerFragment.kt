@@ -61,8 +61,8 @@ class BottomPlayerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //注册观察者
-        PlayServiceManager.registerObserver(observer)
+//        //注册观察者
+//        PlayServiceManager.registerObserver(observer)
     }
 
     override fun onCreateView(
@@ -101,6 +101,18 @@ class BottomPlayerFragment : Fragment() {
         resumeUIInfo()
     }
 
+    override fun onStart() {
+        super.onStart()
+        //注册观察者
+        PlayServiceManager.registerObserver(observer)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        //取消注册
+        PlayServiceManager.unregisterObserver(observer)
+    }
+
     private fun resumeUIInfo() {
         //设置播放状态的按钮.
         when (PlayServiceManager.getPlayState()) {
@@ -124,8 +136,8 @@ class BottomPlayerFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        //取消注册
-        PlayServiceManager.unregisterObserver(observer)
+//        //取消注册
+//        PlayServiceManager.unregisterObserver(observer)
 
         super.onDestroy()
     }
