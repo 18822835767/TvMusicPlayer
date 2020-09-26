@@ -3,7 +3,7 @@ package com.example.tvmusicplayer.bean
 import android.os.Parcel
 import android.os.Parcelable
 
-class Song : Parcelable {
+class Song : Parcelable ,Comparable<Song>{
     var id: Long? = null
     var url: String? = null
     var size: Long? = null
@@ -94,12 +94,12 @@ class Song : Parcelable {
         }
     }
 
-//    override fun compareTo(other: Song): Int {
-//        if(this.firstLetter == '#'){
-//            return 1;
-//        } else if(o.getFirstLetter() == '#'){
-//            return -1;
-//        }
-//        return Character.compare(this.firstLetter,o.firstLetter);
-//    }
+    override fun compareTo(other: Song): Int {
+        if(this.firstLetter == '#'){
+            return 1;
+        } else if(other.firstLetter == '#'){
+            return -1;
+        }
+        return this.firstLetter.compareTo(other.firstLetter);
+    }
 }

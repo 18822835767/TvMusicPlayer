@@ -22,6 +22,7 @@ import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.squareup.picasso.Picasso
+import java.util.*
 
 /**
  * 点击歌单时，展示歌单中的歌曲的活动.
@@ -114,6 +115,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     }
 
     override fun getPlayListDetailSuccess(list: MutableList<Song>) {
+        list.sort()
         adapter.addDatas(list)
 //        list.forEach { song -> LogUtil.d(TAG,song.toString()) }
     }
