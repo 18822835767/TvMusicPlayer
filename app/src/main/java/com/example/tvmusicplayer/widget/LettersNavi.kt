@@ -18,7 +18,7 @@ class LettersNavi : View {
         "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
         "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
         "W", "X", "Y", "Z", "#"
-    )
+    ).toMutableList()
 
     /**
      * 鼠标点击时，滑动时选择的字母的下标位置.
