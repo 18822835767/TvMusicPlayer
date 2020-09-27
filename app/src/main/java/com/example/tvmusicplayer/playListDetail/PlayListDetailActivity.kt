@@ -39,8 +39,6 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter : PlayListDetailAdapter
     private lateinit var loadingLayout : FrameLayout
-    private lateinit var playListCoverIv : ImageView
-    private lateinit var playlistNameTv : TextView
     private lateinit var manager : LinearLayoutManager
     private lateinit var lettersNavi: LettersNavi
     
@@ -70,8 +68,6 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         toolbar = findViewById(R.id.toolbar)
         recyclerView = findViewById(R.id.recycler_view)
         loadingLayout = findViewById(R.id.fl_loading)
-        playListCoverIv = findViewById(R.id.playlist_cover_iv)
-        playlistNameTv = findViewById(R.id.playlist_name_tv)
         lettersNavi = findViewById(R.id.letters_navi)
     }
     
@@ -87,15 +83,15 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         //添加分割线
         recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
         
-        //设置歌单名字和图片在相应控件上
-        playList?.let { 
-            playlistNameTv.text = it.name 
-            Picasso.get().load(it.coverImgUrl)
-                .resize(100,100)
-                .placeholder(R.drawable.empty_photo)
-                .error(R.drawable.load_error)
-                .into(playListCoverIv)
-        }
+//        //设置歌单名字和图片在相应控件上
+//        playList?.let { 
+//            playlistNameTv.text = it.name 
+//            Picasso.get().load(it.coverImgUrl)
+//                .resize(100,100)
+//                .placeholder(R.drawable.empty_photo)
+//                .error(R.drawable.load_error)
+//                .into(playListCoverIv)
+//        }
         
         //获取歌单中的歌曲数据
         playList?.id?.let {presenter.getPlayListDetail(it)}
