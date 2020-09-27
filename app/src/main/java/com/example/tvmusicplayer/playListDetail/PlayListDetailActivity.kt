@@ -17,11 +17,8 @@ import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
-import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.example.tvmusicplayer.widget.LettersNavi
-import com.squareup.picasso.Picasso
-import java.util.*
 
 /**
  * 点击歌单时，展示歌单中的歌曲的活动.
@@ -128,6 +125,18 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         this.presenter = presenter
     }
 
+    private fun getSongsFirstLetterList(songs : MutableList<Song>) : List<String>{
+        val charSet = mutableSetOf<String>()
+        for(i in songs.indices){
+            if(songs[i].firstLetter in 'A'..'Z'){
+                charSet.add(songs[i].firstLetter.toString())    
+            }else{
+                charSet.add("#")
+            }
+        }
+        return charSet.toList()
+    }
+    
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
     }
