@@ -95,11 +95,14 @@ class Song : Parcelable ,Comparable<Song>{
     }
 
     override fun compareTo(other: Song): Int {
-        if(this.firstLetter == '#'){
-            return 1;
+        if(this.firstLetter == other.firstLetter){
+            return 0
         } else if(other.firstLetter == '#'){
-            return -1;
+            return -1
+        }else if(this.firstLetter == '#'){
+            return 1
         }
+
         return this.firstLetter.compareTo(other.firstLetter);
     }
 }
