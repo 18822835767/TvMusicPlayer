@@ -3,7 +3,8 @@
     
     <declare-styleable name="LettersNavi">
         <attr name="textSize" format="dimension"/>    
-        
+        <attr name="backgroundColor" format="color"/>
+        <attr name="touchColor" format="color"/>
     </declare-styleable>
     
 </resources>

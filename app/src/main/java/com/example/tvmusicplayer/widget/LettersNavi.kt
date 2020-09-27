@@ -32,6 +32,10 @@ class LettersNavi : View {
      */
     private var textView: TextView? = null
     private var listener: OnTouchLetterListener? = null
+    
+    private var bgColor : Int = Color.TRANSPARENT
+    
+    private var touchColor : Int = Color.RED
 
     constructor(context: Context?) : this(context,null) {
         
@@ -48,6 +52,8 @@ class LettersNavi : View {
         context?.let {
             val typedArray : TypedArray = it.obtainStyledAttributes(attrs,R.styleable.LettersNavi)
             textSize = typedArray.getDimensionPixelSize(R.styleable.LettersNavi_textSize,20)
+            bgColor = typedArray.getColor(R.styleable.LettersNavi_backgroundColor,Color.TRANSPARENT)
+            touchColor = typedArray.getColor(R.styleable.LettersNavi_touchColor,Color.RED)
             typedArray.recycle()
         }
     }
@@ -79,7 +85,7 @@ class LettersNavi : View {
         for (i in s.indices) {
             initPaint()
             if (choose == i) {
-                textPaint.color = Color.RED
+                textPaint.color = touchColor
             }
             //计算每个字母的坐标
             val x = (width - textPaint.measureText(s[i])) / 2
@@ -101,7 +107,7 @@ class LettersNavi : View {
         }
         when (event.action) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                setBackgroundColor(Color.GRAY)
+                setBackgroundColor(bgColor)
                 //选中字母高亮
                 choose = index
                 //出现中间文字
