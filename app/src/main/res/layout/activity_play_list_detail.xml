@@ -57,6 +57,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
         
+        <TextView
+            android:id="@+id/center_letter_text"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="#D3D3D3"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+        
     </FrameLayout>
     
 </FrameLayout>

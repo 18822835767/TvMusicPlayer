@@ -38,6 +38,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private lateinit var manager : LinearLayoutManager
     private lateinit var lettersNavi: LettersNavi
     private lateinit var progressBar : ProgressBar
+    private lateinit var centerLetterText : TextView
     
     companion object{
         const val PLAY_LIST_PARAMS = "play_list_params"
@@ -66,6 +67,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         recyclerView = findViewById(R.id.recycler_view)
         lettersNavi = findViewById(R.id.letters_navi)
         progressBar = findViewById(R.id.progress_bar)
+        centerLetterText = findViewById(R.id.center_letter_text)
     }
     
     private fun initData(){
@@ -94,6 +96,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         playList?.id?.let {presenter.getPlayListDetail(it)}
     
         lettersNavi.setListener(this)
+        lettersNavi.setTextView(centerLetterText)
     }
     
     
