@@ -136,6 +136,6 @@ class LettersNavi : View {
     }
 
     interface OnTouchLetterListener {
-        fun touchLetterListener(s: String?)
+        fun touchLetterListener(s: String)
     }
 }

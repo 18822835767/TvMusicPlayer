@@ -75,6 +75,7 @@
                 android:layout_height="match_parent">
                 
                 <com.example.tvmusicplayer.widget.LettersNavi
+                    android:id="@+id/letters_navi"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"

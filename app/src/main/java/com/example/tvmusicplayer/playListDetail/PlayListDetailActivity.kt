@@ -20,7 +20,9 @@ import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
+import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
+import com.example.tvmusicplayer.widget.LettersNavi
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -28,7 +30,7 @@ import java.util.*
  * 点击歌单时，展示歌单中的歌曲的活动.
  * */
 class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView,
-    BaseRecyclerViewAdapter.OnItemClickListener{
+    BaseRecyclerViewAdapter.OnItemClickListener,LettersNavi.OnTouchLetterListener{
     
     private val TAG = "PlayListDetailActivity"
     private var playList : PlayList? = null
@@ -40,6 +42,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private lateinit var playListCoverIv : ImageView
     private lateinit var playlistNameTv : TextView
     private lateinit var manager : LinearLayoutManager
+    private lateinit var lettersNavi: LettersNavi
     
     companion object{
         const val PLAY_LIST_PARAMS = "play_list_params"
@@ -69,6 +72,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         loadingLayout = findViewById(R.id.fl_loading)
         playListCoverIv = findViewById(R.id.playlist_cover_iv)
         playlistNameTv = findViewById(R.id.playlist_name_tv)
+        lettersNavi = findViewById(R.id.letters_navi)
     }
     
     private fun initData(){
@@ -95,7 +99,10 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         
         //获取歌单中的歌曲数据
         playList?.id?.let {presenter.getPlayListDetail(it)}
+    
+        lettersNavi.setListener(this)
     }
+    
     
     private fun setActionBar(){
         playList?.let { 
@@ -139,5 +146,14 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
 
     override fun onItemClick(v: View?, position: Int) {
         ThreadUtil.runOnThreadPool(Runnable {PlayServiceManager.playSongs(adapter.getItems(),position)})
+    }
+
+    override fun touchLetterListener(s: String) {
+        if(s.isNotEmpty()){
+            val position = adapter.getSelectPosition(s.first())
+            if(position != -1){
+                manager.scrollToPositionWithOffset(position,0)
+            }
+        }
     }
 }
