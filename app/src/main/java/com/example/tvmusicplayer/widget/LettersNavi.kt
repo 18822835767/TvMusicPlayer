@@ -10,15 +10,10 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import com.example.tvmusicplayer.R
-import com.example.tvmusicplayer.util.LogUtil
 
 class LettersNavi : View {
     private val textPaint = Paint()
-    private val s = arrayOf(
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
-        "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-        "W", "X", "Y", "Z", "#"
-    ).toMutableList()
+    private val lettersList = mutableListOf<String>()
 
     /**
      * 鼠标点击时，滑动时选择的字母的下标位置.
@@ -74,23 +69,27 @@ class LettersNavi : View {
      * 画字母.
      */
     private fun drawText(canvas: Canvas) {
+        if(lettersList.isEmpty()){
+            return
+        }
+        
         //View的宽高
         val width = width
         val height = height
 
         //获取每个字母的高度
-        val singleHeight = height / s.size
+        val singleHeight = height / lettersList.size
 
         //遍历每个字母，draw
-        for (i in s.indices) {
+        for (i in lettersList.indices) {
             initPaint()
             if (choose == i) {
                 textPaint.color = touchColor
             }
             //计算每个字母的坐标
-            val x = (width - textPaint.measureText(s[i])) / 2
+            val x = (width - textPaint.measureText(lettersList[i])) / 2
             val y = (i + 1) * singleHeight.toFloat()
-            canvas.drawText(s[i], x, y, textPaint)
+            canvas.drawText(lettersList[i], x, y, textPaint)
             //重置画笔颜色
             textPaint.reset()
         }
@@ -98,10 +97,10 @@ class LettersNavi : View {
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         //计算选中的字母的下标
-        var index = (event.y / height * s.size).toInt()
+        var index = (event.y / height * lettersList.size).toInt()
         //防止脚标越界
-        if (index >= s.size) {
-            index = s.size - 1
+        if (index >= lettersList.size) {
+            index = lettersList.size - 1
         } else if (index < 0) {
             index = 0
         }
@@ -113,10 +112,10 @@ class LettersNavi : View {
                 //出现中间文字
                 textView?.let{
                     it.visibility = VISIBLE
-                    it.text = s[choose]
+                    it.text = lettersList[choose]
                 }
                 //调用接口
-                listener?.touchLetterListener(s[choose])
+                listener?.touchLetterListener(lettersList[choose])
                 //重绘
                 invalidate()
             }
@@ -133,6 +132,12 @@ class LettersNavi : View {
         return true
     }
 
+    fun setLetters(letters : List<String>){
+        lettersList.clear()
+        lettersList.addAll(letters)
+        postInvalidate()
+    }
+    
     fun setTextView(textView: TextView?) {
         this.textView = textView
     }

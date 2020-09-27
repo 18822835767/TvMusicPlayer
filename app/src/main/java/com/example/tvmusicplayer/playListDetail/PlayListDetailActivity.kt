@@ -117,6 +117,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
 
     override fun getPlayListDetailSuccess(list: MutableList<Song>) {
         list.sort()
+        lettersNavi.setLetters(getSongsFirstLetterList(list))
         adapter.addDatas(list)
 //        list.forEach { song -> LogUtil.d(TAG,song.toString()) }
     }
@@ -126,15 +127,18 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     }
 
     private fun getSongsFirstLetterList(songs : MutableList<Song>) : List<String>{
-        val charSet = mutableSetOf<String>()
+        val letterList = mutableListOf<String>()
         for(i in songs.indices){
-            if(songs[i].firstLetter in 'A'..'Z'){
-                charSet.add(songs[i].firstLetter.toString())    
-            }else{
-                charSet.add("#")
+            val letter = songs[i].firstLetter
+            if(!letterList.contains(letter.toString())){
+                if(letter in 'A'..'Z'){
+                    letterList.add(letter.toString())
+                }else{
+                    letterList.add("#")
+                }
             }
         }
-        return charSet.toList()
+        return letterList
     }
     
     override fun showLoading() {
