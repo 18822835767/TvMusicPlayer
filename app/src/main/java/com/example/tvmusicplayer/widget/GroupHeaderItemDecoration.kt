@@ -9,6 +9,7 @@ import android.view.View
 import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.bean.Song
+import com.example.tvmusicplayer.util.LogUtil
 
 /**
  * 和字母栏一起使用的分割线，用于显示RecyclerView中每一组Item对应的字母.
@@ -16,7 +17,7 @@ import com.example.tvmusicplayer.bean.Song
 class GroupHeaderItemDecoration(var songsList: MutableList<Song>) : RecyclerView.ItemDecoration() {
     
     private var groupHeaderHeight = 90
-    private var groupHeaderLeftPadding = 5
+    private var groupHeaderLeftPadding = 20
     private var paint : Paint
     private var textPaint : TextPaint
     
