@@ -55,14 +55,17 @@ class GroupHeaderItemDecoration(var songsList: MutableList<Song>) : RecyclerView
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
 
+        //parent.childCount是显示在屏幕内的item数量
         for (i in 0 until parent.childCount) {
             val view: View = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(view)
             val letter = songsList[position].firstLetter.toString()
+            //第一条item 或者 这条item字母和前一条item的字母不同，那么就画字母
             if (position == 0 || (songsList[position].firstLetter != songsList[position - 1].firstLetter)) {
                 drawGroupHeader(c, parent, view, letter)
             }
             
+            //画分割线，画的条件是 不是最后一条 并且 该item的字母和下一个item的字母是相同的
             if(position + 1 < songsList.size && songsList[position].firstLetter == songsList[position + 1].firstLetter){
                 drawDivider(c,parent,view)
             }
@@ -82,9 +85,11 @@ class GroupHeaderItemDecoration(var songsList: MutableList<Song>) : RecyclerView
         val right = parent.width - parent.paddingRight
         val bottom = view.top - params.topMargin
         val top = bottom - groupHeaderHeight
+        //先画一个矩形
         c.drawRect(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat(), paint)
         val x = left + groupHeaderLeftPadding
         val y = top + (groupHeaderHeight + textPaint.measureText(letter)) / 2
+        //在矩形中画字母
         c.drawText(letter, x.toFloat(), y, textPaint)
     }
 
@@ -94,9 +99,10 @@ class GroupHeaderItemDecoration(var songsList: MutableList<Song>) : RecyclerView
     private fun drawDivider(c : Canvas,parent : RecyclerView,view : View) {
         val params : RecyclerView.LayoutParams = view.layoutParams as RecyclerView.LayoutParams
         val left = parent.paddingLeft
-        val right = parent.width
+        val right = parent.width + left
         val top = view.bottom + params.bottomMargin
         val bottom = top + dividerHeight
+        //画一个分割线
         c.drawRect(left.toFloat(),top.toFloat(),right.toFloat(),bottom.toFloat(),dividerPaint)
     }
 }
