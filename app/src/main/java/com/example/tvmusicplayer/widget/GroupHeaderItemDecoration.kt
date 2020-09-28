@@ -99,7 +99,7 @@ class GroupHeaderItemDecoration(var songsList: MutableList<Song>) : RecyclerView
     private fun drawDivider(c : Canvas,parent : RecyclerView,view : View) {
         val params : RecyclerView.LayoutParams = view.layoutParams as RecyclerView.LayoutParams
         val left = parent.paddingLeft
-        val right = parent.width + left
+        val right = parent.width + parent.paddingRight
         val top = view.bottom + params.bottomMargin
         val bottom = top + dividerHeight
         //画一个分割线
