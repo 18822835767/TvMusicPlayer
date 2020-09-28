@@ -18,6 +18,7 @@ import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.ThreadUtil
+import com.example.tvmusicplayer.widget.GroupHeaderItemDecoration
 import com.example.tvmusicplayer.widget.LettersNavi
 
 /**
@@ -36,6 +37,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     private lateinit var lettersNavi: LettersNavi
     private lateinit var progressBar : ProgressBar
     private lateinit var centerLetterText : TextView
+    private lateinit var groupHeaderItemDecoration: GroupHeaderItemDecoration
     
     companion object{
         const val PLAY_LIST_PARAMS = "play_list_params"
@@ -77,7 +79,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         recyclerView.layoutManager = manager
         recyclerView.adapter = adapter
         //添加分割线
-        recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
+//        recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
         
 //        //设置歌单名字和图片在相应控件上
 //        playList?.let { 
@@ -118,6 +120,8 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
     override fun getPlayListDetailSuccess(list: MutableList<Song>) {
         list.sort()
         lettersNavi.setLetters(getSongsFirstLetterList(list))
+        groupHeaderItemDecoration = GroupHeaderItemDecoration(list)
+        recyclerView.addItemDecoration(groupHeaderItemDecoration)
         adapter.addDatas(list)
 //        list.forEach { song -> LogUtil.d(TAG,song.toString()) }
     }
