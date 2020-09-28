@@ -21,7 +21,7 @@ class GroupHeaderItemDecoration(var songsList: MutableList<Song>) : RecyclerView
     private var paint: Paint
     private var textPaint: TextPaint
     private var dividerPaint: Paint
-    private var dividerHeight = 2
+    private var dividerHeight = 1
 
     init {
         textPaint = TextPaint()
