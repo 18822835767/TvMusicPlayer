@@ -15,19 +15,19 @@ import com.example.tvmusicplayer.bean.Song
  * */
 class GroupHeaderItemDecoration(var songsList: MutableList<Song>) : RecyclerView.ItemDecoration() {
     
-    private var groupHeaderHeight = 50
+    private var groupHeaderHeight = 90
     private var groupHeaderLeftPadding = 5
     private var paint : Paint
     private var textPaint : TextPaint
     
     init {
         textPaint = TextPaint()
-        textPaint.textSize = 15F
+        textPaint.textSize = 55F
         textPaint.color = Color.BLACK
         
         paint = Paint()
         paint.style = Paint.Style.FILL
-        paint.color = Color.GRAY
+        paint.color = Color.parseColor("#E6E6FA")
     }
     
     override fun getItemOffsets(
