@@ -104,6 +104,7 @@ object DataUtil {
                             //拼接字符串
                             val cookie = stringBuilder.toString()
 
+                            LogUtil.d(TAG,"返回的cookie:${cookie}")
                             //如果获取的cookie不是以NMTID开头，这里加上是因为获取用户歌单时会返回一个cookie
                             //但是这cookie是不需要的
                             if(!cookie.startsWith("NMTID",true)){
