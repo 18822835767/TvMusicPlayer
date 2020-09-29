@@ -17,6 +17,7 @@ import com.example.tvmusicplayer.login.LoginActivity
 import com.example.tvmusicplayer.recommend.RecommendFragment
 import com.example.tvmusicplayer.user.UserFragment
 import com.example.tvmusicplayer.manager.LoginStatusManager
+import com.example.tvmusicplayer.search.SearchActivity
 import com.example.tvmusicplayer.util.NetWorkUtil
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -123,7 +124,7 @@ class HomeActivity : AppCompatActivity(),HomeContract.OnView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.search -> Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show()
+            R.id.search -> SearchActivity.actionStart(this)
             android.R.id.home -> drawerLayout.openDrawer(GravityCompat.START)
         }
         return true
