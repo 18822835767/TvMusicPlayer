@@ -38,7 +38,7 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     /**
      * 记录搜索界面当前是在第几面
      * */
-    private var currentPage: Int = 1
+    private var currentPage: Int = 0
 
     /**
      * 上拉加载更多时，是否已加载歌曲结束的标志
@@ -75,6 +75,7 @@ class SearchFragment : Fragment(), SearchContract.OnView,
         super.onActivityCreated(savedInstanceState)
 
         initData()
+        initEvent()
     }
 
     private fun initData() {
@@ -95,18 +96,37 @@ class SearchFragment : Fragment(), SearchContract.OnView,
         )
     }
 
+    private fun initEvent(){
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                LogUtil.d(TAG,"$newState")
+            }
+        })
+    }
+    
     fun searchContent(keywords: String) {
         //显示加载进度条
         showLoading()
         //每次搜索音乐时，重置当前所在的页数
-        currentPage = 1
-        presenter.searchSongs(pageSize,(currentPage - 1)*pageSize,SEARCH_TYPE,keywords)
+        currentPage = 0
+        presenter.searchSongs(pageSize,0,SEARCH_TYPE,keywords)
     }
 
     override fun searchSuccess(list: MutableList<Song>,songCount : Int) {
         LogUtil.d(TAG,"songCount:${songCount}")
+        
+        //记录剩余歌曲的总数量
+        remainingCount = songCount - pageSize
+        //当前页数加1
+        currentPage++
         //隐藏加载进度条
         hideLoading()
+        
         adapter.clearAndAddNewDatas(list)
     }
 
