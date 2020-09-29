@@ -14,6 +14,7 @@ class SearchPresenter(var onView : SearchContract.OnView) : SearchContract.Prese
     }
     
     override fun searchSongs(limit: Int, offset: Int, type: Int, keyword: String) {
+        
         model.searchSongs(limit,offset,type,keyword,this)
     }
 

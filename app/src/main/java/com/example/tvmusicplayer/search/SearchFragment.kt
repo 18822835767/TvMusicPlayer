@@ -16,21 +16,43 @@ import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.SearchAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.Song
+import com.example.tvmusicplayer.util.Constant.SearchSongConstant.SEARCH_TYPE
 
-class SearchFragment : Fragment(),SearchContract.OnView,BaseRecyclerViewAdapter.OnItemClickListener {
+class SearchFragment : Fragment(), SearchContract.OnView,
+    BaseRecyclerViewAdapter.OnItemClickListener {
 
-    private lateinit var loadingFl : FrameLayout
-    private lateinit var presenter : SearchContract.Presenter
+    private lateinit var loadingFl: FrameLayout
+    private lateinit var presenter: SearchContract.Presenter
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SearchAdapter
-    private lateinit var manager : LinearLayoutManager
-    
+    private lateinit var manager: LinearLayoutManager
+
+    /**
+     * 分页加载的数量.
+     * */
+    private var pageSize: Int = 20
+
+    /**
+     * 记录搜索界面当前是在第几面
+     * */
+    private var currentPage: Int = 1
+
+    /**
+     * 上拉加载更多时，是否已加载歌曲结束的标志
+     */
+    private var loadingFinishFlag: Boolean = true
+
+    /**
+     * 记录搜索的歌曲还有多少未被加载.
+     * */
+    private var remainingCount: Int = 0
+
     companion object {
-        fun newInstance() : SearchFragment{
+        fun newInstance(): SearchFragment {
             return SearchFragment()
         }
     }
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,25 +70,30 @@ class SearchFragment : Fragment(),SearchContract.OnView,BaseRecyclerViewAdapter.
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        
+
         initData()
     }
-    
-    private fun initData(){
+
+    private fun initData() {
         //构造presenter
         SearchPresenter(this)
-        
-        adapter = SearchAdapter(mutableListOf<Song>(),R.layout.song_item)
+
+        adapter = SearchAdapter(mutableListOf<Song>(), R.layout.song_item)
         adapter.setItemClickListener(this)
         manager = LinearLayoutManager(context)
         recyclerView.layoutManager = manager
         recyclerView.adapter = adapter
         //添加分割线
-        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
-    
-    fun searchContent(keywords : String){
-        
+
+    fun searchContent(keywords: String) {
+        presenter.searchSongs(pageSize,(currentPage - 1)*pageSize,SEARCH_TYPE,keywords)
     }
 
     override fun searchSuccess(list: MutableList<Song>) {
@@ -86,10 +113,10 @@ class SearchFragment : Fragment(),SearchContract.OnView,BaseRecyclerViewAdapter.
     }
 
     override fun showError(errorMessage: String) {
-        Toast.makeText(context,"错误：$errorMessage", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "错误：$errorMessage", Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemClick(v: View?, position: Int) {
-        TODO("Not yet implemented")
+        
     }
 }

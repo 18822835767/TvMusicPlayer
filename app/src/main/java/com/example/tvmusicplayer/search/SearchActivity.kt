@@ -67,16 +67,18 @@ class SearchActivity : AppCompatActivity(){
                 //模式情况下，不是只显示图标
                 searchView.setIconifiedByDefault(false)
                 
-                //todo 增加监听
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        
+                        query?.let{
+                            //搜索相关内容
+                            searchFragment.searchContent(it)
+                        }
+                        return true
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         return false
                     }
-
                 })
             }
         }
