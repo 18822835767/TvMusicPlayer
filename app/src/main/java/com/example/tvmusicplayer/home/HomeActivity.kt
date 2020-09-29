@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.tvmusicplayer.R
-import com.example.tvmusicplayer.bottomPlayer.BottomPlayerFragment
 import com.example.tvmusicplayer.login.LoginActivity
 import com.example.tvmusicplayer.recommend.RecommendFragment
 import com.example.tvmusicplayer.user.UserFragment
@@ -45,7 +44,7 @@ class HomeActivity : AppCompatActivity(),HomeContract.OnView {
 
 
     private fun initView() {
-        toolbar = findViewById(R.id.main_toolbar)
+        toolbar = findViewById(R.id.search_toolbar)
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tab_layout)
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -118,7 +117,7 @@ class HomeActivity : AppCompatActivity(),HomeContract.OnView {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        menuInflater.inflate(R.menu.home_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
