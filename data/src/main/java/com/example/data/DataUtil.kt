@@ -10,6 +10,7 @@ import com.example.data.clientApiImpl.ClientMusicApiImpl
 import com.example.data.clientApiImpl.ClientSearchApiImpl
 import com.example.data.observableApi.ObservableLoginApi
 import com.example.data.observableApi.ObservableMusicApi
+import com.example.data.observableApi.ObservableSearchApi
 import com.example.data.util.Constant
 import com.example.data.util.ContextProvider
 import com.example.data.util.LogUtil
@@ -32,6 +33,7 @@ object DataUtil {
     private var clientBuilder: OkHttpClient.Builder
     internal var observableLoginApi: ObservableLoginApi
     internal var observableMusicApi: ObservableMusicApi
+    internal var observableSearchApi : ObservableSearchApi
     internal var sharedPreferences: SharedPreferences? = null
     private var cookies = HashMap<String, String>()
 
@@ -131,6 +133,7 @@ object DataUtil {
         //获取ObservableApi
         observableLoginApi = retrofit.create(ObservableLoginApi::class.java)
         observableMusicApi = retrofit.create(ObservableMusicApi::class.java)
+        observableSearchApi = retrofit.create(ObservableSearchApi::class.java)
     }
 
     /**
