@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -119,12 +118,12 @@ class SearchFragment : Fragment(), SearchContract.OnView,
                             if(remainingCount >= pageSize){
                                 loadingFinishFlag = false
                                 //todo setFooter
-                                presenter.loadSongs(pageSize,currentPage * pageSize, 
+                                presenter.loadMoreSongs(pageSize,currentPage * pageSize, 
                                     SEARCH_TYPE,lastKeyWord)
                                 //未加载的歌曲数量不足一页的情况下
                             }else if(remainingCount > 0){
                                 loadingFinishFlag = false
-                                presenter.loadSongs(remainingCount,currentPage * pageSize,
+                                presenter.loadMoreSongs(remainingCount,currentPage * pageSize,
                                     SEARCH_TYPE,lastKeyWord)
                                 remainingCount = 0
                             }
@@ -140,6 +139,9 @@ class SearchFragment : Fragment(), SearchContract.OnView,
         lastKeyWord = keywords
         //每次搜索音乐时，重置当前所在的页数
         currentPage = 0
+        //剩余数量置为0
+        remainingCount = 0
+        
         presenter.searchSongs(pageSize,0,SEARCH_TYPE,keywords)
     }
 
@@ -166,7 +168,6 @@ class SearchFragment : Fragment(), SearchContract.OnView,
         
         //设置数据
         adapter.addDatas(list)
-        
     }
 
     override fun setPresenter(presenter: SearchContract.Presenter) {

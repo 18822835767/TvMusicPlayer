@@ -18,7 +18,7 @@ class SearchPresenter(var onView : SearchContract.OnView) : SearchContract.Prese
         model.searchOrLoadMoreSongs(limit,offset,type,keyword,this)
     }
 
-    override fun loadSongs(limit: Int, offset: Int, type: Int, keyword: String) {
+    override fun loadMoreSongs(limit: Int, offset: Int, type: Int, keyword: String) {
         model.searchOrLoadMoreSongs(limit,offset,type,keyword,this)
     }
 
