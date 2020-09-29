@@ -7,12 +7,14 @@ import com.example.repository.api.ClientLoginApi
 import com.example.repository.api.ClientMusicApi
 import com.example.data.clientApiImpl.ClientLoginApiImpl
 import com.example.data.clientApiImpl.ClientMusicApiImpl
+import com.example.data.clientApiImpl.ClientSearchApiImpl
 import com.example.data.observableApi.ObservableLoginApi
 import com.example.data.observableApi.ObservableMusicApi
 import com.example.data.util.Constant
 import com.example.data.util.ContextProvider
 import com.example.data.util.LogUtil
 import com.example.repository.RequestCallBack
+import com.example.repository.api.ClientSearchApi
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -40,6 +42,8 @@ object DataUtil {
         ClientLoginApiImpl()
     val clientMusicApi: ClientMusicApi =
         ClientMusicApiImpl()
+    val clientSearchApi : ClientSearchApi = 
+        ClientSearchApiImpl()
 
     init {
 //        //初始化SharedPreferences
