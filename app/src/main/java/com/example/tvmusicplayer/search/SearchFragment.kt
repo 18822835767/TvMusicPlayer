@@ -64,6 +64,10 @@ class SearchFragment : Fragment(),SearchContract.OnView,BaseRecyclerViewAdapter.
         //添加分割线
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
+    
+    fun searchContent(keywords : String){
+        
+    }
 
     override fun searchSuccess(list: MutableList<Song>) {
         adapter.addDatas(list)

@@ -18,6 +18,7 @@ class SearchActivity : AppCompatActivity(){
 
     private lateinit var toolBar: Toolbar
     private lateinit var searchView : SearchView
+    private lateinit var searchFragment: SearchFragment
     
     companion object {
         fun actionStart(context: Context) {
@@ -40,6 +41,12 @@ class SearchActivity : AppCompatActivity(){
     }
 
     private fun initData() {
+        //初始化展示搜索内容的碎片
+        val manager = supportFragmentManager
+        val transaction = manager.beginTransaction()
+        searchFragment = SearchFragment.newInstance()
+        transaction.replace(R.id.fragment_layout,searchFragment)
+        transaction.commit()
     }
 
     /**
@@ -61,9 +68,18 @@ class SearchActivity : AppCompatActivity(){
                 searchView.setIconifiedByDefault(false)
                 
                 //todo 增加监听
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        return false
+                    }
+
+                })
             }
         }
-        
         return true
     }
 
