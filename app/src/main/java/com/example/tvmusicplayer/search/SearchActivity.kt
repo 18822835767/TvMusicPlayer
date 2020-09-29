@@ -5,14 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import com.example.tvmusicplayer.R
-import com.example.tvmusicplayer.bean.Song
 
 class SearchActivity : AppCompatActivity(){
 
@@ -53,6 +49,7 @@ class SearchActivity : AppCompatActivity(){
      * 设置toolbar的相关信息.
      * */
     private fun setActionBar() {
+        toolBar.title=""
         setSupportActionBar(toolBar)
         //toolbar左侧显示返回按钮
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -73,6 +70,9 @@ class SearchActivity : AppCompatActivity(){
                             //搜索相关内容
                             searchFragment.searchContent(it)
                         }
+                        
+                        //提交后失去焦点，即收起软键盘
+                        searchView.clearFocus()
                         return true
                     }
 

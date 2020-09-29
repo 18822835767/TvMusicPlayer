@@ -93,10 +93,16 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     }
 
     fun searchContent(keywords: String) {
+        //显示加载进度条
+        showLoading()
+        //每次搜索音乐时，重置当前所在的页数
+        currentPage = 1
         presenter.searchSongs(pageSize,(currentPage - 1)*pageSize,SEARCH_TYPE,keywords)
     }
 
     override fun searchSuccess(list: MutableList<Song>) {
+        //隐藏加载进度条
+        hideLoading()
         adapter.addDatas(list)
     }
 
@@ -113,6 +119,8 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     }
 
     override fun showError(errorMessage: String) {
+        //隐藏加载进度条.
+        hideLoading()
         Toast.makeText(context, "错误：$errorMessage", Toast.LENGTH_SHORT).show()
     }
 
