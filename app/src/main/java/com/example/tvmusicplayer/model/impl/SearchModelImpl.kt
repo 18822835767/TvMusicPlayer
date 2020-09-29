@@ -51,7 +51,8 @@ class SearchModelImpl : SearchModel{
                         )
                     )
                 }
-                getSongDetail(listener)
+                val songCount = data.result?.songCount
+                getSongDetail(listener,songCount?:0)
             }
 
             override fun error(errorMsg: String) {
@@ -64,7 +65,7 @@ class SearchModelImpl : SearchModel{
     /**
      * 获取音乐详情，这里主要是为了获取歌曲专辑的封面图片url.
      * */
-    private fun getSongDetail(listener: SearchModel.OnListener) {
+    private fun getSongDetail(listener: SearchModel.OnListener,songCount : Int) {
         DataUtil.clientMusicApi.getSongsDetail(idsBuilder.toString(),
             object : RequestCallBack<SongDetailJson> {
                 override fun callback(data: SongDetailJson) {
@@ -93,7 +94,7 @@ class SearchModelImpl : SearchModel{
                                 song.firstLetter = '#'
                             }
                         }
-                        listener.searchSuccess(songList)//回调出去
+                        listener.searchSuccess(songList,songCount)//回调出去
 //                        getSongsPlayInfo(listener)
                     }
                 }

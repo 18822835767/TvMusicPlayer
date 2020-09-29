@@ -17,10 +17,13 @@ import com.example.tvmusicplayer.adapter.SearchAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.Constant.SearchSongConstant.SEARCH_TYPE
+import com.example.tvmusicplayer.util.LogUtil
 
 class SearchFragment : Fragment(), SearchContract.OnView,
     BaseRecyclerViewAdapter.OnItemClickListener {
 
+    private val TAG = "SearchFragment"
+    
     private lateinit var loadingFl: FrameLayout
     private lateinit var presenter: SearchContract.Presenter
     private lateinit var recyclerView: RecyclerView
@@ -100,7 +103,8 @@ class SearchFragment : Fragment(), SearchContract.OnView,
         presenter.searchSongs(pageSize,(currentPage - 1)*pageSize,SEARCH_TYPE,keywords)
     }
 
-    override fun searchSuccess(list: MutableList<Song>) {
+    override fun searchSuccess(list: MutableList<Song>,songCount : Int) {
+        LogUtil.d(TAG,"songCount:${songCount}")
         //隐藏加载进度条
         hideLoading()
         adapter.clearAndAddNewDatas(list)

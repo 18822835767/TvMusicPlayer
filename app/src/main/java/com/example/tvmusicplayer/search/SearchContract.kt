@@ -10,6 +10,6 @@ interface SearchContract {
     }
     
     interface OnView : BaseView<Presenter>{
-        fun searchSuccess(list : MutableList<Song>)
+        fun searchSuccess(list : MutableList<Song>,songCount : Int)
     }
 }

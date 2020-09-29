@@ -21,8 +21,8 @@ class SearchPresenter(var onView : SearchContract.OnView) : SearchContract.Prese
     override fun start() {
     }
 
-    override fun searchSuccess(list: MutableList<Song>) {
-        onView.searchSuccess(list)
+    override fun searchSuccess(list: MutableList<Song>,songCount : Int) {
+        onView.searchSuccess(list,songCount)
     }
 
     override fun error(msg: String) {

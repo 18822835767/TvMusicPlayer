@@ -7,6 +7,6 @@ interface SearchModel {
     fun searchSongs(limit: Int, offset: Int, type: Int, keyword: String,listener : OnListener)
     
     interface OnListener : BaseModelListener{
-        fun searchSuccess(list : MutableList<Song>)
+        fun searchSuccess(list : MutableList<Song>,songCount : Int)
     }
 }
