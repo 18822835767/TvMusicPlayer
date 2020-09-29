@@ -117,12 +117,15 @@ class SearchFragment : Fragment(), SearchContract.OnView,
                             //未加载的歌曲充足的情况下
                             if(remainingCount >= pageSize){
                                 loadingFinishFlag = false
-                                //todo setFooter
+                                //设置FooterView
+                                setFooterView(recyclerView)
                                 presenter.loadMoreSongs(pageSize,currentPage * pageSize, 
                                     SEARCH_TYPE,lastKeyWord)
                                 //未加载的歌曲数量不足一页的情况下
                             }else if(remainingCount > 0){
                                 loadingFinishFlag = false
+                                //设置FooterView
+                                setFooterView(recyclerView)
                                 presenter.loadMoreSongs(remainingCount,currentPage * pageSize,
                                     SEARCH_TYPE,lastKeyWord)
                                 remainingCount = 0
@@ -165,11 +168,24 @@ class SearchFragment : Fragment(), SearchContract.OnView,
         remainingCount = if(remainingCount - pageSize >= 0) remainingCount - pageSize else 0
         //当前页数加1
         currentPage++
+    
+        //移除FooterView
+        removeFooterView()
         
         //设置数据
         adapter.addDatas(list)
     }
 
+    private fun setFooterView(recyclerView : RecyclerView){
+        val view : View = LayoutInflater.from(context).inflate(R.layout.footer_view,recyclerView,
+            false)
+        adapter.setFooterView(view)
+    }
+
+    private fun removeFooterView(){
+        adapter.removeFooterView()
+    }
+    
     override fun setPresenter(presenter: SearchContract.Presenter) {
         this.presenter = presenter
     }

@@ -65,6 +65,16 @@ abstract class BaseRecyclerViewAdapter<T>(
         }
     }
 
+    fun setFooterView(footerView : View){
+        this.footerView = footerView
+        notifyItemInserted(itemCount)//?
+    }
+    
+    fun removeFooterView(){
+        notifyItemRemoved(itemCount - 1)
+        footerView = null
+    }
+    
     fun setItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
