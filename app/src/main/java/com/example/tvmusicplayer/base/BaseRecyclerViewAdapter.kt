@@ -77,6 +77,12 @@ abstract class BaseRecyclerViewAdapter<T>(protected var data: MutableList<T>, pr
         notifyDataSetChanged()
     }
     
+    fun clearAndAddNewDatas(datas: MutableList<T>){
+        data.clear()
+        data.addAll(datas)
+        notifyDataSetChanged()
+    }
+    
     fun getItem(position : Int): T {
         return data[position]
     }

@@ -103,7 +103,7 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     override fun searchSuccess(list: MutableList<Song>) {
         //隐藏加载进度条
         hideLoading()
-        adapter.addDatas(list)
+        adapter.clearAndAddNewDatas(list)
     }
 
     override fun setPresenter(presenter: SearchContract.Presenter) {
