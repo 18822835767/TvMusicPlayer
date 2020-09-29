@@ -14,13 +14,11 @@ import androidx.appcompat.widget.Toolbar
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Song
 
-class SearchActivity : AppCompatActivity(),SearchContract.OnView{
+class SearchActivity : AppCompatActivity(){
 
     private lateinit var toolBar: Toolbar
     private lateinit var searchView : SearchView
-    private lateinit var loadingFl : FrameLayout
-    private lateinit var presenter : SearchContract.Presenter
-
+    
     companion object {
         fun actionStart(context: Context) {
             val intent = Intent(context, SearchActivity::class.java)
@@ -39,12 +37,9 @@ class SearchActivity : AppCompatActivity(),SearchContract.OnView{
 
     private fun initView() {
         toolBar = findViewById(R.id.search_toolbar)
-        loadingFl = findViewById(R.id.fl_loading)
     }
 
     private fun initData() {
-        //构造presenter
-        SearchPresenter(this)
     }
 
     /**
@@ -77,25 +72,5 @@ class SearchActivity : AppCompatActivity(),SearchContract.OnView{
             finish()
         }
         return true
-    }
-
-    override fun searchSuccess(list: MutableList<Song>) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setPresenter(presenter: SearchContract.Presenter) {
-        this.presenter = presenter
-    }
-
-    override fun showLoading() {
-        loadingFl.visibility = View.VISIBLE
-    }
-
-    override fun hideLoading() {
-        loadingFl.visibility = View.GONE
-    }
-
-    override fun showError(errorMessage: String) {
-        Toast.makeText(this,"错误：$errorMessage", Toast.LENGTH_SHORT).show()
     }
 }
