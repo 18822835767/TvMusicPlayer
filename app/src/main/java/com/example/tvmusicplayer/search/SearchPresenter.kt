@@ -14,18 +14,28 @@ class SearchPresenter(var onView : SearchContract.OnView) : SearchContract.Prese
     }
     
     override fun searchSongs(limit: Int, offset: Int, type: Int, keyword: String) {
-        
-        model.searchSongs(limit,offset,type,keyword,this)
+        onView.showLoading()
+        model.searchOrLoadMoreSongs(limit,offset,type,keyword,this)
+    }
+
+    override fun loadSongs(limit: Int, offset: Int, type: Int, keyword: String) {
+        model.searchOrLoadMoreSongs(limit,offset,type,keyword,this)
     }
 
     override fun start() {
     }
 
     override fun searchSuccess(list: MutableList<Song>,songCount : Int) {
+        onView.hideLoading()
         onView.searchSuccess(list,songCount)
     }
 
+    override fun loadMoreSuccess(list: MutableList<Song>, songCount: Int) {
+        onView.loadMoreSuccess(list,songCount)
+    }
+
     override fun error(msg: String) {
+        onView.hideLoading()
         onView.showError(msg)
     }
 }

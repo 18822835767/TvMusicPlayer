@@ -19,7 +19,7 @@ class SearchModelImpl : SearchModel{
      * */
     private val idsBuilder = StringBuilder()
     
-    override fun searchSongs(
+    override fun searchOrLoadMoreSongs(
         limit: Int,
         offset: Int,
         type: Int,
@@ -52,7 +52,7 @@ class SearchModelImpl : SearchModel{
                     )
                 }
                 val songCount = data.result?.songCount
-                getSongDetail(listener,songCount?:0)
+                getSongDetail(listener,songCount?:0,offset)
             }
 
             override fun error(errorMsg: String) {
@@ -65,7 +65,7 @@ class SearchModelImpl : SearchModel{
     /**
      * 获取音乐详情，这里主要是为了获取歌曲专辑的封面图片url.
      * */
-    private fun getSongDetail(listener: SearchModel.OnListener,songCount : Int) {
+    private fun getSongDetail(listener: SearchModel.OnListener,songCount : Int,offset : Int) {
         DataUtil.clientMusicApi.getSongsDetail(idsBuilder.toString(),
             object : RequestCallBack<SongDetailJson> {
                 override fun callback(data: SongDetailJson) {
@@ -94,8 +94,14 @@ class SearchModelImpl : SearchModel{
                                 song.firstLetter = '#'
                             }
                         }
-                        listener.searchSuccess(songList,songCount)//回调出去
-//                        getSongsPlayInfo(listener)
+                        
+                        //偏移量为0，说明是搜索歌曲
+                        if(offset == 0){
+                            listener.searchSuccess(songList,songCount)//回调出去
+                        }else if(offset > 0){
+                            //偏移量大于0，说明是加载更多
+                            listener.loadMoreSuccess(songList,songCount)
+                        }
                     }
                 }
 

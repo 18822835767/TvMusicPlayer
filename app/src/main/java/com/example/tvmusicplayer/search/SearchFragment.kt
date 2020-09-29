@@ -49,6 +49,11 @@ class SearchFragment : Fragment(), SearchContract.OnView,
      * 记录搜索的歌曲还有多少未被加载.
      * */
     private var remainingCount: Int = 0
+    
+    /**
+     * 记录最新搜索的关键词.
+     * */
+    private var lastKeyWord : String = ""
 
     companion object {
         fun newInstance(): SearchFragment {
@@ -98,36 +103,70 @@ class SearchFragment : Fragment(), SearchContract.OnView,
 
     private fun initEvent(){
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-            }
-
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                LogUtil.d(TAG,"$newState")
+                val manager : LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                //当停止滚动时
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    //得到最后一个完全可见的item的下标
+                    val lastVisibleItem = manager.findLastCompletelyVisibleItemPosition()
+                    val totalItemCount = manager.itemCount
+                    //已经到最后一个
+                    if(lastVisibleItem == totalItemCount - 1){
+                        //此处是为了防止多次加载，表示当前没有在"加载更多歌曲".
+                        if(loadingFinishFlag){
+                            //未加载的歌曲充足的情况下
+                            if(remainingCount >= pageSize){
+                                loadingFinishFlag = false
+                                //todo setFooter
+                                presenter.loadSongs(pageSize,currentPage * pageSize, 
+                                    SEARCH_TYPE,lastKeyWord)
+                                //未加载的歌曲数量不足一页的情况下
+                            }else if(remainingCount > 0){
+                                loadingFinishFlag = false
+                                presenter.loadSongs(remainingCount,currentPage * pageSize,
+                                    SEARCH_TYPE,lastKeyWord)
+                                remainingCount = 0
+                            }
+                        }
+                    }
+                }
             }
         })
     }
     
     fun searchContent(keywords: String) {
-        //显示加载进度条
-        showLoading()
+        //记录关键词
+        lastKeyWord = keywords
         //每次搜索音乐时，重置当前所在的页数
         currentPage = 0
         presenter.searchSongs(pageSize,0,SEARCH_TYPE,keywords)
     }
 
     override fun searchSuccess(list: MutableList<Song>,songCount : Int) {
-        LogUtil.d(TAG,"songCount:${songCount}")
+        LogUtil.d(TAG,"searchSuccess,songCount:${songCount}")
         
         //记录剩余歌曲的总数量
-        remainingCount = songCount - pageSize
+        remainingCount = if(songCount - pageSize >= 0) songCount - pageSize else 0 
         //当前页数加1
         currentPage++
-        //隐藏加载进度条
-        hideLoading()
         
         adapter.clearAndAddNewDatas(list)
+    }
+
+    override fun loadMoreSuccess(list: MutableList<Song>, songCount: Int) {
+        LogUtil.d(TAG,"loadMoreSuccess,songCount:${songCount}")
+    
+        //加载更多结束
+        loadingFinishFlag = true
+        //更新剩余歌曲的数量.
+        remainingCount = if(remainingCount - pageSize >= 0) remainingCount - pageSize else 0
+        //当前页数加1
+        currentPage++
+        
+        //设置数据
+        adapter.addDatas(list)
+        
     }
 
     override fun setPresenter(presenter: SearchContract.Presenter) {
@@ -143,8 +182,6 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     }
 
     override fun showError(errorMessage: String) {
-        //隐藏加载进度条.
-        hideLoading()
         Toast.makeText(context, "错误：$errorMessage", Toast.LENGTH_SHORT).show()
     }
 
