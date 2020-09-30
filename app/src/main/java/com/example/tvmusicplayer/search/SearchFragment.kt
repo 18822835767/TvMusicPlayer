@@ -15,8 +15,10 @@ import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.SearchAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.Song
+import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.Constant.SearchSongConstant.SEARCH_TYPE
 import com.example.tvmusicplayer.util.LogUtil
+import com.example.tvmusicplayer.util.ThreadUtil
 
 class SearchFragment : Fragment(), SearchContract.OnView,
     BaseRecyclerViewAdapter.OnItemClickListener {
@@ -220,6 +222,6 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     }
 
     override fun onItemClick(v: View?, position: Int) {
-
+        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongs(adapter.getItems(),position)})
     }
 }
