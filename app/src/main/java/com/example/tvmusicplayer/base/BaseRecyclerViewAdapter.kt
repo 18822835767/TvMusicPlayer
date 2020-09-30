@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.util.LogUtil
 
 abstract class BaseRecyclerViewAdapter<T>(
     protected var data: MutableList<T>,
@@ -67,7 +68,8 @@ abstract class BaseRecyclerViewAdapter<T>(
 
     fun setFooterView(footerView : View){
         this.footerView = footerView
-        notifyItemInserted(itemCount)//?
+//        notifyItemInserted(itemCount)
+        notifyItemInserted(itemCount - 1)
     }
     
     fun removeFooterView(){
