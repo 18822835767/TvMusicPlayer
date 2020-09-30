@@ -56,7 +56,12 @@ class SearchModelImpl : SearchModel{
             }
 
             override fun error(errorMsg: String) {
-                listener.error(errorMsg)
+//                listener.error(errorMsg)
+                if(offset == 0){
+                    listener.searchError(errorMsg)
+                }else if(offset > 0){
+                    listener.loadMoreError(errorMsg)
+                }
             }
 
         })
@@ -106,7 +111,12 @@ class SearchModelImpl : SearchModel{
                 }
 
                 override fun error(errorMsg: String) {
-                    listener.error(errorMsg)
+//                    listener.error(errorMsg)
+                    if(offset == 0){
+                        listener.searchError(errorMsg)
+                    }else if(offset > 0){
+                        listener.loadMoreError(errorMsg)
+                    }
                 }
 
             })

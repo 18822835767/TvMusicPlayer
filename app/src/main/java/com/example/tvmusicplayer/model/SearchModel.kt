@@ -9,5 +9,8 @@ interface SearchModel {
     interface OnListener : BaseModelListener{
         fun searchSuccess(list : MutableList<Song>,songCount : Int)
         fun loadMoreSuccess(list : MutableList<Song>, songCount : Int)
+        
+        fun searchError(msg : String)
+        fun loadMoreError(msg : String)
     }
 }
