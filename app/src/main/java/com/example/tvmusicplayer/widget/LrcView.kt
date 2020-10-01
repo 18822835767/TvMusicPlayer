@@ -175,7 +175,7 @@ class LrcView : View {
         if (lryList.isEmpty()) {
             canvas?.drawText(
                 DEFAUKT_TEXT, viewWidth - currentPaint.measureText(DEFAUKT_TEXT),
-                centerY.toFloat(), currentPaint
+                centerY.toFloat(), normalPaint
             )
             return
         }
