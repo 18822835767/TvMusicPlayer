@@ -1,9 +1,6 @@
 package com.example.data.observableApi
 
-import com.example.repository.bean.SongDetailJson
-import com.example.repository.bean.SongIdsJson
-import com.example.repository.bean.SongPlayJson
-import com.example.repository.bean.UserPlayListJson
+import com.example.repository.bean.*
 import io.reactivex.Observable
 import io.reactivex.Observer
 import retrofit2.http.GET
@@ -24,4 +21,7 @@ interface ObservableMusicApi {
     
     @GET("/song/url")
     fun getSongPlay(@Query("id")id : Long) : Observable<SongPlayJson>
+
+    @GET("/lyric")
+    fun getSongLyric(@Query("id")id: Long) : Observable<LyricJson>
 }

@@ -1,10 +1,7 @@
 package com.example.repository.api
 
 import com.example.repository.RequestCallBack
-import com.example.repository.bean.SongDetailJson
-import com.example.repository.bean.SongIdsJson
-import com.example.repository.bean.SongPlayJson
-import com.example.repository.bean.UserPlayListJson
+import com.example.repository.bean.*
 
 /**
  * 暴露给用户使用的，与音乐有关的Api.
@@ -35,10 +32,10 @@ interface ClientMusicApi {
      * 获取歌曲url、码率等信息，传入歌曲的多个id
      * */
     fun getSongsPlay(ids: String, callBack: RequestCallBack<SongPlayJson>)
-//
-//    /**
-//     * 获取歌曲的歌词.
-//     * */
-//    fun getSongLyric(id: Long, callBack: RequestCallBack<LyricJson>)
+
+    /**
+     * 获取歌曲的歌词.
+     * */
+    fun getSongLyric(id: Long, callBack: RequestCallBack<LyricJson>)
 
 }
