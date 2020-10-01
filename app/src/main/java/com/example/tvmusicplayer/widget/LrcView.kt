@@ -9,12 +9,15 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Scroller
 import com.example.tvmusicplayer.bean.Lyrics
+import com.example.tvmusicplayer.util.LogUtil
 
 /**
  * 显示歌词的控件.
  * */
 class LrcView : View {
 
+    private val TAG = "LrcView"
+    
     companion object {
         //滚动时间
         val SCROLL_TIME = 500
@@ -139,6 +142,7 @@ class LrcView : View {
     fun setLyrics(lyricText: String) {
         lryList.clear()
         lryList.addAll(parseLyrics(lyricText))
+        invalidate()
     }
 
     /**
@@ -146,7 +150,10 @@ class LrcView : View {
      * */
     private fun parseLyrics(lyricText: String): MutableList<Lyrics> {
         val lryList = mutableListOf<Lyrics>()
-        val lyricsArray: List<String> = lyricText.split("\\n") //?待定。第一个斜杆用于转义
+//        测试时，歌词直接写在字符串里，字符串中用"\\n"表示"\n"，第一个"\"用于转义；但是这里的歌词直接通过网络获取
+//        获取的歌词中是"\n"，无转义字符，所以只用使用"\n"进行分割
+//        val lyricsArray: List<String> = lyricText.split("\\n") 
+        val lyricsArray: List<String> = lyricText.split("\n")
         for (element in lyricsArray) {
             //每一行文本，包括 歌词 与 时间
             val text = element

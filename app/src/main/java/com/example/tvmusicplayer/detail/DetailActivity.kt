@@ -205,6 +205,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
         seekBar.max = duration
         seekBar.progress = PlayServiceManager.getCurrentPoint()
         endTimeTv.text = TextUtil.getTimeStr(duration.toLong())
+        song.id?.let { 
+            presenter.getSongLyrics(it)
+        }
         Picasso.get().load(song.picUrl)
             .resize(250,250)
             .placeholder(R.drawable.album_default_view)
