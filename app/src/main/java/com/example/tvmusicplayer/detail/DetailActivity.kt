@@ -261,6 +261,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
     }
 
     override fun getLyricsSuccess(lyricsText: String) {
+        lrcView.reset()
         lrcView.setLyrics(lyricsText)
     }
 

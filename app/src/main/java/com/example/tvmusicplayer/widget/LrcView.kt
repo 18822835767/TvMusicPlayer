@@ -140,7 +140,6 @@ class LrcView : View {
      * 设置歌词.
      * */
     fun setLyrics(lyricText: String) {
-        lryList.clear()
         lryList.addAll(parseLyrics(lyricText))
         invalidate()
     }
