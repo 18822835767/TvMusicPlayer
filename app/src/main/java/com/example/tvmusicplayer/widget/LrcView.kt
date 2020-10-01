@@ -146,9 +146,9 @@ class LrcView : View {
     private fun parseLyrics(lyricText: String): MutableList<Lyrics> {
         val lryList = mutableListOf<Lyrics>()
         val lyricsArray: List<String> = lyricText.split("\\n") //?待定。第一个斜杆用于转义
-        for (i in 0..lyricsArray.size - 1) {
+        for (element in lyricsArray) {
             //每一行文本，包括 歌词 与 时间
-            val text = lyricsArray[i]
+            val text = element
             //歌词
             val lyric = text.substring(text.indexOf("]") + 1)
             //若像 [xxx]，后面没有东西，直接丢弃.

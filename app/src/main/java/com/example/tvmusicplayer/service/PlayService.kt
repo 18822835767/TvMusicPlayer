@@ -72,7 +72,7 @@ class PlayService : Service() {
      * */
     private var currentTimePoint = 0
 
-    private val listener: SongInfoModel.OnListener = object : SongInfoModel.OnListener {
+    private val listener: SongInfoModel.OnSongPlayInfoListener = object : SongInfoModel.OnSongPlayInfoListener {
         override fun getSongPlayInfoSuccess(song: Song) {
             performSong(song.url ?: NULL_URL)
         }
