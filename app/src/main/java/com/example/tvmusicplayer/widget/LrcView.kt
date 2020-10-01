@@ -174,7 +174,7 @@ class LrcView : View {
         //如果歌词列表是空的，那么就提示无歌词
         if (lryList.isEmpty()) {
             canvas?.drawText(
-                DEFAUKT_TEXT, viewWidth - currentPaint.measureText(DEFAUKT_TEXT),
+                DEFAUKT_TEXT, (viewWidth - currentPaint.measureText(DEFAUKT_TEXT)) / 2,
                 centerY.toFloat(), normalPaint
             )
             return
