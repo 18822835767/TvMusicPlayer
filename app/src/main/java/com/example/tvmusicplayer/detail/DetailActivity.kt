@@ -31,7 +31,7 @@ import com.squareup.picasso.Picasso
 /**
  * 歌曲播放的详情页.
  * */
-class DetailActivity : AppCompatActivity(), View.OnClickListener {
+class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.OnView{
 
     private val TAG = "DetailActivity"
     private lateinit var backIv: ImageView
@@ -47,6 +47,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var queueIv: ImageView
     private lateinit var seekBar: SeekBar
     private lateinit var lrcView: LrcView
+    
+    private lateinit var presenter : DetailContract.Presenter
 
     /**
      * 判断用户是否触碰了进度条.
@@ -126,6 +128,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initData() {
+        presenter = DetailPresenter(this)
+        
         //注册观察者
         PlayServiceManager.registerObserver(observer)
     }
@@ -249,5 +253,25 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     
     private fun showText(msg : String){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    }
+
+    override fun getLyricsSuccess(lyricsText: String) {
+        lrcView.setLyrics(lyricsText)
+    }
+
+    override fun setPresenter(presenter: DetailContract.Presenter) {
+        this.presenter = presenter
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(errorMessage: String) {
+        TODO("Not yet implemented")
     }
 }
