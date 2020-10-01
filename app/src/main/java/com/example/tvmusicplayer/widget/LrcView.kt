@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Scroller
 import com.example.tvmusicplayer.bean.Lyrics
-import com.example.tvmusicplayer.util.LogUtil
 
 /**
  * 显示歌词的控件.
@@ -17,7 +16,7 @@ import com.example.tvmusicplayer.util.LogUtil
 class LrcView : View {
 
     private val TAG = "LrcView"
-    
+
     companion object {
         //滚动时间
         val SCROLL_TIME = 500
@@ -29,7 +28,7 @@ class LrcView : View {
     /**
      * 存放歌词实体类.
      * */
-    private val lryList = mutableListOf<Lyrics>()
+    private val lyrList = mutableListOf<Lyrics>()
 
     /**
      * 下一句开始时间.
@@ -140,7 +139,7 @@ class LrcView : View {
      * 设置歌词.
      * */
     fun setLyrics(lyricText: String) {
-        lryList.addAll(parseLyrics(lyricText))
+        lyrList.addAll(parseLyrics(lyricText))
         invalidate()
     }
 
@@ -178,7 +177,7 @@ class LrcView : View {
         //得到中心的Y坐标
         val centerY = (measuredHeight + textBounds.height()) / 2 //?
         //如果歌词列表是空的，那么就提示无歌词
-        if (lryList.isEmpty()) {
+        if (lyrList.isEmpty()) {
             canvas?.drawText(
                 DEFAUKT_TEXT, (viewWidth - currentPaint.measureText(DEFAUKT_TEXT)) / 2,
                 centerY.toFloat(), normalPaint
@@ -190,11 +189,11 @@ class LrcView : View {
 
         var j = 1
         //如果current等于-1，说明当前还未到第一句歌词的开始时间
-        if(currentLine == -1){
+        if (currentLine == -1) {
             for (i in 0..rows / 2 + 2) {
-                if(i < lryList.size){
+                if (i < lyrList.size) {
                     //拿到歌词
-                    val lycText = lryList[i].text
+                    val lycText = lyrList[i].text
                     val x = (viewWidth - normalPaint.measureText(lycText)) / 2
                     canvas?.drawText(lycText, x, centerY + (j - 1) * span - offSetY, normalPaint)
                     j++
@@ -202,28 +201,28 @@ class LrcView : View {
             }
             return
         }
-        
+
         //要高亮显示的歌词文本
-        val currentLrc = lryList[currentLine].text
+        val currentLrc = lyrList[currentLine].text
         //要高亮显示的歌词文本的X坐标
         val currentX = (viewWidth - currentPaint.measureText(currentLrc)) / 2
         //画当前行
         canvas?.drawText(currentLrc, currentX, centerY - offSetY, currentPaint)
-        
+
         //要显示的第一行的下标
         var firstLine = currentLine - rows / 2
         //边界检查
         firstLine = if (firstLine < 0) 0 else firstLine
         var lastLine = currentLine + rows / 2 + 2 //?
         //边界检查
-        lastLine = if (lastLine > lryList.size - 1) lryList.size else lastLine
+        lastLine = if (lastLine > lyrList.size - 1) lyrList.size else lastLine
 
         j = 1
         if (currentLine != 0) {
             //画中间行上面的歌词
             for (i in currentLine - 1 downTo firstLine) {
                 //拿到歌词
-                val lrcText = lryList[i].text
+                val lrcText = lyrList[i].text
                 val x = (viewWidth - normalPaint.measureText(lrcText)) / 2
                 //绘制歌词
                 canvas?.drawText(lrcText, x, centerY - j * span - offSetY, normalPaint)
@@ -234,9 +233,9 @@ class LrcView : View {
         j = 1
         //画中间行下面的歌词
         for (i in currentLine + 1..lastLine) {
-            if(i < lryList.size){
+            if (i < lyrList.size) {
                 //拿到歌词
-                val lycText = lryList[i].text
+                val lycText = lyrList[i].text
                 val x = (viewWidth - normalPaint.measureText(lycText)) / 2
                 canvas?.drawText(lycText, x, centerY + j * span - offSetY, normalPaint)
                 j++
@@ -248,16 +247,17 @@ class LrcView : View {
      * 音乐播放器的回调.
      * 为什么加锁?
      * */
-    @Synchronized fun onProgress(time : Long) {
+    @Synchronized
+    fun onProgress(time: Long) {
         //如果当前时间小于下一句开始的时间,直接return
-        if(nextTime > time){
+        if (nextTime > time) {
             return
         }
-        
-        val size = lryList.size
-        for(i in 0 until size){
+
+        val size = lyrList.size
+        for (i in 0 until size) {
             //解决最后一行不能高亮显示的问题
-            if (nextTime == lryList[size - 1].start) {
+            if (nextTime == lyrList[size - 1].start) {
                 currentLine = size - 1
                 nextTime += 60 * 1000 //让nextTime变大，使其不会被重复绘制
                 scroller.abortAnimation()
@@ -265,12 +265,13 @@ class LrcView : View {
                 postInvalidate() //重绘
                 break
             }
-            
+
             //找到大于当前时间的，作为下一行
-            if(lryList[i].start > time){
-                nextTime = lryList[i].start
+            if (lyrList[i].start > time) {
+                nextTime = lyrList[i].start
                 //时间 < 第一句歌词开始时间
-                if(i == 0){
+                if (i == 0) {
+                    currentLine = -1
                     postInvalidate()
                     return
                 }
@@ -278,15 +279,29 @@ class LrcView : View {
                 currentLine = i - 1
 
                 scroller.abortAnimation()//? 若有未完成的滚动，完成它，终止
-                scroller.startScroll(i,0,0,maxScroll, SCROLL_TIME)//这里的i用于记录下一行的行数
+                scroller.startScroll(i, 0, 0, maxScroll, SCROLL_TIME)//这里的i用于记录下一行的行数
                 postInvalidate()
                 break
             }
         }
     }
 
+    /**
+     * 用户在释放拖动的进度条后调用，用于改变歌词的位置.
+     * */
+    fun onDrag(progress: Long) {
+        for (i in lyrList.indices){
+            if(lyrList[i].start > progress){
+                nextTime = if(i==0) 0 else lyrList[i-1].start
+                return
+            }
+        }
+        //todo 还有一点处理
+        
+    }
+
     override fun computeScroll() {
-        if(scroller.computeScrollOffset()){
+        if (scroller.computeScrollOffset()) {
             //根据Scroller的计算，获取滚动的过程中，Y方向上应该有的偏移量
             offSetY = scroller.currY.toFloat()
             postInvalidate()
@@ -294,7 +309,7 @@ class LrcView : View {
     }
 
     fun reset() {
-        lryList.clear()
+        lyrList.clear()
         currentLine = -1
         nextTime = 0
         offSetY = 0F
@@ -305,6 +320,6 @@ class LrcView : View {
      * 判断是否有歌词数据.
      * */
     fun hasLrc(): Boolean {
-        return lryList.isNotEmpty()
+        return lyrList.isNotEmpty()
     }
 }

@@ -156,6 +156,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
                 seekBar?.let {
                     val touchProgress: Int = it.progress
                     PlayServiceManager.seekTo(touchProgress)
+                    lrcView.onDrag(it.progress.toLong())
                 }
                 userTouchProgress = false
             }
