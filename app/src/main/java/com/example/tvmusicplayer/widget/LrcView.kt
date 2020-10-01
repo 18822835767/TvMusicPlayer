@@ -49,7 +49,7 @@ class LrcView : View {
     /**
      * 记录展示多少行.
      * */
-    private var rows: Int = 7
+    private var rows: Int = 12
 
     /**
      * 记录当前展示、高亮的行(在list中的下标).
@@ -300,6 +300,6 @@ class LrcView : View {
      * 判断是否有歌词数据.
      * */
     fun hasLrc(): Boolean {
-        return !lryList.isEmpty()
+        return lryList.isNotEmpty()
     }
 }

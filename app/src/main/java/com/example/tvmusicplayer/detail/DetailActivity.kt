@@ -84,6 +84,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
                     seekBar.progress = currentPosition
                 })
             }
+            
+            lrcView.onProgress(currentPosition.toLong())
         }
 
         override fun onSongChange(song: Song?) {
