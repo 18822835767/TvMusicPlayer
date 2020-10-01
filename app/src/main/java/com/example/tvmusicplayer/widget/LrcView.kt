@@ -290,14 +290,17 @@ class LrcView : View {
      * 用户在释放拖动的进度条后调用，用于改变歌词的位置.
      * */
     fun onDrag(progress: Long) {
-        for (i in lyrList.indices){
-            if(lyrList[i].start > progress){
-                nextTime = if(i==0) 0 else lyrList[i-1].start
+        for (i in lyrList.indices) {
+            if (lyrList[i].start > progress) {
+                nextTime = if (i == 0) 0 else lyrList[i - 1].start
                 return
             }
         }
-        //todo 还有一点处理
-        
+        //这里主要是处理，直接将进度条拉到快结束的那种状态，如果不这样处理，歌词将不会随着进度条的移动而移动.
+        if (lyrList.isNotEmpty()) {
+            nextTime = lyrList[lyrList.size - 1].start
+        }
+
     }
 
     override fun computeScroll() {
