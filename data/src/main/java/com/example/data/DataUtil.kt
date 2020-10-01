@@ -105,9 +105,9 @@ object DataUtil {
                             val cookie = stringBuilder.toString()
 
                             LogUtil.d(TAG,"返回的cookie:${cookie}")
-                            //如果获取的cookie不是以NMTID开头，这里加上是因为获取用户歌单时会返回一个cookie
-                            //但是这cookie是不需要的
-                            if(!cookie.startsWith("NMTID",true)){
+//                            //如果获取的cookie不是以NMTID开头，这里加上是因为获取用户歌单时会返回一个cookie
+//                            //但是这cookie是不需要的
+//                            if(!cookie.startsWith("NMTID",true)){
                                 //更新内存中Cookie值
                                 cookies[hostString] = cookie
                                 //存储到本地磁盘中
@@ -115,7 +115,7 @@ object DataUtil {
                                 editor.putString(hostString, cookie)
                                 editor.apply()
                                 LogUtil.d(TAG, "Set-Cookie->cookies: $cookie host: $hostString")
-                            }
+//                            }
                         }
                         return originalResponse
                     }
