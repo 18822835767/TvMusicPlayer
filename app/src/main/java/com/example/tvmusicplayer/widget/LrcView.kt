@@ -54,7 +54,7 @@ class LrcView : View {
     /**
      * 记录当前展示、高亮的行(在list中的下标).
      * */
-    private var currentLine = 0
+    private var currentLine = -1
 
     /**
      * 保存滚动时，y方向上的偏移.
@@ -155,15 +155,14 @@ class LrcView : View {
         val lyricsArray: List<String> = lyricText.split("\n")
         for (element in lyricsArray) {
             //每一行文本，包括 歌词 与 时间
-            val text = element
             //歌词
-            val lyric = text.substring(text.indexOf("]") + 1)
+            val lyric = element.substring(element.indexOf("]") + 1)
             //若像 [xxx]，后面没有东西，直接丢弃.
             if (lyric.equals("")) {
                 continue
             }
             //开始时的时间
-            val time = text.substring(text.indexOf("["), text.indexOf("]") + 1)
+            val time = element.substring(element.indexOf("["), element.indexOf("]") + 1)
             if (time.contains(".")) {
                 val min = time.substring(time.indexOf("[") + 1, time.indexOf("[") + 3)
                 val second = time.substring(time.indexOf(":") + 1, time.indexOf(":") + 3)
@@ -187,14 +186,30 @@ class LrcView : View {
             return
         }
 
+        val span = textBounds.height() + dividerHeight //?
+
+        var j = 1
+        if(currentLine == -1){
+            //画中间行下面的歌词
+            for (i in 0..rows / 2 + 2) {
+                if(i < lryList.size){
+                    //拿到歌词
+                    val lycText = lryList[i].text
+                    val x = (viewWidth - normalPaint.measureText(lycText)) / 2
+                    canvas?.drawText(lycText, x, centerY + (j - 1) * span - offSetY, normalPaint)
+                    j++
+                }
+            }
+            return
+        }
+        
         //要高亮显示的歌词文本
         val currentLrc = lryList[currentLine].text
         //要高亮显示的歌词文本的X坐标
         val currentX = (viewWidth - currentPaint.measureText(currentLrc)) / 2
         //画当前行
         canvas?.drawText(currentLrc, currentX, centerY - offSetY, currentPaint)
-
-        val span = textBounds.height() + dividerHeight //?
+        
         //要显示的第一行的下标
         var firstLine = currentLine - rows / 2
         //边界检查
@@ -203,7 +218,7 @@ class LrcView : View {
         //边界检查
         lastLine = if (lastLine > lryList.size - 1) lryList.size else lastLine
 
-        var j = 1
+        j = 1
         if (currentLine != 0) {
             //画中间行上面的歌词
             for (i in currentLine - 1 downTo firstLine) {
@@ -254,11 +269,17 @@ class LrcView : View {
             //找到大于当前时间的，作为下一行
             if(lryList[i].start > time){
                 nextTime = lryList[i].start
-                //若 时间<第一句歌词开始时间 或者 在第一句歌词时间范围内，那么直接第一句歌词高亮.
-                if(i == 0 || i == 1){
+                //时间 < 第一句歌词开始时间
+                if(i == 0){
                     postInvalidate()
-                    break
+                    return
                 }
+//                //时间在第一句歌词时间范围内，那么直接第一句歌词高亮.
+//                if(i == 1){
+//                    currentLine = i - 1
+//                    postInvalidate()
+//                    break
+//                }
                 currentLine = i - 1
 
                 scroller.abortAnimation()//? 若有未完成的滚动，完成它，终止
@@ -289,7 +310,7 @@ class LrcView : View {
 
     fun reset() {
         lryList.clear()
-        currentLine = 0
+        currentLine = -1
         nextTime = 0
         offSetY = 0F
         postInvalidate()//?
