@@ -177,6 +177,7 @@ class LrcView : View {
                 DEFAUKT_TEXT, viewWidth - currentPaint.measureText(DEFAUKT_TEXT),
                 centerY.toFloat(), currentPaint
             )
+            return
         }
 
         //要高亮显示的歌词文本

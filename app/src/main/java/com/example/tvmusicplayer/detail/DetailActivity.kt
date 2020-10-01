@@ -24,6 +24,7 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.TextUtil
 import com.example.tvmusicplayer.util.ThreadUtil
+import com.example.tvmusicplayer.widget.LrcView
 import com.example.tvmusicplayer.widget.RotationCircleImage
 import com.squareup.picasso.Picasso
 
@@ -45,6 +46,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var nextOneIv: ImageView
     private lateinit var queueIv: ImageView
     private lateinit var seekBar: SeekBar
+    private lateinit var lrcView: LrcView
 
     /**
      * 判断用户是否触碰了进度条.
@@ -120,6 +122,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         nextOneIv = findViewById(R.id.next_one)
         queueIv = findViewById(R.id.play_queue)
         seekBar = findViewById(R.id.seek_bar)
+        lrcView = findViewById(R.id.lrc_view)
     }
 
     private fun initData() {
@@ -157,6 +160,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         preOneIv.setOnClickListener(this)
         playModeIv.setOnClickListener(this)
         backIv.setOnClickListener(this)
+        coverIv.setOnClickListener(this)
+        lrcView.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -230,6 +235,14 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
                 R.id.ic_back -> finish()
+                R.id.cover_iv -> {
+                    coverIv.visibility = View.GONE
+                    lrcView.visibility = View.VISIBLE
+                }
+                R.id.lrc_view -> {
+                    lrcView.visibility = View.GONE
+                    coverIv.visibility = View.VISIBLE
+                }
             }
         }
     }
