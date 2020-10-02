@@ -99,8 +99,8 @@ class LrcView : View {
 
     private var lastPosition = 0
 
-    var seekListener : OnSeekListener? = null
-    
+    var seekListener: OnSeekListener? = null
+
     constructor(context: Context?) : super(context) {
         initData()
     }
@@ -261,7 +261,7 @@ class LrcView : View {
      * */
     @Synchronized
     fun onProgress(time: Long) {
-        if(moving){
+        if (moving) {
             return
         }
         //如果当前时间小于下一句开始的时间,直接return
@@ -322,8 +322,8 @@ class LrcView : View {
         event?.let {
             val y = it.y
 
-            when(it.action){
-                MotionEvent.ACTION_DOWN ->{
+            when (it.action) {
+                MotionEvent.ACTION_DOWN -> {
                     lastY = y
                     lastPosition = currentLine
                 }
@@ -331,33 +331,39 @@ class LrcView : View {
                 MotionEvent.ACTION_MOVE -> {
                     val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
                     val tempOffsetY = y - lastY
-                    if(abs(tempOffsetY) > touchSlop){
+                    if (abs(tempOffsetY) > touchSlop) {
                         moving = true
                         val lineOffset = tempOffsetY / maxScroll
-                        Log.d(TAG,"$lineOffset")
+//                        Log.d(TAG, "$lineOffset")
                         currentLine = lastPosition - lineOffset.toInt()
                         //边界控制
-                        if(currentLine < 0){
+                        if (currentLine < 0) {
                             currentLine = 0
-                        }else if(currentLine >= lyrList.size){
+                        } else if (currentLine >= lyrList.size) {
                             currentLine = lyrList.size - 1
                         }
                         invalidate()
                     }
                 }
 
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->{
-                    if(moving){
-                        seekListener?.let { 
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    if (moving) {
+                        seekListener?.let {
                             it.onSeek(lyrList[currentLine].start)
-                            
+
                             nextTime = lyrList[currentLine - 1].start
                         }
                         moving = false
+                        //这里返回false，是因为onTouchEvent()的执行有两种情况：第一种是点击，这时候moving是
+                        //false(在ACTION_MOVE中并没有被赋值)，不会进入if体，所以最后调用super.onTouchEven
+                        // t(event)，使得点击事件被触发；第二种是滑动歌词，这时候moving是true，进入if体，
+                        //返回false，因为onClick()并没有收到ACTION_UP事件，所以onClick()不会被触发
+                        return false
                     }
                 }
             }
         }
+        //这里调用super...，是为了使得onClick()也有机会被执行.
         return super.onTouchEvent(event)
     }
 
@@ -383,8 +389,8 @@ class LrcView : View {
     fun hasLrc(): Boolean {
         return lyrList.isNotEmpty()
     }
-    
-    interface OnSeekListener{
-        fun onSeek(time : Long)
+
+    interface OnSeekListener {
+        fun onSeek(time: Long)
     }
 }
