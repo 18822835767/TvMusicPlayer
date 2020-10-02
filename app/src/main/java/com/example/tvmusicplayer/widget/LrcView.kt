@@ -350,8 +350,12 @@ class LrcView : View {
                     if (moving) {
                         seekListener?.let {
                             it.onSeek(lyrList[currentLine].start)
-
-                            nextTime = lyrList[currentLine - 1].start
+                            
+                            if(currentLine == lyrList.size - 1){
+                                nextTime = Long.MAX_VALUE
+                            }else if(currentLine >= 0 && currentLine < lyrList.size - 1){
+                                nextTime = lyrList[currentLine+1].start    
+                            }
                         }
                         moving = false
                         //这里返回false，是因为onTouchEvent()的执行有两种情况：第一种是点击，这时候moving是
