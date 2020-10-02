@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
@@ -21,7 +20,6 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
-import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.TextUtil
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.example.tvmusicplayer.widget.LrcView
@@ -111,6 +109,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
         initView()
         initData()
         initEvent()
+
+        setUIInfo()
     }
 
     private fun initView() {
@@ -135,12 +135,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
         //注册观察者
         PlayServiceManager.registerObserver(observer)
     }
-
-    override fun onResume() {
-        super.onResume()
-        resumeUIInfo()
-    }
-
+    
     private fun initEvent() {
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -179,7 +174,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
     /**
      * 设置播放栏的UI信息.
      * */
-    private fun resumeUIInfo() {
+    private fun setUIInfo() {
         //设置播放状态的按钮.
         when (PlayServiceManager.getPlayState()) {
             PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
