@@ -29,7 +29,7 @@ import com.squareup.picasso.Picasso
 /**
  * 歌曲播放的详情页.
  * */
-class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.OnView{
+class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.OnView,LrcView.OnSeekListener{
 
     private val TAG = "DetailActivity"
     private lateinit var backIv: ImageView
@@ -131,6 +131,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
 
     private fun initData() {
         presenter = DetailPresenter(this)
+        lrcView.seekListener = this
         
         //注册观察者
         PlayServiceManager.registerObserver(observer)
@@ -275,5 +276,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
 
     override fun showError(errorMessage: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun onSeek(time: Long) {
+        PlayServiceManager.seekTo(time.toInt())
     }
 }

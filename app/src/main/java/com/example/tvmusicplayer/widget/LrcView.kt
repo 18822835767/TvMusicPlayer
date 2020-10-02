@@ -6,9 +6,13 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.widget.Scroller
 import com.example.tvmusicplayer.bean.Lyrics
+import kotlin.math.abs
 
 /**
  * 显示歌词的控件.
@@ -89,6 +93,14 @@ class LrcView : View {
 
     private lateinit var scroller: Scroller
 
+    private var moving = false
+
+    private var lastY = 0F
+
+    private var lastPosition = 0
+
+    var seekListener : OnSeekListener? = null
+    
     constructor(context: Context?) : super(context) {
         initData()
     }
@@ -249,6 +261,9 @@ class LrcView : View {
      * */
     @Synchronized
     fun onProgress(time: Long) {
+        if(moving){
+            return
+        }
         //如果当前时间小于下一句开始的时间,直接return
         if (nextTime > time) {
             return
@@ -303,6 +318,49 @@ class LrcView : View {
 
     }
 
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        event?.let {
+            val y = it.y
+
+            when(it.action){
+                MotionEvent.ACTION_DOWN ->{
+                    lastY = y
+                    lastPosition = currentLine
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
+                    val tempOffsetY = y - lastY
+                    if(abs(tempOffsetY) > touchSlop){
+                        moving = true
+                        val lineOffset = tempOffsetY / maxScroll
+                        Log.d(TAG,"$lineOffset")
+                        currentLine = lastPosition - lineOffset.toInt()
+                        //边界控制
+                        if(currentLine < 0){
+                            currentLine = 0
+                        }else if(currentLine >= lyrList.size){
+                            currentLine = lyrList.size - 1
+                        }
+                        invalidate()
+                    }
+                }
+
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->{
+                    if(moving){
+                        seekListener?.let { 
+                            it.onSeek(lyrList[currentLine].start)
+                            
+                            nextTime = lyrList[currentLine - 1].start
+                        }
+                        moving = false
+                    }
+                }
+            }
+        }
+        return super.onTouchEvent(event)
+    }
+
     override fun computeScroll() {
         if (scroller.computeScrollOffset()) {
             //根据Scroller的计算，获取滚动的过程中，Y方向上应该有的偏移量
@@ -324,5 +382,9 @@ class LrcView : View {
      * */
     fun hasLrc(): Boolean {
         return lyrList.isNotEmpty()
+    }
+    
+    interface OnSeekListener{
+        fun onSeek(time : Long)
     }
 }
