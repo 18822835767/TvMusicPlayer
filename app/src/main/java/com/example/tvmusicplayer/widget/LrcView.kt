@@ -319,50 +319,53 @@ class LrcView : View {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        event?.let {
-            val y = it.y
+        if(lyrList.isNotEmpty()){
+            event?.let {
+                val y = it.y
 
-            when (it.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastY = y
-                    lastPosition = currentLine
-                }
-
-                MotionEvent.ACTION_MOVE -> {
-                    val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
-                    val tempOffsetY = y - lastY
-                    if (abs(tempOffsetY) > touchSlop) {
-                        moving = true
-                        val lineOffset = tempOffsetY / maxScroll
-//                        Log.d(TAG, "$lineOffset")
-                        currentLine = lastPosition - lineOffset.toInt()
-                        //边界控制
-                        if (currentLine < 0) {
-                            currentLine = 0
-                        } else if (currentLine >= lyrList.size) {
-                            currentLine = lyrList.size - 1
-                        }
-                        invalidate()
+                when (it.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        lastY = y
+                        lastPosition = currentLine
                     }
-                }
 
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    if (moving) {
-                        seekListener?.let {
-                            it.onSeek(lyrList[currentLine].start)
-                            
-                            if(currentLine == lyrList.size - 1){
-                                nextTime = Long.MAX_VALUE
-                            }else if(currentLine >= 0 && currentLine < lyrList.size - 1){
-                                nextTime = lyrList[currentLine+1].start    
+                    MotionEvent.ACTION_MOVE -> {
+                        val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
+                        val tempOffsetY = y - lastY
+                        if (abs(tempOffsetY) > touchSlop) {
+                            moving = true
+                            val lineOffset = tempOffsetY / maxScroll
+//                        Log.d(TAG, "$lineOffset")
+                            currentLine = lastPosition - lineOffset.toInt()
+                            //边界控制
+                            if (currentLine < 0) {
+                                currentLine = 0
+                            } else if (currentLine >= lyrList.size) {
+                                currentLine = lyrList.size - 1
                             }
+                            invalidate()
                         }
-                        moving = false
-                        //这里返回false，是因为onTouchEvent()的执行有两种情况：第一种是点击，这时候moving是
-                        //false(在ACTION_MOVE中并没有被赋值)，不会进入if体，所以最后调用super.onTouchEven
-                        // t(event)，使得点击事件被触发；第二种是滑动歌词，这时候moving是true，进入if体，
-                        //返回false，因为onClick()并没有收到ACTION_UP事件，所以onClick()不会被触发
-                        return false
+                    }
+
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        if (moving) {
+                            seekListener?.let {
+                                it.onSeek(lyrList[currentLine].start)
+
+                                if(currentLine == lyrList.size - 1){
+                                    nextTime = Long.MAX_VALUE
+                                }else if(currentLine >= 0 && currentLine < lyrList.size - 1){
+                                    nextTime = lyrList[currentLine+1].start
+                                }
+
+                            }
+                            moving = false
+                            //这里返回false，是因为onTouchEvent()的执行有两种情况：第一种是点击，这时候moving是
+                            //false(在ACTION_MOVE中并没有被赋值)，不会进入if体，所以最后调用super.onTouchEven
+                            // t(event)，使得点击事件被触发；第二种是滑动歌词，这时候moving是true，进入if体，
+                            //返回false，因为onClick()并没有收到ACTION_UP事件，所以onClick()不会被触发
+                            return false
+                        }
                     }
                 }
             }
