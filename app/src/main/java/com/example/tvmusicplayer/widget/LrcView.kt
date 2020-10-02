@@ -259,7 +259,7 @@ class LrcView : View {
             //解决最后一行不能高亮显示的问题
             if (nextTime == lyrList[size - 1].start) {
                 currentLine = size - 1
-                nextTime += 60 * 1000 //让nextTime变大，使其不会被重复绘制
+                nextTime += Long.MAX_VALUE //让nextTime变大，使歌词不会被重复绘制
                 scroller.abortAnimation()
                 scroller.startScroll(size, 0, 0, maxScroll, SCROLL_TIME)
                 postInvalidate() //重绘
