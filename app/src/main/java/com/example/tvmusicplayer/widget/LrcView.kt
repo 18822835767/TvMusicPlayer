@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -65,9 +64,9 @@ class LrcView : View {
     private var offSetY: Float = 0F
 
     /**
-     * 用于保存行与行切换时，应该最大滚动的距离 = 一行歌词高度+歌词间距.
+     * 用于保存行与行切换时，应该 滚动的距离 = 一行歌词高度+歌词间距.
      * */
-    private var maxScroll: Int = 0
+    private var scrollHeight: Int = 0
 
     /**
      * 记录字体大小
@@ -131,7 +130,7 @@ class LrcView : View {
         currentPaint.isAntiAlias = true
 
         currentPaint.getTextBounds(DEFAUKT_TEXT, 0, DEFAUKT_TEXT.length, textBounds)
-        maxScroll = (textBounds.height() + dividerHeight).toInt()
+        scrollHeight = (textBounds.height() + dividerHeight).toInt()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -276,7 +275,7 @@ class LrcView : View {
                 currentLine = size - 1
                 nextTime += Long.MAX_VALUE //让nextTime变大，使歌词不会被重复绘制
                 scroller.abortAnimation()
-                scroller.startScroll(size, 0, 0, maxScroll, SCROLL_TIME)
+                scroller.startScroll(size, 0, 0, scrollHeight, SCROLL_TIME)
                 postInvalidate() //重绘
                 break
             }
@@ -294,7 +293,7 @@ class LrcView : View {
                 currentLine = i - 1
 
                 scroller.abortAnimation()//? 若有未完成的滚动，完成它，终止
-                scroller.startScroll(i, 0, 0, maxScroll, SCROLL_TIME)//这里的i用于记录下一行的行数
+                scroller.startScroll(i, 0, 0, scrollHeight, SCROLL_TIME)//这里的i用于记录下一行的行数
                 postInvalidate()
                 break
             }
@@ -303,6 +302,7 @@ class LrcView : View {
 
     /**
      * 用户在释放拖动的进度条后调用，用于改变歌词的位置.
+     * 主要是让nextTime的值设置在显示的歌词的startTime，使得onProgress被调用后，可以及时的更新当前歌词的位置.
      * */
     fun onDrag(progress: Long) {
         for (i in lyrList.indices) {
@@ -319,7 +319,7 @@ class LrcView : View {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if(lyrList.isNotEmpty()){
+        if (lyrList.isNotEmpty()) {
             event?.let {
                 val y = it.y
 
@@ -334,7 +334,7 @@ class LrcView : View {
                         val tempOffsetY = y - lastY
                         if (abs(tempOffsetY) > touchSlop) {
                             moving = true
-                            val lineOffset = tempOffsetY / maxScroll
+                            val lineOffset = tempOffsetY / scrollHeight
 //                        Log.d(TAG, "$lineOffset")
                             currentLine = lastPosition - lineOffset.toInt()
                             //边界控制
@@ -352,10 +352,12 @@ class LrcView : View {
                             seekListener?.let {
                                 it.onSeek(lyrList[currentLine].start)
 
-                                if(currentLine == lyrList.size - 1){
+                                //这里对nextTime的处理和onDrag()有点不一样。这里nextTime是设置为下一句歌词的
+                                //startTime，使得当前的歌词在onProgress()的时候不会被重新绘制滚动.
+                                if (currentLine == lyrList.size - 1) {
                                     nextTime = Long.MAX_VALUE
-                                }else if(currentLine >= 0 && currentLine < lyrList.size - 1){
-                                    nextTime = lyrList[currentLine+1].start
+                                } else if (currentLine >= 0 && currentLine < lyrList.size - 1) {
+                                    nextTime = lyrList[currentLine + 1].start
                                 }
 
                             }
