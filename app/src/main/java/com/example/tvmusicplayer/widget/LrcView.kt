@@ -20,13 +20,11 @@ class LrcView : View {
 
     private val TAG = "LrcView"
 
-    companion object {
-        //滚动时间
-        val SCROLL_TIME = 500
+    //滚动时间
+    private val SCROLL_TIME = 500
 
-        //无歌词时的默认显示
-        val DEFAUKT_TEXT = "暂无歌词"
-    }
+    //无歌词时的默认显示
+    private val DEFAUKT_TEXT = "暂无歌词"
 
     /**
      * 存放歌词实体类.
@@ -92,12 +90,24 @@ class LrcView : View {
 
     private lateinit var scroller: Scroller
 
+    /**
+     * 用于记录手指是否在拖拽歌词.
+     * */
     private var moving = false
 
+    /**
+     * 拖拽歌词时，lastY用于记录ACTION_DOWN时的y的位置.
+     * */
     private var lastY = 0F
 
+    /**
+     * 拖拽歌词时，lastPosition用于记录ACTION_DOWN时歌词在第几行.
+     * */
     private var lastPosition = 0
 
+    /**
+     * 拖拽歌词时，回调出去，调整音乐的播放进度.
+     * */
     var seekListener: OnSeekListener? = null
 
     constructor(context: Context?) : super(context) {
@@ -116,6 +126,7 @@ class LrcView : View {
     private fun initData() {
         scroller = Scroller(context)
 
+        //歌词高度
         lrcHeight = ((textSize + dividerHeight) * rows + 5).toInt()
 
         //初始化画笔
@@ -130,6 +141,7 @@ class LrcView : View {
         currentPaint.isAntiAlias = true
 
         currentPaint.getTextBounds(DEFAUKT_TEXT, 0, DEFAUKT_TEXT.length, textBounds)
+        //歌词滚动时，滚动高度.
         scrollHeight = (textBounds.height() + dividerHeight).toInt()
     }
 
@@ -168,7 +180,7 @@ class LrcView : View {
             //歌词
             val lyric = element.substring(element.indexOf("]") + 1)
             //若像 [xxx]，后面没有东西，直接丢弃.
-            if (lyric.equals("")) {
+            if (lyric == "") {
                 continue
             }
             //开始时的时间
@@ -201,6 +213,7 @@ class LrcView : View {
         var j = 1
         //如果current等于-1，说明当前还未到第一句歌词的开始时间
         if (currentLine == -1) {
+            //用normalPaint进行歌词的绘制.
             for (i in 0..rows / 2 + 2) {
                 if (i < lyrList.size) {
                     //拿到歌词
@@ -256,7 +269,7 @@ class LrcView : View {
 
     /**
      * 音乐播放器的回调.
-     * 为什么加锁?
+     * (大概)这里加锁，是因为在客户端的binder线程池里调用该方法，加锁是为了进行线程间的同步.
      * */
     @Synchronized
     fun onProgress(time: Long) {

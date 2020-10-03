@@ -378,9 +378,7 @@ class PlayService : Service() {
     }
 
     private fun seekTo(seek: Int) {
-        mediaPlayer?.let {
-            it.seekTo(seek)
-        }
+        mediaPlayer?.seekTo(seek)
     }
 
     private fun startTimer() {
