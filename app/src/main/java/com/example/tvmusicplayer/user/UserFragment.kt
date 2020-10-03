@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.UserAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
+import com.example.tvmusicplayer.lcoal.LocalActivity
 import com.example.tvmusicplayer.playlist.UserPlayListActivity
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.manager.LoginStatusManager
@@ -65,6 +66,9 @@ class UserFragment : Fragment(),BaseRecyclerViewAdapter.OnItemClickListener{
                   //还没登陆
                     Toast.makeText(context,"亲，请先登陆噢~",Toast.LENGTH_SHORT).show()
                 }
+            }
+            Constant.UserFragmentConstant.LOCAL_MUSIC ->{
+                context?.let {LocalActivity.actionStart(it)}
             }
         }
     }

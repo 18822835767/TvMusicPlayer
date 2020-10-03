@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".search.SearchActivity"></activity>
+        <activity android:name=".lcoal.LocalActivity"></activity>
+        <activity android:name=".search.SearchActivity" />
 
         <service
             android:name=".service.PlayService"
@@ -25,7 +26,7 @@
         <activity android:name=".playListDetail.PlayListDetailActivity" />
         <activity android:name=".playlist.UserPlayListActivity" />
         <activity android:name=".login.LoginActivity" />
-        <activity android:name=".detail.DetailActivity"></activity>
+        <activity android:name=".detail.DetailActivity" />
         <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
