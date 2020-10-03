@@ -3,20 +3,24 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp">
     
-    
-    
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.example.tvmusicplayer.widget.CircleImage
         android:id="@+id/circle_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_fm"
-        app:civ_circle_background_color="#EE6363"/>
+        android:background="#EE6363"
+        android:scaleType="center"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/button_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"/>
     
 </LinearLayout>

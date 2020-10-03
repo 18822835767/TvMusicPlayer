@@ -44,18 +44,18 @@ class RecommendFragment : Fragment() {
         drawableList.add(context?.getDrawable(R.drawable.test))
         banner.setData(drawableList)
         
-//        //推荐面的一排圆形按钮
-//        circleButtonText.add("私人FM")
-//        circleButtonText.add("歌单")
-//        circleButtonText.add("排行榜")
-//        circleButtonText.add("直播")
-//        circleButtonText.add("电台")
-//        circleButtonText.add("数字专辑")
-//        val circleButtonAdapter = CircleButtonAdapter(circleButtonText,R.layout.circle_button_item)
-//        val manager = LinearLayoutManager(context)
-//        manager.orientation = LinearLayoutManager.HORIZONTAL
-//        circleButtonRv.adapter = circleButtonAdapter
-//        circleButtonRv.layoutManager = manager
+        //推荐面的一排圆形按钮
+        circleButtonText.add("私人FM")
+        circleButtonText.add("歌单")
+        circleButtonText.add("排行榜")
+        circleButtonText.add("直播")
+        circleButtonText.add("电台")
+        circleButtonText.add("数字专辑")
+        val circleButtonAdapter = CircleButtonAdapter(circleButtonText,R.layout.circle_button_item)
+        val manager = LinearLayoutManager(context)
+        manager.orientation = LinearLayoutManager.HORIZONTAL
+        circleButtonRv.adapter = circleButtonAdapter
+        circleButtonRv.layoutManager = manager
     }
 
     companion object {
