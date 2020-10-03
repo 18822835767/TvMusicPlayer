@@ -10,15 +10,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.PermissionHelper
 
-class LocalActivity : AppCompatActivity() {
+class LocalActivity : AppCompatActivity(),LocalContract.OnView {
 
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private val PERMISSION_REQUEST_CODE = 0
+    private lateinit var presenter: LocalPresenter
     private val TAG = "LocalActivity"
 
     companion object {
@@ -45,7 +47,9 @@ class LocalActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-
+        LocalPresenter(this)
+        
+        presenter.getLocalSongs()
     }
 
     private fun setActionBar() {
@@ -92,5 +96,25 @@ class LocalActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    override fun getLocalSongsSuccess(songs: MutableList<Song>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setPresenter(presenter: LocalContract.Presenter) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(errorMessage: String) {
+        TODO("Not yet implemented")
     }
 }
