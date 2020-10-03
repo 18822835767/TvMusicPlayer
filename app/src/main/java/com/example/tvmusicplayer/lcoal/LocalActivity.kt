@@ -20,7 +20,7 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView {
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private val PERMISSION_REQUEST_CODE = 0
-    private lateinit var presenter: LocalPresenter
+    private lateinit var presenter: LocalContract.Presenter
     private val TAG = "LocalActivity"
 
     companion object {
@@ -99,22 +99,19 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView {
     }
 
     override fun getLocalSongsSuccess(songs: MutableList<Song>) {
-        TODO("Not yet implemented")
+        
     }
 
     override fun setPresenter(presenter: LocalContract.Presenter) {
-        TODO("Not yet implemented")
+        this.presenter = presenter
     }
 
     override fun showLoading() {
-        TODO("Not yet implemented")
     }
 
     override fun hideLoading() {
-        TODO("Not yet implemented")
     }
 
     override fun showError(errorMessage: String) {
-        TODO("Not yet implemented")
     }
 }
