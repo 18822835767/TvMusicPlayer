@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.util.Constant
+import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.PermissionHelper
 
 class LocalActivity : AppCompatActivity() {
@@ -18,6 +19,7 @@ class LocalActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private val PERMISSION_REQUEST_CODE = 0
+    private val TAG = "LocalActivity"
 
     companion object {
         fun actionStart(context: Context) {
@@ -31,9 +33,10 @@ class LocalActivity : AppCompatActivity() {
         setContentView(R.layout.activity_local)
 
         initView()
-        initData()
         setActionBar()
         requestPermissions()
+//        initData()
+//        LogUtil.d(TAG,"onCreate...")
     }
 
     private fun initView() {
@@ -64,6 +67,8 @@ class LocalActivity : AppCompatActivity() {
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 ), PERMISSION_REQUEST_CODE
             )
+        }else{
+            initData()
         }
     }
 
@@ -81,7 +86,7 @@ class LocalActivity : AppCompatActivity() {
     ) {
         if(requestCode == PERMISSION_REQUEST_CODE){
             if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-               //todo 相关操作 
+               initData()
             }else{
                 Toast.makeText(this, "拒绝权限将无法使用该功能", Toast.LENGTH_SHORT).show()
                 finish()
