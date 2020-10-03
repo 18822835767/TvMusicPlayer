@@ -8,21 +8,27 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.adapter.LocalAdapter
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.PermissionHelper
 
 class LocalActivity : AppCompatActivity(),LocalContract.OnView {
-
+    
+    private val TAG = "LocalActivity"
+    private val PERMISSION_REQUEST_CODE = 0
+    
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
-    private val PERMISSION_REQUEST_CODE = 0
     private lateinit var presenter: LocalContract.Presenter
-    private val TAG = "LocalActivity"
-
+    private lateinit var adapter : LocalAdapter
+    private lateinit var manager : LinearLayoutManager
+    
     companion object {
         fun actionStart(context: Context) {
             val intent = Intent(context, LocalActivity::class.java)
@@ -48,6 +54,13 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView {
 
     private fun initData() {
         LocalPresenter(this)
+        
+        //设置RecyclerView的数据
+        adapter = LocalAdapter(mutableListOf<Song>(),R.layout.song_item)
+        manager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = manager
+        recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
         
         presenter.getLocalSongs()
     }
@@ -99,7 +112,8 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView {
     }
 
     override fun getLocalSongsSuccess(songs: MutableList<Song>) {
-        
+        songs.sort()
+        adapter.addDatas(songs)
     }
 
     override fun setPresenter(presenter: LocalContract.Presenter) {

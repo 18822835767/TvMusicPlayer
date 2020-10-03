@@ -26,7 +26,8 @@ class LocalSongsUtil {
                     val id: Long = c.getLong(c.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
                     val url: String =
                         c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
-                    val name = c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE))
+                    val name: String =
+                        c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE))
                     val artistName: String =
                         c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST))
                     //todo 图片的url
@@ -38,6 +39,7 @@ class LocalSongsUtil {
                         s.url = url
                         s.name = name
                         s.artistName = artistName
+                        s.firstLetter = PinyinUtil.getHeaderLetter(name)
                         songs.add(s)
                     }
                 }
