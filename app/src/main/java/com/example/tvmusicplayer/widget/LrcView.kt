@@ -1,6 +1,7 @@
 package com.example.tvmusicplayer.widget
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -10,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.widget.Scroller
+import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Lyrics
 import kotlin.math.abs
 
@@ -110,16 +112,30 @@ class LrcView : View {
      * */
     var seekListener: OnSeekListener? = null
 
-    constructor(context: Context?) : super(context) {
-        initData()
+    private var normalLyricColor : Int = Color.WHITE
+    
+    private var curLyricColor : Int = Color.GREEN
+    
+    constructor(context: Context?) : this(context,null) {
+//        initData()
     }
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
-        initData()
+    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs,0) {
+//        initData()
     }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr) {
+        context?.let { 
+            val typedArray : TypedArray = it.obtainStyledAttributes(attrs, R.styleable.LrcView)
+            rows = typedArray.getInteger(R.styleable.LrcView_rows,12)
+            textSize = typedArray.getDimensionPixelOffset(R.styleable.LrcView_lyricSize, 50).toFloat()
+            dividerHeight = typedArray.getDimensionPixelOffset(R.styleable.LrcView_dividerHeight,20).toFloat()
+            normalLyricColor = typedArray.getColor(R.styleable.LrcView_normalLyricColor,Color.WHITE)
+            curLyricColor = typedArray.getColor(R.styleable.LrcView_curLyricColor,Color.GREEN)
+            typedArray.recycle()
+        }
+        
         initData()
     }
 
@@ -134,10 +150,10 @@ class LrcView : View {
         currentPaint = Paint()
 
         normalPaint.textSize = textSize
-        normalPaint.color = Color.WHITE
+        normalPaint.color = normalLyricColor
         normalPaint.isAntiAlias = true
         currentPaint.textSize = textSize
-        currentPaint.color = Color.GREEN
+        currentPaint.color = curLyricColor
         currentPaint.isAntiAlias = true
 
         currentPaint.getTextBounds(DEFAUKT_TEXT, 0, DEFAUKT_TEXT.length, textBounds)

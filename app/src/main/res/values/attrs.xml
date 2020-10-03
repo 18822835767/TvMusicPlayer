@@ -9,7 +9,7 @@
     
     <declare-styleable name="LrcView">
         <attr name="rows" format="integer"/>
-        <attr name="textSize" format="float"/>
+        <attr name="lyricSize" format="float"/>
         <attr name="dividerHeight" format="float"/>
         <attr name="normalLyricColor" format="color"/>
         <attr name="curLyricColor" format="color"/>
