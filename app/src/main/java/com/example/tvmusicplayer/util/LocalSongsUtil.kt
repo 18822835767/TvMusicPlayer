@@ -11,9 +11,9 @@ import com.example.tvmusicplayer.bean.Song
  * */
 class LocalSongsUtil {
     companion object {
-        fun getLocalSong(context: Context): List<Song> {
+        fun getLocalSong(): MutableList<Song> {
             val songs = mutableListOf<Song>()
-            val cursor : Cursor? = MyApplication.app?.contentResolver?.query(
+            val cursor: Cursor? = MyApplication.app?.contentResolver?.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
                 , null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER
             )

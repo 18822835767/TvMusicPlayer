@@ -5,6 +5,6 @@ import com.example.tvmusicplayer.util.LocalSongsUtil
 
 class LocalModelImpl : LocalModel {
     override fun getLocalSongs(listener: LocalModel.OnListener) {
-//        LocalSongsUtil.getLocalSong()
+        listener.getLocalSongsSuccess(LocalSongsUtil.getLocalSong())
     }
 }
