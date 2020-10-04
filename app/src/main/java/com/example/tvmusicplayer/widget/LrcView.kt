@@ -191,8 +191,12 @@ class LrcView : View {
 //        获取的歌词中是"\n"，无转义字符，所以只用使用"\n"进行分割
 //        val lyricsArray: List<String> = lyricText.split("\\n") 
         val lyricsArray: List<String> = lyricText.split("\n")
+        //每一行文本，包括 歌词 与 时间
         for (element in lyricsArray) {
-            //每一行文本，包括 歌词 与 时间
+            //如果没有[]，即包围时间的左括号，直接丢弃
+            if(element.indexOf("[") == -1){
+                continue
+            }
             //歌词
             val lyric = element.substring(element.indexOf("]") + 1)
             //若像 [xxx]，后面没有东西，直接丢弃.
