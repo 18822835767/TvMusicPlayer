@@ -2,12 +2,13 @@ package com.example.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.text.TextUtils
+import com.example.data.clientApiImpl.ClientImageApiImpl
 import com.example.repository.api.ClientLoginApi
 import com.example.repository.api.ClientMusicApi
 import com.example.data.clientApiImpl.ClientLoginApiImpl
 import com.example.data.clientApiImpl.ClientMusicApiImpl
 import com.example.data.clientApiImpl.ClientSearchApiImpl
+import com.example.data.observableApi.ObservableImageApi
 import com.example.data.observableApi.ObservableLoginApi
 import com.example.data.observableApi.ObservableMusicApi
 import com.example.data.observableApi.ObservableSearchApi
@@ -15,6 +16,7 @@ import com.example.data.util.Constant
 import com.example.data.util.ContextProvider
 import com.example.data.util.LogUtil
 import com.example.repository.RequestCallBack
+import com.example.repository.api.ClientImageApi
 import com.example.repository.api.ClientSearchApi
 import okhttp3.*
 import retrofit2.Retrofit
@@ -34,6 +36,7 @@ object DataUtil {
     internal var observableLoginApi: ObservableLoginApi
     internal var observableMusicApi: ObservableMusicApi
     internal var observableSearchApi : ObservableSearchApi
+    internal var observableImageApi : ObservableImageApi
     internal var sharedPreferences: SharedPreferences? = null
     private var cookies = HashMap<String, String>()
 
@@ -46,6 +49,8 @@ object DataUtil {
         ClientMusicApiImpl()
     val clientSearchApi : ClientSearchApi = 
         ClientSearchApiImpl()
+    val clientImageApi : ClientImageApi = 
+        ClientImageApiImpl()
 
     init {
 //        //初始化SharedPreferences
@@ -135,6 +140,7 @@ object DataUtil {
         observableLoginApi = retrofit.create(ObservableLoginApi::class.java)
         observableMusicApi = retrofit.create(ObservableMusicApi::class.java)
         observableSearchApi = retrofit.create(ObservableSearchApi::class.java)
+        observableImageApi = retrofit.create(ObservableImageApi::class.java)
     }
 
     /**
