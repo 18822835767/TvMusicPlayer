@@ -22,7 +22,8 @@ import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.PermissionHelper
 import com.example.tvmusicplayer.util.ThreadUtil
 
-class LocalActivity : AppCompatActivity(),LocalContract.OnView,BaseRecyclerViewAdapter.OnItemClickListener {
+class LocalActivity : AppCompatActivity(),LocalContract.OnView,
+    BaseRecyclerViewAdapter.OnItemClickListener,LocalAdapter.OnPopupClickListener {
     
     private val TAG = "LocalActivity"
     private val PERMISSION_REQUEST_CODE = 0
@@ -62,6 +63,7 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,BaseRecyclerViewA
         //设置RecyclerView的数据
         adapter = LocalAdapter(mutableListOf<Song>(),R.layout.local_song_item)
         adapter.setItemClickListener(this)
+        adapter.setOnPopupClickListener(this)
         manager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = manager
@@ -137,5 +139,9 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,BaseRecyclerViewA
 
     override fun onItemClick(v: View?, position: Int) {
         ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongs(adapter.getItems(),position)})
+    }
+
+    override fun onPopupClick(v: View?, position: Int) {
+        Toast.makeText(this,"点击$position",Toast.LENGTH_SHORT).show()
     }
 }
