@@ -118,7 +118,7 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,BaseRecyclerViewA
 
     override fun getLocalSongsSuccess(songs: MutableList<Song>) {
         songs.sort()
-        songs.forEach { song -> LogUtil.d(TAG,song.toString()) }
+//        songs.forEach { song -> LogUtil.d(TAG,song.toString()) }
         adapter.addDatas(songs)
     }
 

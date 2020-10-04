@@ -34,7 +34,6 @@ class LocalSongsUtil {
                     val size: Long = c.getLong(c.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE))
                     val albumId: Long =
                         c.getLong(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID))
-                    //todo 图片的url
                     val isMusic: Int =
                         c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.IS_MUSIC))
                     if (isMusic != 0) {
@@ -44,7 +43,7 @@ class LocalSongsUtil {
                         s.size = size
                         s.name = name
                         s.artistName = artistName
-                        //这个图片url貌似不对.
+                        //这个图片url貌似不对。本地音乐的图片不加载......
                         s.picUrl = "content://media/external/audio/media/$albumId/albumart"
                         s.online = false
                         s.firstLetter = PinyinUtil.getHeaderLetter(name)
