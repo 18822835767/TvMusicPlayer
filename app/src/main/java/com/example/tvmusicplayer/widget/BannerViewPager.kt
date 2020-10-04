@@ -109,14 +109,16 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
      * 初始化imageUrls的资源。
      */
     fun setData(urls: List<String?>) {
-        mViews.clear()
-        mCount = urls.size
-        imageUrls.add(urls[mCount - 1])
-        imageUrls.addAll(urls)
-        imageUrls.add(urls[0])
-        initIndicator()
-        showImage
-        setUI()
+        if(urls.isNotEmpty()){
+            mViews.clear()
+            mCount = urls.size
+            imageUrls.add(urls[mCount - 1])
+            imageUrls.addAll(urls)
+            imageUrls.add(urls[0])
+            initIndicator()
+            showImage
+            setUI()
+        }
     }
 
     /**
