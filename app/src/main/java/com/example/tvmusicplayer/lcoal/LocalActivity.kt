@@ -60,7 +60,7 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,BaseRecyclerViewA
         LocalPresenter(this)
         
         //设置RecyclerView的数据
-        adapter = LocalAdapter(mutableListOf<Song>(),R.layout.song_item)
+        adapter = LocalAdapter(mutableListOf<Song>(),R.layout.local_song_item)
         adapter.setItemClickListener(this)
         manager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
