@@ -36,4 +36,8 @@ class Constant {
         //要搜索的类型，相关数值和网易云接口需要的数据有关.
         const val SEARCH_TYPE: Int = 1
     }
+    
+    object PopupWindowConstant{
+        const val NEXT_PAY = "下一首播放"
+    }
 }

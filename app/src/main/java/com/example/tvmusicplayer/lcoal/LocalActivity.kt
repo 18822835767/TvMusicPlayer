@@ -6,8 +6,12 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +27,8 @@ import com.example.tvmusicplayer.util.PermissionHelper
 import com.example.tvmusicplayer.util.ThreadUtil
 
 class LocalActivity : AppCompatActivity(),LocalContract.OnView,
-    BaseRecyclerViewAdapter.OnItemClickListener,LocalAdapter.OnPopupClickListener {
+    BaseRecyclerViewAdapter.OnItemClickListener,LocalAdapter.OnPopupClickListener, 
+    AdapterView.OnItemClickListener{
     
     private val TAG = "LocalActivity"
     private val PERMISSION_REQUEST_CODE = 0
@@ -33,6 +38,10 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,
     private lateinit var presenter: LocalContract.Presenter
     private lateinit var adapter : LocalAdapter
     private lateinit var manager : LinearLayoutManager
+    private lateinit var listPopupWindow : ListPopupWindow
+    private lateinit var popupAdapter : ArrayAdapter<String>
+    
+    private val popupArray = arrayOf(Constant.PopupWindowConstant.NEXT_PAY) 
     
     companion object {
         fun actionStart(context: Context) {
@@ -68,6 +77,16 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,
         recyclerView.adapter = adapter
         recyclerView.layoutManager = manager
         recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
+
+        //设置弹窗数据
+        listPopupWindow = ListPopupWindow(this)
+        popupAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,popupArray)
+        listPopupWindow.setAdapter(popupAdapter)
+        //不确定
+        listPopupWindow.width = 350
+        listPopupWindow.height = 130
+        listPopupWindow.isModal = true
+        listPopupWindow.setOnItemClickListener(this)
         
         presenter.getLocalSongs()
     }
@@ -142,6 +161,15 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,
     }
 
     override fun onPopupClick(v: View?, position: Int) {
-        Toast.makeText(this,"点击$position",Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this,"点击$position",Toast.LENGTH_SHORT).show()
+        v?.let { 
+            listPopupWindow.anchorView = it
+            listPopupWindow.show()
+        }
     }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+       
+    }
+
 }
