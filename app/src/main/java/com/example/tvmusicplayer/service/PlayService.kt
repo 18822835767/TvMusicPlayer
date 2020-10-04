@@ -296,6 +296,7 @@ class PlayService : Service() {
         song?.let {
             if(songs.isEmpty()){
                 songs.add(it)
+                currentPosition = 0
                 loadSong(it)
             }else{
                 songs.add(currentPosition + 1,it)
