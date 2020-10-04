@@ -29,7 +29,8 @@ import com.squareup.picasso.Picasso
 /**
  * 歌曲播放的详情页.
  * */
-class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.OnView,LrcView.OnSeekListener{
+class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract.OnView,
+    LrcView.OnSeekListener {
 
     private val TAG = "DetailActivity"
     private lateinit var backIv: ImageView
@@ -37,7 +38,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
     private lateinit var singerNameTv: TextView
     private lateinit var coverIv: RotationCircleImage
     private lateinit var endTimeTv: TextView
-    private lateinit var nowPointTv : TextView
+    private lateinit var nowPointTv: TextView
     private lateinit var playModeIv: ImageView
     private lateinit var preOneIv: ImageView
     private lateinit var playOrPauseIv: ImageView
@@ -45,8 +46,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
     private lateinit var queueIv: ImageView
     private lateinit var seekBar: SeekBar
     private lateinit var lrcView: LrcView
-    
-    private lateinit var presenter : DetailContract.Presenter
+
+    private lateinit var presenter: DetailContract.Presenter
 
     /**
      * 判断用户是否触碰了进度条.
@@ -78,11 +79,11 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
 
         override fun onSeekChange(currentPosition: Int) {
             if (!userTouchProgress) {
-                ThreadUtil.runOnUi(Runnable { 
+                ThreadUtil.runOnUi(Runnable {
                     seekBar.progress = currentPosition
                 })
             }
-            
+
             lrcView.onProgress(currentPosition.toLong())
         }
 
@@ -132,11 +133,11 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
     private fun initData() {
         presenter = DetailPresenter(this)
         lrcView.seekListener = this
-        
+
         //注册观察者
         PlayServiceManager.registerObserver(observer)
     }
-    
+
     private fun initEvent() {
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -181,39 +182,50 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
             PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_pause_white)
             PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_play_white)
         }
-        
-        when(PlayServiceManager.getPlayMode()){
+
+        when (PlayServiceManager.getPlayMode()) {
             ORDER_PLAY -> playModeIv.setImageResource(R.drawable.ic_order_play)
             RANDOM_PLAY -> playModeIv.setImageResource(R.drawable.ic_random_play)
             LOOP_PLAY -> playModeIv.setImageResource(R.drawable.ic_loop_play)
         }
-        
-        PlayServiceManager.getCurrentSong()?.let { 
+
+        PlayServiceManager.getCurrentSong()?.let {
             setSongInfo(it)
         }
 
-        if(PlayServiceManager.getPlayState() != PLAY_STATE_PLAY){
+        if (PlayServiceManager.getPlayState() != PLAY_STATE_PLAY) {
             coverIv.setRotation(false)
         }
     }
-    
-    private fun setSongInfo(song : Song){
+
+    private fun setSongInfo(song: Song) {
         songNameTv.text = song.name
         singerNameTv.text = song.artistName
         val duration = PlayServiceManager.getDuration()
         seekBar.max = duration
         seekBar.progress = PlayServiceManager.getCurrentPoint()
         endTimeTv.text = TextUtil.getTimeStr(duration.toLong())
-        song.id?.let { 
-            presenter.getSongLyrics(it)
+        //当歌曲是线上歌曲时，才去获取歌词，加载网络图片
+        if (song.online) {
+            song.id?.let {
+                presenter.getSongLyrics(it)
+            }
+            
+            Picasso.get().load(song.picUrl)
+                .resize(250, 250)
+                .placeholder(R.drawable.album_default_view)
+                .error(R.drawable.load_error)
+                .into(coverIv)
+            //本地歌曲时，只加载资源图片
+        }else{
+            Picasso.get().load(R.drawable.album_default_view)
+                .placeholder(R.drawable.load_error)
+                .resize(250,250)
+                .into(coverIv)
         }
-        Picasso.get().load(song.picUrl)
-            .resize(250,250)
-            .placeholder(R.drawable.album_default_view)
-            .error(R.drawable.load_error)
-            .into(coverIv)
+
     }
-    
+
 
     override fun onClick(v: View?) {
         v?.let {
@@ -222,7 +234,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
                 R.id.next_one -> PlayServiceManager.playNext()
                 R.id.pre_one -> PlayServiceManager.playPre()
                 R.id.play_mode -> {
-                    when(PlayServiceManager.getPlayMode()){
+                    when (PlayServiceManager.getPlayMode()) {
                         ORDER_PLAY -> {
                             playModeIv.setImageResource(R.drawable.ic_random_play)
                             showText("随机播放")
@@ -252,9 +264,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
             }
         }
     }
-    
-    private fun showText(msg : String){
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+
+    private fun showText(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun getLyricsSuccess(lyricsText: String) {
@@ -267,15 +279,12 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener,DetailContract.
     }
 
     override fun showLoading() {
-        TODO("Not yet implemented")
     }
 
     override fun hideLoading() {
-        TODO("Not yet implemented")
     }
 
     override fun showError(errorMessage: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onSeek(time: Long) {

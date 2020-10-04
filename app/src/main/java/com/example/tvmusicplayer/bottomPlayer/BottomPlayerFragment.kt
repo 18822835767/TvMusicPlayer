@@ -128,11 +128,18 @@ class BottomPlayerFragment : Fragment() {
     private fun setSongInfo(song: Song) {
         songNameTv.text = song.name
         singerNameTv.text = song.artistName
-        Picasso.get().load(song.picUrl)
-            .resize(250, 250)
-            .placeholder(R.drawable.album_default_view)
-            .error(R.drawable.load_error)
-            .into(musicCovIv)
+        if(song.online){
+            Picasso.get().load(song.picUrl)
+                .resize(50, 50)
+                .placeholder(R.drawable.album_default_view)
+                .error(R.drawable.load_error)
+                .into(musicCovIv)
+        }else{
+            Picasso.get().load(R.drawable.album_default_view)
+                .resize(50,50)
+                .into(musicCovIv)
+        }
+
     }
 
     override fun onDestroy() {
