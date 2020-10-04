@@ -132,7 +132,7 @@ class BottomPlayerFragment : Fragment() {
             Picasso.get().load(song.picUrl)
                 .resize(50, 50)
                 .placeholder(R.drawable.album_default_view)
-                .error(R.drawable.load_error)
+                .error(R.drawable.album_default_view)
                 .into(musicCovIv)
         }else{
             Picasso.get().load(R.drawable.album_default_view)

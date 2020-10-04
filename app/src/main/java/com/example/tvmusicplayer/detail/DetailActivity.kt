@@ -215,12 +215,11 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
             Picasso.get().load(song.picUrl)
                 .resize(250, 250)
                 .placeholder(R.drawable.album_default_view)
-                .error(R.drawable.load_error)
+                .error(R.drawable.album_default_view)
                 .into(coverIv)
             //本地歌曲时，只加载资源图片
         }else{
             Picasso.get().load(R.drawable.album_default_view)
-                .placeholder(R.drawable.load_error)
                 .resize(250,250)
                 .into(coverIv)
         }
