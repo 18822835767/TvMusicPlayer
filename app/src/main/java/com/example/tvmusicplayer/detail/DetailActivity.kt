@@ -20,6 +20,7 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
+import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.TextUtil
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.example.tvmusicplayer.widget.LrcView

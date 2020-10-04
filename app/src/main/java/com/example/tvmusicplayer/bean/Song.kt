@@ -47,6 +47,7 @@ class Song : Parcelable, Comparable<Song> {
         artistName = parcel.readString()
         picUrl = parcel.readString()
         firstLetter = parcel.readInt().toChar()
+        online = (parcel.readByte().toInt() != 0)
     }
 
     constructor() {
@@ -83,6 +84,7 @@ class Song : Parcelable, Comparable<Song> {
         parcel.writeString(artistName)
         parcel.writeString(picUrl)
         parcel.writeInt(firstLetter.toInt())
+        parcel.writeByte(if(online) 1 else 0)
     }
 
     override fun describeContents(): Int {
