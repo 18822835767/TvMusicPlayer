@@ -41,4 +41,6 @@ interface IPlayInterface {
     void registerObserver(in IPlayObserver observer);
     
     void unregisterObserver(in IPlayObserver observer);
+    
+    void addNext(in Song song);
 }

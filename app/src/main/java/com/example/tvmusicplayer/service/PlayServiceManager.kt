@@ -82,4 +82,8 @@ object PlayServiceManager {
     fun getCurrentPoint() : Int{
         return service?.currenPoint?:0
     }
+    
+    fun addNext(song : Song?){
+        service?.addNext(song)
+    }
 }

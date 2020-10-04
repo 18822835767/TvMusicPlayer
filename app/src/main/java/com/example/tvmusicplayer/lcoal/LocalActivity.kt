@@ -26,23 +26,23 @@ import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.PermissionHelper
 import com.example.tvmusicplayer.util.ThreadUtil
 
-class LocalActivity : AppCompatActivity(),LocalContract.OnView,
-    BaseRecyclerViewAdapter.OnItemClickListener,LocalAdapter.OnPopupClickListener, 
-    AdapterView.OnItemClickListener{
-    
+class LocalActivity : AppCompatActivity(), LocalContract.OnView,
+    BaseRecyclerViewAdapter.OnItemClickListener, LocalAdapter.OnPopupClickListener,
+    AdapterView.OnItemClickListener {
+
     private val TAG = "LocalActivity"
     private val PERMISSION_REQUEST_CODE = 0
-    
+
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var presenter: LocalContract.Presenter
-    private lateinit var adapter : LocalAdapter
-    private lateinit var manager : LinearLayoutManager
-    private lateinit var listPopupWindow : ListPopupWindow
-    private lateinit var popupAdapter : ArrayAdapter<String>
-    
-    private val popupArray = arrayOf(Constant.PopupWindowConstant.NEXT_PAY) 
-    
+    private lateinit var adapter: LocalAdapter
+    private lateinit var manager: LinearLayoutManager
+    private lateinit var listPopupWindow: ListPopupWindow
+    private lateinit var popupAdapter: ArrayAdapter<String>
+
+    private val popupArray = arrayOf(Constant.PopupWindowConstant.NEXT_PAY)
+
     companion object {
         fun actionStart(context: Context) {
             val intent = Intent(context, LocalActivity::class.java)
@@ -68,28 +68,30 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,
 
     private fun initData() {
         LocalPresenter(this)
-        
+
         //设置RecyclerView的数据
-        adapter = LocalAdapter(mutableListOf<Song>(),R.layout.local_song_item)
+        adapter = LocalAdapter(mutableListOf<Song>(), R.layout.local_song_item)
         adapter.setItemClickListener(this)
         adapter.setOnPopupClickListener(this)
         manager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = manager
-        recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         //设置弹窗数据
         listPopupWindow = ListPopupWindow(this)
-        popupAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,popupArray)
+        popupAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, popupArray)
         listPopupWindow.setAdapter(popupAdapter)
         //设置宽度和高度
-        val density  = this.resources.displayMetrics.density.toInt()//值是3.0
-        val itemHeight = this.resources.getDimensionPixelOffset(R.dimen.popup_item_height)//55dp->165
+        val density = this.resources.displayMetrics.density.toInt()//值是3.0
+        val itemHeight =
+            this.resources.getDimensionPixelOffset(R.dimen.popup_item_height)//55dp->165
         listPopupWindow.setContentWidth((125 * density))
         listPopupWindow.height = popupArray.size * itemHeight
+//        listPopupWindow.horizontalOffset = (-25 * density) 这句话好像没作用
         listPopupWindow.isModal = true
         listPopupWindow.setOnItemClickListener(this)
-        
+
         presenter.getLocalSongs()
     }
 
@@ -112,7 +114,7 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 ), PERMISSION_REQUEST_CODE
             )
-        }else{
+        } else {
             initData()
         }
     }
@@ -129,10 +131,10 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if(requestCode == PERMISSION_REQUEST_CODE){
-            if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-               initData()
-            }else{
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initData()
+            } else {
                 Toast.makeText(this, "拒绝权限将无法使用该功能", Toast.LENGTH_SHORT).show()
                 finish()
             }
@@ -159,19 +161,25 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,
     }
 
     override fun onItemClick(v: View?, position: Int) {
-        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongs(adapter.getItems(),position)})
+        ThreadUtil.runOnThreadPool(Runnable {
+            PlayServiceManager.playSongs(
+                adapter.getItems(),
+                position
+            )
+        })
     }
 
     override fun onPopupClick(v: View?, position: Int) {
 //        Toast.makeText(this,"点击$position",Toast.LENGTH_SHORT).show()
-        v?.let { 
+        v?.let {
             listPopupWindow.anchorView = it
             listPopupWindow.show()
         }
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-       
+//        Toast.makeText(this,"点击${popupArray[position]}",Toast.LENGTH_SHORT).show()
+        listPopupWindow.dismiss()
     }
 
 }

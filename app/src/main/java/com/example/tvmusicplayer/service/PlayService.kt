@@ -267,6 +267,10 @@ class PlayService : Service() {
             playPreSong()
         }
 
+        override fun addNext(song: Song?) {
+            this@PlayService.addNext(song)
+        }
+
         override fun getQueueSongs(): MutableList<Song> {
             return songs
         }
@@ -286,6 +290,18 @@ class PlayService : Service() {
         override fun setPlayMode(mode: Int) {
             this@PlayService.playMode = mode
         }
+    }
+    
+    private fun addNext(song : Song?){
+        song?.let {
+            if(songs.isEmpty()){
+                songs.add(it)
+                loadSong(it)
+            }else{
+                songs.add(currentPosition + 1,it)
+            }
+        }
+        
     }
 
     private fun playOrPause() {
