@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -13,12 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.LocalAdapter
+import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.Song
+import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.PermissionHelper
+import com.example.tvmusicplayer.util.ThreadUtil
 
-class LocalActivity : AppCompatActivity(),LocalContract.OnView {
+class LocalActivity : AppCompatActivity(),LocalContract.OnView,BaseRecyclerViewAdapter.OnItemClickListener {
     
     private val TAG = "LocalActivity"
     private val PERMISSION_REQUEST_CODE = 0
@@ -57,6 +61,7 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView {
         
         //设置RecyclerView的数据
         adapter = LocalAdapter(mutableListOf<Song>(),R.layout.song_item)
+        adapter.setItemClickListener(this)
         manager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = manager
@@ -128,5 +133,9 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView {
     }
 
     override fun showError(errorMessage: String) {
+    }
+
+    override fun onItemClick(v: View?, position: Int) {
+        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongs(adapter.getItems(),position)})
     }
 }
