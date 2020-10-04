@@ -44,6 +44,7 @@ class LocalSongsUtil {
                         s.size = size
                         s.name = name
                         s.artistName = artistName
+                        //这个图片url貌似不对.
                         s.picUrl = "content://media/external/audio/media/$albumId/albumart"
                         s.online = false
                         s.firstLetter = PinyinUtil.getHeaderLetter(name)
@@ -63,8 +64,8 @@ class LocalSongsUtil {
                 Uri.parse("$uriAlbums/$albumId"), projections, null,
                 null, null
             )
-            cur?.let { 
-                if(it.count > 0 && it.columnCount > 0){
+            cur?.let {
+                if (it.count > 0 && it.columnCount > 0) {
                     it.moveToNext()
                     albumPic = it.getString(0)
                 }

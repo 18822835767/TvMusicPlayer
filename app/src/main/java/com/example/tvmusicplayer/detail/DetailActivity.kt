@@ -89,11 +89,18 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         }
 
         override fun onSongChange(song: Song?) {
-            song?.let {
-                ThreadUtil.runOnUi(Runnable {
+            ThreadUtil.runOnUi(Runnable { 
+                lrcView.clearLyrics()
+                song?.let{
                     setSongInfo(it)
-                })
-            }
+                }
+            })
+            
+//            song?.let {
+//                ThreadUtil.runOnUi(Runnable {
+//                    setSongInfo(it)
+//                })
+//            }
         }
     }
 
@@ -285,6 +292,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     }
 
     override fun showError(errorMessage: String) {
+        Toast.makeText(this,errorMessage,Toast.LENGTH_SHORT).show()
     }
 
     override fun onSeek(time: Long) {
