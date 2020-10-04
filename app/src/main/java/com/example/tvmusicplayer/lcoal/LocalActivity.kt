@@ -82,9 +82,11 @@ class LocalActivity : AppCompatActivity(),LocalContract.OnView,
         listPopupWindow = ListPopupWindow(this)
         popupAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,popupArray)
         listPopupWindow.setAdapter(popupAdapter)
-        //不确定
-        listPopupWindow.width = 350
-        listPopupWindow.height = 130
+        //设置宽度和高度
+        val density  = this.resources.displayMetrics.density.toInt()//值是3.0
+        val itemHeight = this.resources.getDimensionPixelOffset(R.dimen.popup_item_height)//55dp->165
+        listPopupWindow.setContentWidth((125 * density))
+        listPopupWindow.height = popupArray.size * itemHeight
         listPopupWindow.isModal = true
         listPopupWindow.setOnItemClickListener(this)
         
