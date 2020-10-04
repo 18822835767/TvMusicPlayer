@@ -30,8 +30,8 @@ class PlayService : Service() {
     private var songs = mutableListOf<Song>()
     private var observers = RemoteCallbackList<IPlayObserver>()
     private var model: SongInfoModel = SongInfoModelImpl()
-    private var broadcastIng : AtomicBoolean = AtomicBoolean(false)
-    
+    private var broadcastIng: AtomicBoolean = AtomicBoolean(false)
+
     /**
      * 当前的播放状态.
      * */
@@ -72,16 +72,17 @@ class PlayService : Service() {
      * */
     private var currentTimePoint = 0
 
-    private val listener: SongInfoModel.OnSongPlayInfoListener = object : SongInfoModel.OnSongPlayInfoListener {
-        override fun getSongPlayInfoSuccess(song: Song) {
-            performSong(song.url ?: NULL_URL)
-        }
+    private val listener: SongInfoModel.OnSongPlayInfoListener =
+        object : SongInfoModel.OnSongPlayInfoListener {
+            override fun getSongPlayInfoSuccess(song: Song) {
+                performSong(song.url ?: NULL_URL)
+            }
 
-        override fun error(msg: String) {
-            showText("歌曲无法播放，自动切换下一首")
-            playNextSong()
+            override fun error(msg: String) {
+                showText("歌曲无法播放，自动切换下一首")
+                playNextSong()
+            }
         }
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -125,16 +126,30 @@ class PlayService : Service() {
     }
 
     private fun loadSong(song: Song) {
-        //如果url是空，那么去请求url的数据
-        if (song.url == null) {
-            model.getSongPlayInfo(song, listener)
-            return
+        //在线歌曲
+        if (song.online) {
+            //如果url是空，那么去请求url的数据
+            if (song.url == null) {
+                model.getSongPlayInfo(song, listener)
+                return
+            }
+
+            //如果url不为空，那么请求歌曲的播放
+            song.url?.let {
+                performSong(it)
+            }
+            //本地歌曲
+        } else {
+            song.url?.let {
+                performSong(it)
+                return
+            }
+            
+            if (song.url == null) {
+                playNextSong()
+            }
         }
 
-        //如果url不为空，那么请求歌曲的播放
-        song.url?.let {
-            performSong(it)
-        }
     }
 
     override fun onDestroy() {
@@ -148,7 +163,7 @@ class PlayService : Service() {
 
     private fun onPlayStateChange() {
         //如果当前正在广播
-        if(broadcastIng.get()){
+        if (broadcastIng.get()) {
             return
         }
         //当前没有在广播
@@ -165,7 +180,7 @@ class PlayService : Service() {
 
     private fun onSeekChange() {
         //如果当前正在广播
-        if(broadcastIng.get()){
+        if (broadcastIng.get()) {
             return
         }
         //当前没有在广播
@@ -180,9 +195,9 @@ class PlayService : Service() {
         broadcastIng.set(false)
     }
 
-    private fun onSongChange(){
+    private fun onSongChange() {
         //如果当前正在广播
-        if(broadcastIng.get()){
+        if (broadcastIng.get()) {
             return
         }
         //当前没有在广播
@@ -203,7 +218,7 @@ class PlayService : Service() {
         }
 
         override fun getDuration(): Int {
-            mediaPlayer?.let { 
+            mediaPlayer?.let {
                 return it.duration
             }
             return 0
@@ -226,7 +241,7 @@ class PlayService : Service() {
         }
 
         override fun getCurrenPoint(): Int {
-            mediaPlayer?.let { 
+            mediaPlayer?.let {
                 return it.currentPosition
             }
             return 0
@@ -241,9 +256,9 @@ class PlayService : Service() {
         }
 
         override fun getCurrentSong(): Song? {
-            return if(currentPosition >= 0 && currentPosition < songs.size){
+            return if (currentPosition >= 0 && currentPosition < songs.size) {
                 songs[currentPosition]
-            }else{
+            } else {
                 null
             }
         }
@@ -366,7 +381,7 @@ class PlayService : Service() {
     }
 
     private fun playSongs(songList: MutableList<Song>?, position: Int) {
-        LogUtil.d(TAG,"$position")
+        LogUtil.d(TAG, "$position")
         songList?.let {
             songs.clear()
             songs.addAll(it)

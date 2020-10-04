@@ -45,6 +45,7 @@ class LocalSongsUtil {
                         s.name = name
                         s.artistName = artistName
                         s.picUrl = "content://media/external/audio/media/$albumId/albumart"
+                        s.online = false
                         s.firstLetter = PinyinUtil.getHeaderLetter(name)
                         songs.add(s)
                     }
