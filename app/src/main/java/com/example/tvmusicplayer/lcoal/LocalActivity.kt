@@ -41,6 +41,11 @@ class LocalActivity : AppCompatActivity(), LocalContract.OnView,
     private lateinit var listPopupWindow: ListPopupWindow
     private lateinit var popupAdapter: ArrayAdapter<String>
 
+    /**
+     * 记录点击的popup的Song在LocalAdapter中的位置.
+     * */
+    private var popupItemClickPosition = -1
+
     private val popupArray = arrayOf(Constant.PopupWindowConstant.NEXT_PAY)
 
     companion object {
@@ -172,6 +177,7 @@ class LocalActivity : AppCompatActivity(), LocalContract.OnView,
     override fun onPopupClick(v: View?, position: Int) {
 //        Toast.makeText(this,"点击$position",Toast.LENGTH_SHORT).show()
         v?.let {
+            popupItemClickPosition = position
             listPopupWindow.anchorView = it
             listPopupWindow.show()
         }
@@ -180,6 +186,12 @@ class LocalActivity : AppCompatActivity(), LocalContract.OnView,
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 //        Toast.makeText(this,"点击${popupArray[position]}",Toast.LENGTH_SHORT).show()
         listPopupWindow.dismiss()
+
+        if (popupArray[position] == Constant.PopupWindowConstant.NEXT_PAY) {
+            if(popupItemClickPosition != -1){
+                PlayServiceManager.addNext(adapter.getItem(popupItemClickPosition))
+            }
+        }
     }
 
 }
