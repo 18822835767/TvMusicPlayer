@@ -53,15 +53,8 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
     }
 
     private fun initData() {
-//        //测试代码
-//        val drawableList = mutableListOf<Drawable?>()
-//        drawableList.add(context?.getDrawable(R.drawable.test))
-//        drawableList.add(context?.getDrawable(R.drawable.test))
-//        drawableList.add(context?.getDrawable(R.drawable.test))
-//        drawableList.add(context?.getDrawable(R.drawable.test))
-//        banner.setData(drawableList)
-
         RecommendPresenter(this)
+        presenter.getBanner(1)
         
         //推荐面的一排圆形按钮
         circleButtonText.add(CircleButtonBean("每日推荐", R.drawable.ic_tuijian))
@@ -88,7 +81,7 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
     }
 
     override fun getBannerSuccess(list: MutableList<String>) {
-        
+        banner.setData(list)
     }
 
     override fun setPresenter(presenter: RecommendContract.Presenter) {

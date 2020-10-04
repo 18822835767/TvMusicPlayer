@@ -15,6 +15,7 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.example.tvmusicplayer.R
+import com.squareup.picasso.Picasso
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -35,8 +36,6 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
     }
 
     init {
-//        mDrawables = ArrayList()
-//        mViews = ArrayList()
         init(mContext, attrs)
     }
     
@@ -44,16 +43,16 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
      * 展示 小圆点的线性布局
      */
     private var mIndicatorGroup: LinearLayout? = null
+    
+    /**
+     * 存放"实际"要展示的图片的url.
+     */
+    private val imageUrls : MutableList<String?> = mutableListOf()
 
     /**
-     * 存放"实际"要展示的图片.
+     * 存放"实际"要展示的图片的ImageView.
      */
-    private val mDrawables: MutableList<Drawable?> = mutableListOf<Drawable?>()
-
-    /**
-     * 存放"实际"要展示的图片.
-     */
-    private val mViews: MutableList<View> = mutableListOf<View>()
+    private val mViews: MutableList<View> = mutableListOf()
 
     /**
      * 存放 小圆点的数组
@@ -109,12 +108,12 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
     /**
      * 初始化imageUrls的资源。
      */
-    fun setData(drawables: List<Drawable?>) {
+    fun setData(urls: List<String?>) {
         mViews.clear()
-        mCount = drawables.size
-        mDrawables.add(drawables[mCount - 1])
-        mDrawables.addAll(drawables)
-        mDrawables.add(drawables[0])
+        mCount = urls.size
+        imageUrls.add(urls[mCount - 1])
+        imageUrls.addAll(urls)
+        imageUrls.add(urls[0])
         initIndicator()
         showImage
         setUI()
@@ -154,9 +153,10 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
      */
     private val showImage: Unit
         private get() {
-            for (i in mDrawables.indices) {
+            for (i in imageUrls.indices) {
                 val imageView = ImageView(mContext)
-                imageView.setImageDrawable(mDrawables[i])
+                Picasso.get().load(imageUrls[i])
+                    .into(imageView)
                 mViews.add(imageView)
             }
         }
@@ -190,7 +190,6 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
         //根据当前的图片位置计算对应的小圆点的下标
         override fun onPageSelected(position: Int) {
             val max = mViews.size
-            val temp: Int //当前pager的下标
             mCurrentItem = position
             if (position == 0) {
                 //选择到最左边的pager时
@@ -200,7 +199,7 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
                 mCurrentItem = 1
             }
             //小圆点的下标
-            temp = mCurrentItem - 1
+            val temp: Int = mCurrentItem - 1 //当前pager的下标
             setIndicator(temp)
         }
 
@@ -241,7 +240,7 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
 
     private class UIHandler internal constructor(bannerViewPager: BannerViewPager) :
         Handler() {
-        var mBannerWeakRef: WeakReference<BannerViewPager>
+        var mBannerWeakRef: WeakReference<BannerViewPager> = WeakReference(bannerViewPager)
         override fun handleMessage(msg: Message) {
             val banner = mBannerWeakRef.get()
             if (banner != null) {
@@ -264,9 +263,6 @@ class BannerViewPager(private val mContext: Context, attrs: AttributeSet?) : Fra
             }
         }
 
-        init {
-            mBannerWeakRef = WeakReference(bannerViewPager)
-        }
     }
 
     /**
