@@ -12,6 +12,7 @@ import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.model.SongInfoModel
 import com.example.tvmusicplayer.model.impl.SongInfoModelImpl
 import com.example.tvmusicplayer.util.Constant
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.LOOP_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.NULL_URL
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
@@ -213,6 +214,23 @@ class PlayService : Service() {
         broadcastIng.set(false)
     }
 
+    private fun onSongsEmpty(){
+        //如果当前正在广播
+        if (broadcastIng.get()) {
+            return
+        }
+        //当前没有在广播
+        broadcastIng.set(true)
+        //遍历观察者
+        val size = observers.beginBroadcast()
+        for (i in 0 until size) {
+            val observer = observers.getBroadcastItem(i)
+            observer.onSongsEmpty()
+        }
+        observers.finishBroadcast()
+        broadcastIng.set(false)
+    }
+    
     private var binder = object : IPlayInterface.Stub() {
         override fun playSongs(songs: MutableList<Song>?, position: Int) {
             this@PlayService.playSongs(songs, position)
@@ -280,6 +298,27 @@ class PlayService : Service() {
                 //如果移除的歌曲在当前播放的歌曲的后面
             } else if (position > this@PlayService.currentPosition) {
                 songs.removeAt(position)
+            //如果移除的歌曲正在播放
+            }else{
+                songs.removeAt(position)
+                //移除后还有歌
+                if(songs.isNotEmpty()){
+                    when (playMode) {
+                        //列表循环播放
+                        ORDER_PLAY, LOOP_PLAY ->{
+                            if(currentPosition == songs.size){
+                                currentPosition = 0
+                            }
+                        }
+                        //随机播放
+                        RANDOM_PLAY -> currentPosition = (Math.random() * songs.size).toInt()
+                    }
+                    loadSong(songs[currentPosition])
+                //移除后已经没有歌曲了
+                }else{
+                    resetInfo()
+                    onSongsEmpty()
+                }
             }
         }
 
