@@ -63,8 +63,10 @@ class PlayQueueAdapter(data: MutableList<Song>, itemLayoutId: Int) :
 
     fun removeItem(position: Int) {
         data.removeAt(position)
-        //todo 这个看下要不要优化一下
         notifyDataSetChanged()
+//        //有动画的移除
+//        notifyItemRemoved(position)
+//        notifyItemRangeChanged(position,data.size - position)
     }
 
     interface OnRemoveClickListener {
