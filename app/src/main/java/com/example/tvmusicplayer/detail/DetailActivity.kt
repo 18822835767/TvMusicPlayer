@@ -3,13 +3,13 @@ package com.example.tvmusicplayer.detail
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.TextView
-import android.widget.Toast
+import android.view.WindowManager
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Song
@@ -47,6 +47,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     private lateinit var queueIv: ImageView
     private lateinit var seekBar: SeekBar
     private lateinit var lrcView: LrcView
+    private lateinit var popupWindow: PopupWindow
 
     private lateinit var presenter: DetailContract.Presenter
 
@@ -89,13 +90,13 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         }
 
         override fun onSongChange(song: Song?) {
-            ThreadUtil.runOnUi(Runnable { 
+            ThreadUtil.runOnUi(Runnable {
                 lrcView.clearLyrics()
-                song?.let{
+                song?.let {
                     setSongInfo(it)
                 }
             })
-            
+
 //            song?.let {
 //                ThreadUtil.runOnUi(Runnable {
 //                    setSongInfo(it)
@@ -174,6 +175,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         backIv.setOnClickListener(this)
         coverIv.setOnClickListener(this)
         lrcView.setOnClickListener(this)
+        queueIv.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -218,21 +220,31 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
             song.id?.let {
                 presenter.getSongLyrics(it)
             }
-            
+
             Picasso.get().load(song.picUrl)
                 .resize(250, 250)
                 .placeholder(R.drawable.album_default_view)
                 .error(R.drawable.album_default_view)
                 .into(coverIv)
             //本地歌曲时，只加载资源图片
-        }else{
+        } else {
             Picasso.get().load(R.drawable.album_default_view)
-                .resize(250,250)
+                .resize(250, 250)
                 .into(coverIv)
         }
 
     }
 
+    private fun showPopupWindow(context: Context, resource: Int) {
+        val view: View = View.inflate(context, resource, null)
+        popupWindow = PopupWindow(view)
+        //设置窗口大小
+        popupWindow.width = WindowManager.LayoutParams.MATCH_PARENT
+        popupWindow.height = 500
+        popupWindow.isFocusable = true
+        popupWindow.setBackgroundDrawable(ColorDrawable(0x00000000))
+        popupWindow.showAtLocation(queueIv,Gravity.BOTTOM,0,0)
+    }
 
     override fun onClick(v: View?) {
         v?.let {
@@ -268,6 +280,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
                     lrcView.visibility = View.GONE
                     coverIv.visibility = View.VISIBLE
                 }
+                R.id.play_queue->{
+                    showPopupWindow(this,R.layout.play_queue)
+                }
             }
         }
     }
@@ -292,7 +307,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     }
 
     override fun showError(errorMessage: String) {
-        Toast.makeText(this,errorMessage,Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun onSeek(time: Long) {
