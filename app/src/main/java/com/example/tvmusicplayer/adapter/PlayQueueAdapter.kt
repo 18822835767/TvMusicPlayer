@@ -15,6 +15,7 @@ class PlayQueueAdapter(data : MutableList<Song>,itemLayoutId : Int) :
     override fun initItemView(holder: CommonViewHolder, position: Int) {
         val song = data[position]
         holder.setText(R.id.song_name,song.name?:"")
+        holder.setText(R.id.singer_name,song.artistName?:"")
     
         val removeView = holder.getView<ImageView>(R.id.remove)
         removeView?.let{
