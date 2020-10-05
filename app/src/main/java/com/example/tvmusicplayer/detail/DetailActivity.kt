@@ -58,12 +58,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     private lateinit var queueView: View
     private lateinit var queueAdapter: PlayQueueAdapter
     private lateinit var queueManager: LinearLayoutManager
-
-    /**
-     * 播放队列中的歌曲.
-     * */
-    private val queueSongs = mutableListOf<Song>()
-
+    
     /**
      * 判断用户是否触碰了进度条.
      * */
@@ -275,9 +270,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         popupWindow.showAtLocation(queueIv, Gravity.BOTTOM, 0, 0)
         
         PlayServiceManager.getQueueSongs()?.let{
-            queueSongs.clear()
-            queueSongs.addAll(it)
-            queueAdapter.clearAndAddNewDatas(queueSongs)
+            queueAdapter.clearAndAddNewDatas(it)
         }
     }
 
