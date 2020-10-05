@@ -260,7 +260,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         songNameTv.text = "歌曲名字"
         singerNameTv.text = "歌手"
         seekBar.progress = 0
-        //todo seekbar看下要不要加
         seekBar.max = 0
         endTimeTv.text = "00:00"
         lrcView.reset()

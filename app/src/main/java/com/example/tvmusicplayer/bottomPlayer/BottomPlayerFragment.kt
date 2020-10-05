@@ -115,8 +115,8 @@ class BottomPlayerFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        //取消注册
-        PlayServiceManager.unregisterObserver(observer)
+//        //取消注册
+//        PlayServiceManager.unregisterObserver(observer)
     }
 
     private fun resumeUIInfo() {
@@ -150,15 +150,15 @@ class BottomPlayerFragment : Fragment() {
     private fun resetInfo(){
         songNameTv.text = "歌曲名字"
         singerNameTv.text = "歌手"
-        playOrPauseIv.setImageResource(R.drawable.ic_play_white)
-        Picasso.get().load(R.drawable.album_default_view)
+        playOrPauseIv.setImageResource(R.drawable.ic_black_play)
+        Picasso.get().load(R.drawable.album)
             .resize(50,50)
             .into(musicCovIv)
     }
 
     override fun onDestroy() {
-//        //取消注册
-//        PlayServiceManager.unregisterObserver(observer)
+        //取消注册
+        PlayServiceManager.unregisterObserver(observer)
 
         super.onDestroy()
     }
