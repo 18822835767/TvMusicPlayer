@@ -8,6 +8,7 @@ import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.base.CommonViewHolder
 import com.example.tvmusicplayer.bean.Song
+import com.example.tvmusicplayer.util.LogUtil
 
 class PlayQueueAdapter(data: MutableList<Song>, itemLayoutId: Int) :
     BaseRecyclerViewAdapter<Song>(data, itemLayoutId) {

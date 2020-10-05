@@ -62,6 +62,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     private lateinit var queueAdapter: PlayQueueAdapter
     private lateinit var queueManager: LinearLayoutManager
 
+    private var queueShowing = false
+
     /**
      * 判断用户是否触碰了进度条.
      * */
@@ -100,13 +102,21 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
             lrcView.onProgress(currentPosition.toLong())
         }
 
-        override fun onSongChange(song: Song?,position : Int) {
+        override fun onSongChange(song: Song?, position: Int) {
             ThreadUtil.runOnUi(Runnable {
                 lrcView.clearLyrics()
                 song?.let {
                     setSongInfo(it)
                 }
+
+                if (queueShowing) {
+                    queueAdapter.curPosition = position
+                    queueAdapter.notifyDataSetChanged()
+                } else {
+                    queueAdapter.curPosition = position
+                }
             })
+
         }
 
         override fun onSongsEmpty() {
@@ -281,17 +291,21 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         //设置下面两项，使得弹出窗口可以响应back等物理时间
         popupWindow.isFocusable = true
         popupWindow.setBackgroundDrawable(ColorDrawable(0x00000000))
+
+        popupWindow.setOnDismissListener { queueShowing = false }
     }
 
     private fun showPopupWindow() {
+        queueShowing = true
+
         //设置弹出窗口的位置.
         popupWindow.showAtLocation(queueIv, Gravity.BOTTOM, 0, 0)
 
         val curPos = PlayServiceManager.getCurrentPosition()
-        if(curPos != NULL_INT_FLAG){
+        if (curPos != NULL_INT_FLAG) {
             queueAdapter.curPosition = curPos
         }
-        
+
         PlayServiceManager.getQueueSongs()?.let {
             queueAdapter.clearAndAddNewDatas(it)
         }
@@ -372,6 +386,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     }
 
     override fun onItemClick(v: View?, position: Int) {
-        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongByIndex(position)})
+        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongByIndex(position) })
     }
 }
