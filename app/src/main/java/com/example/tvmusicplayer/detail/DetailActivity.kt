@@ -35,7 +35,7 @@ import com.squareup.picasso.Picasso
  * 歌曲播放的详情页.
  * */
 class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract.OnView,
-    LrcView.OnSeekListener {
+    LrcView.OnSeekListener,PlayQueueAdapter.OnRemoveClickListener{
 
     private val TAG = "DetailActivity"
     private lateinit var backIv: ImageView
@@ -156,6 +156,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
 
         //设置队列的recyclerView的数据
         queueAdapter = PlayQueueAdapter(mutableListOf<Song>(), R.layout.play_queue_item)
+        queueAdapter.setOnRemoveClickListener(this)
         queueManager = LinearLayoutManager(this)
         queueRv.adapter = queueAdapter
         queueRv.layoutManager = queueManager
@@ -340,5 +341,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
 
     override fun onSeek(time: Long) {
         PlayServiceManager.seekTo(time.toInt())
+    }
+
+    override fun onRemoveClick(v: View?, position: Int) {
+        Toast.makeText(this,"点击位置：${position}",Toast.LENGTH_SHORT).show()
     }
 }
