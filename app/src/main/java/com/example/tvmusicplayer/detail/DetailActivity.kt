@@ -293,6 +293,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         popupWindow.setBackgroundDrawable(ColorDrawable(0x00000000))
 
         popupWindow.setOnDismissListener { queueShowing = false }
+        //设置进出的动画
+        popupWindow.animationStyle = R.style.anim_bottom_popup
     }
 
     private fun showPopupWindow() {
