@@ -11,8 +11,11 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.adapter.PlayQueueAdapter
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.service.SimplePlayObserver
@@ -51,8 +54,15 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     private lateinit var popupWindow: PopupWindow
 
     private lateinit var presenter: DetailContract.Presenter
-    private lateinit var queueRv : RecyclerView
-    private lateinit var queueView :View
+    private lateinit var queueRv: RecyclerView
+    private lateinit var queueView: View
+    private lateinit var queueAdapter: PlayQueueAdapter
+    private lateinit var queueManager: LinearLayoutManager
+
+    /**
+     * 播放队列中的歌曲.
+     * */
+    private val queueSongs = mutableListOf<Song>()
 
     /**
      * 判断用户是否触碰了进度条.
@@ -140,16 +150,24 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         queueIv = findViewById(R.id.play_queue)
         seekBar = findViewById(R.id.seek_bar)
         lrcView = findViewById(R.id.lrc_view)
-        
-        queueView = View.inflate(this,R.layout.play_queue,null)
+
+        queueView = View.inflate(this, R.layout.play_queue, null)
         queueRv = queueView.findViewById(R.id.queue_rv)
     }
 
     private fun initData() {
         presenter = DetailPresenter(this)
         lrcView.seekListener = this
+
+        //设置队列的recyclerView的数据
+        queueAdapter = PlayQueueAdapter(mutableListOf<Song>(), R.layout.play_queue_item)
+        queueManager = LinearLayoutManager(this)
+        queueRv.adapter = queueAdapter
+        queueRv.layoutManager = queueManager
+        queueRv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+
         initPopupWindow()
-        
+
         //注册观察者
         PlayServiceManager.registerObserver(observer)
     }
@@ -242,7 +260,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
 
     }
 
-    private fun initPopupWindow(){
+    private fun initPopupWindow() {
         popupWindow = PopupWindow(queueView)
         //设置窗口大小
         popupWindow.width = WindowManager.LayoutParams.MATCH_PARENT
@@ -251,10 +269,10 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         popupWindow.isFocusable = true
         popupWindow.setBackgroundDrawable(ColorDrawable(0x00000000))
     }
-    
+
     private fun showPopupWindow() {
         //设置弹出窗口的位置.
-        popupWindow.showAtLocation(queueIv,Gravity.BOTTOM,0,0)
+        popupWindow.showAtLocation(queueIv, Gravity.BOTTOM, 0, 0)
     }
 
     override fun onClick(v: View?) {
@@ -291,7 +309,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
                     lrcView.visibility = View.GONE
                     coverIv.visibility = View.VISIBLE
                 }
-                R.id.play_queue->{
+                R.id.play_queue -> {
                     showPopupWindow()
                 }
             }

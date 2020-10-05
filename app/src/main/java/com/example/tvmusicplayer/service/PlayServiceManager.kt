@@ -42,9 +42,8 @@ object PlayServiceManager {
         service?.playMode = mode
     }
     
-    fun getQueueSongs() : MutableList<Song>{
-        //todo 这里有点问题吧...
-        return service?.queueSongs as MutableList<Song>
+    fun getQueueSongs() : MutableList<Song>?{
+        return service?.queueSongs
     }
     
     fun getCurrentPosition() : Int{
