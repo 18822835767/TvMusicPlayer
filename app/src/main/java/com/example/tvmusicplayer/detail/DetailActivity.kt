@@ -35,7 +35,7 @@ import com.squareup.picasso.Picasso
  * 歌曲播放的详情页.
  * */
 class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract.OnView,
-    LrcView.OnSeekListener,PlayQueueAdapter.OnRemoveClickListener{
+    LrcView.OnSeekListener, PlayQueueAdapter.OnRemoveClickListener {
 
     private val TAG = "DetailActivity"
     private lateinit var backIv: ImageView
@@ -58,7 +58,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     private lateinit var queueView: View
     private lateinit var queueAdapter: PlayQueueAdapter
     private lateinit var queueManager: LinearLayoutManager
-    
+
     /**
      * 判断用户是否触碰了进度条.
      * */
@@ -107,7 +107,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         }
 
         override fun onSongsEmpty() {
-            
+            resetInfo()
         }
     }
 
@@ -251,7 +251,23 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
                 .resize(250, 250)
                 .into(coverIv)
         }
+    }
 
+    /**
+     * 重置信息，除了播放模式之外.
+     * */
+    private fun resetInfo() {
+        songNameTv.text = "歌曲名字"
+        singerNameTv.text = "歌手"
+        seekBar.progress = 0
+        //todo seekbar看下要不要加
+        seekBar.max = 0
+        endTimeTv.text = "00:00"
+        lrcView.reset()
+        playOrPauseIv.setImageResource(R.drawable.ic_play_white)
+        Picasso.get().load(R.drawable.album_default_view)
+            .resize(250, 250)
+            .into(coverIv)
     }
 
     private fun initPopupWindow() {
@@ -267,8 +283,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     private fun showPopupWindow() {
         //设置弹出窗口的位置.
         popupWindow.showAtLocation(queueIv, Gravity.BOTTOM, 0, 0)
-        
-        PlayServiceManager.getQueueSongs()?.let{
+
+        PlayServiceManager.getQueueSongs()?.let {
             queueAdapter.clearAndAddNewDatas(it)
         }
     }

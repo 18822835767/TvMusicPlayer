@@ -59,7 +59,7 @@ class BottomPlayerFragment : Fragment() {
 
         override fun onSongsEmpty() {
             ThreadUtil.runOnUi(Runnable { 
-                
+                resetInfo()
             })
         }
     }
@@ -145,7 +145,15 @@ class BottomPlayerFragment : Fragment() {
                 .resize(50,50)
                 .into(musicCovIv)
         }
-
+    }
+    
+    private fun resetInfo(){
+        songNameTv.text = "歌曲名字"
+        singerNameTv.text = "歌手"
+        playOrPauseIv.setImageResource(R.drawable.ic_play_white)
+        Picasso.get().load(R.drawable.album_default_view)
+            .resize(50,50)
+            .into(musicCovIv)
     }
 
     override fun onDestroy() {
