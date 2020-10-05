@@ -21,6 +21,7 @@ import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.service.SimplePlayObserver
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.LOOP_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.NULL_INT_FLAG
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
@@ -286,6 +287,11 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         //设置弹出窗口的位置.
         popupWindow.showAtLocation(queueIv, Gravity.BOTTOM, 0, 0)
 
+        val curPos = PlayServiceManager.getCurrentPosition()
+        if(curPos != NULL_INT_FLAG){
+            queueAdapter.curPosition = curPos
+        }
+        
         PlayServiceManager.getQueueSongs()?.let {
             queueAdapter.clearAndAddNewDatas(it)
         }
