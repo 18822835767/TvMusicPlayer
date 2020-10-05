@@ -11,6 +11,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
@@ -50,6 +51,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     private lateinit var popupWindow: PopupWindow
 
     private lateinit var presenter: DetailContract.Presenter
+    private lateinit var queueRv : RecyclerView
+    private lateinit var queueView :View
 
     /**
      * 判断用户是否触碰了进度条.
@@ -137,12 +140,16 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         queueIv = findViewById(R.id.play_queue)
         seekBar = findViewById(R.id.seek_bar)
         lrcView = findViewById(R.id.lrc_view)
+        
+        queueView = View.inflate(this,R.layout.play_queue,null)
+        queueRv = queueView.findViewById(R.id.queue_rv)
     }
 
     private fun initData() {
         presenter = DetailPresenter(this)
         lrcView.seekListener = this
-
+        initPopupWindow()
+        
         //注册观察者
         PlayServiceManager.registerObserver(observer)
     }
@@ -235,14 +242,18 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
 
     }
 
-    private fun showPopupWindow(context: Context, resource: Int) {
-        val view: View = View.inflate(context, resource, null)
-        popupWindow = PopupWindow(view)
+    private fun initPopupWindow(){
+        popupWindow = PopupWindow(queueView)
         //设置窗口大小
         popupWindow.width = WindowManager.LayoutParams.MATCH_PARENT
-        popupWindow.height = 500
+        popupWindow.height = 1000
+        //设置下面两项，使得弹出窗口可以响应back等物理时间
         popupWindow.isFocusable = true
         popupWindow.setBackgroundDrawable(ColorDrawable(0x00000000))
+    }
+    
+    private fun showPopupWindow() {
+        //设置弹出窗口的位置.
         popupWindow.showAtLocation(queueIv,Gravity.BOTTOM,0,0)
     }
 
@@ -281,7 +292,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
                     coverIv.visibility = View.VISIBLE
                 }
                 R.id.play_queue->{
-                    showPopupWindow(this,R.layout.play_queue)
+                    showPopupWindow()
                 }
             }
         }
