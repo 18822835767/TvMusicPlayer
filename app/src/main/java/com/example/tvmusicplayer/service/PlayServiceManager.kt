@@ -89,4 +89,8 @@ object PlayServiceManager {
     fun removeSong(position: Int){
         service?.removeSong(position)
     }
+
+    fun playSongByIndex(position: Int){
+        service?.playSongByIndex(position)
+    }
 }

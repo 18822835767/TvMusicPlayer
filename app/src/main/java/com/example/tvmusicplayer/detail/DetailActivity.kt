@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.PlayQueueAdapter
+import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.service.SimplePlayObserver
@@ -35,7 +36,8 @@ import com.squareup.picasso.Picasso
  * 歌曲播放的详情页.
  * */
 class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract.OnView,
-    LrcView.OnSeekListener, PlayQueueAdapter.OnRemoveClickListener {
+    LrcView.OnSeekListener, PlayQueueAdapter.OnRemoveClickListener,
+    BaseRecyclerViewAdapter.OnItemClickListener {
 
     private val TAG = "DetailActivity"
     private lateinit var backIv: ImageView
@@ -155,6 +157,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
         //设置队列的recyclerView的数据
         queueAdapter = PlayQueueAdapter(mutableListOf<Song>(), R.layout.play_queue_item)
         queueAdapter.setOnRemoveClickListener(this)
+        queueAdapter.setItemClickListener(this)
         queueManager = LinearLayoutManager(this)
         queueRv.adapter = queueAdapter
         queueRv.layoutManager = queueManager
@@ -360,5 +363,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
 //        Toast.makeText(this,"点击位置：${position}",Toast.LENGTH_SHORT).show()
         queueAdapter.removeItem(position)
         ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.removeSong(position) })
+    }
+
+    override fun onItemClick(v: View?, position: Int) {
+//        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongByIndex(position)})
     }
 }

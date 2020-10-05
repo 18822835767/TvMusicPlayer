@@ -45,4 +45,6 @@ interface IPlayInterface {
     void addNext(in Song song);
     
     void removeSong(int position);
+    
+    void playSongByIndex(int position);
 }

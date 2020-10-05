@@ -341,6 +341,13 @@ class PlayService : Service() {
         override fun setPlayMode(mode: Int) {
             this@PlayService.playMode = mode
         }
+
+        override fun playSongByIndex(position: Int) {
+            if(position != currentPosition){
+                currentPosition = position
+                loadSong(songs[currentPosition])
+            }
+        }
     }
 
     private fun addNext(song: Song?) {
