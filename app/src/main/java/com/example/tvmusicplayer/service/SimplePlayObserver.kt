@@ -15,7 +15,7 @@ abstract class SimplePlayObserver : IPlayObserver.Stub() {
 
     }
 
-    override fun onSongChange(song: Song?) {
+    override fun onSongChange(song: Song?,position : Int) {
 
     }
 

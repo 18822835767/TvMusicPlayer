@@ -17,7 +17,7 @@ class PlayQueueAdapter(data: MutableList<Song>, itemLayoutId: Int) :
     /**
      * 标记当前在播放的歌曲.
      * */
-    private var curPosition: Int = -1
+    var curPosition: Int = -1
 
     override fun initItemView(holder: CommonViewHolder, position: Int) {
         val song = data[position]

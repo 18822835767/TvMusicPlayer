@@ -49,12 +49,14 @@ class BottomPlayerFragment : Fragment() {
             })
         }
 
-        override fun onSongChange(song: Song?) {
+        override fun onSongChange(song: Song?,position : Int) {
             song?.let {
                 ThreadUtil.runOnUi(Runnable {
                     setSongInfo(it)
                 })
             }
+            
+            
         }
 
         override fun onSongsEmpty() {

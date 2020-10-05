@@ -99,7 +99,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
             lrcView.onProgress(currentPosition.toLong())
         }
 
-        override fun onSongChange(song: Song?) {
+        override fun onSongChange(song: Song?,position : Int) {
             ThreadUtil.runOnUi(Runnable {
                 lrcView.clearLyrics()
                 song?.let {

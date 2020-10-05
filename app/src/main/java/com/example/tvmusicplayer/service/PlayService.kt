@@ -208,7 +208,7 @@ class PlayService : Service() {
         val size = observers.beginBroadcast()
         for (i in 0 until size) {
             val observer = observers.getBroadcastItem(i)
-            observer.onSongChange(songs[currentPosition])
+            observer.onSongChange(songs[currentPosition],currentPosition)
         }
         observers.finishBroadcast()
         broadcastIng.set(false)
