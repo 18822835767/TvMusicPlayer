@@ -344,6 +344,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     }
 
     override fun onRemoveClick(v: View?, position: Int) {
-        Toast.makeText(this,"点击位置：${position}",Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this,"点击位置：${position}",Toast.LENGTH_SHORT).show()
+        queueAdapter.removeItem(position)
+        PlayServiceManager.removeSong(position)
     }
 }

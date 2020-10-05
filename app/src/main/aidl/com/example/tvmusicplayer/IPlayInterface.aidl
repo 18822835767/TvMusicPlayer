@@ -43,4 +43,6 @@ interface IPlayInterface {
     void unregisterObserver(in IPlayObserver observer);
     
     void addNext(in Song song);
+    
+    void removeSong(int position);
 }

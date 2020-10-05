@@ -271,6 +271,17 @@ class PlayService : Service() {
             this@PlayService.addNext(song)
         }
 
+        override fun removeSong(position: Int) {
+            //如果移除的歌曲在当前播放的歌曲的前面
+            if(position < this@PlayService.currentPosition){
+                songs.removeAt(position)
+                this@PlayService.currentPosition--
+                //如果移除的歌曲在当前播放的歌曲的后面
+            }else if(position > this@PlayService.currentPosition){
+                songs.removeAt(position)
+            }
+        }
+
         override fun getQueueSongs(): MutableList<Song> {
             return songs
         }

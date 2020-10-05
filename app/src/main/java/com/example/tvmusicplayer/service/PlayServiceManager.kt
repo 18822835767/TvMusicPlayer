@@ -85,4 +85,8 @@ object PlayServiceManager {
     fun addNext(song : Song?){
         service?.addNext(song)
     }
+    
+    fun removeSong(position: Int){
+        service?.removeSong(position)
+    }
 }

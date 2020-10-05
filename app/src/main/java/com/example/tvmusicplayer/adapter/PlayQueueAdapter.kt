@@ -26,6 +26,12 @@ class PlayQueueAdapter(data : MutableList<Song>,itemLayoutId : Int) :
         removeClickListener = listener
     }
     
+    fun removeItem(position: Int){
+        data.removeAt(position)
+        //todo 这个看下要不要优化一下
+        notifyDataSetChanged()
+    }
+    
     interface OnRemoveClickListener{
         fun onRemoveClick(v: View?, position: Int)
     }
