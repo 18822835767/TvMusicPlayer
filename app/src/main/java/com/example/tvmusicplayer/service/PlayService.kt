@@ -16,6 +16,7 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.NULL_URL
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.ORDER_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_STOP
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
@@ -144,7 +145,7 @@ class PlayService : Service() {
                 performSong(it)
                 return
             }
-            
+
             if (song.url == null) {
                 playNextSong()
             }
@@ -273,11 +274,11 @@ class PlayService : Service() {
 
         override fun removeSong(position: Int) {
             //如果移除的歌曲在当前播放的歌曲的前面
-            if(position < this@PlayService.currentPosition){
+            if (position < this@PlayService.currentPosition) {
                 songs.removeAt(position)
                 this@PlayService.currentPosition--
                 //如果移除的歌曲在当前播放的歌曲的后面
-            }else if(position > this@PlayService.currentPosition){
+            } else if (position > this@PlayService.currentPosition) {
                 songs.removeAt(position)
             }
         }
@@ -302,18 +303,18 @@ class PlayService : Service() {
             this@PlayService.playMode = mode
         }
     }
-    
-    private fun addNext(song : Song?){
+
+    private fun addNext(song: Song?) {
         song?.let {
-            if(songs.isEmpty()){
+            if (songs.isEmpty()) {
                 songs.add(it)
                 currentPosition = 0
                 loadSong(it)
-            }else{
-                songs.add(currentPosition + 1,it)
+            } else {
+                songs.add(currentPosition + 1, it)
             }
         }
-        
+
     }
 
     private fun playOrPause() {
@@ -451,6 +452,20 @@ class PlayService : Service() {
 
     private fun showText(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * 重置信息.
+     * */
+    private fun resetInfo() {
+        //若音乐正在播放并且定时任务开着，那么关闭定时任务
+        if (currentState == PLAY_STATE_PLAY && startTimer) {
+            stopTimer()
+        }
+        currentPosition = -1
+        currentState = PLAY_STATE_STOP
+        currentTimePoint = 0
+        mediaPlayer?.reset()
     }
 
     private inner class SeekTimeTask : TimerTask() {

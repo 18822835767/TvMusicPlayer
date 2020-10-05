@@ -56,6 +56,12 @@ class BottomPlayerFragment : Fragment() {
                 })
             }
         }
+
+        override fun onSongsEmpty() {
+            ThreadUtil.runOnUi(Runnable { 
+                
+            })
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

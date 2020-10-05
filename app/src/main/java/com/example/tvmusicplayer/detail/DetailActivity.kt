@@ -104,12 +104,10 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
                     setSongInfo(it)
                 }
             })
+        }
 
-//            song?.let {
-//                ThreadUtil.runOnUi(Runnable {
-//                    setSongInfo(it)
-//                })
-//            }
+        override fun onSongsEmpty() {
+            
         }
     }
 
