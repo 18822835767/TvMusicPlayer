@@ -273,6 +273,12 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     private fun showPopupWindow() {
         //设置弹出窗口的位置.
         popupWindow.showAtLocation(queueIv, Gravity.BOTTOM, 0, 0)
+        
+        PlayServiceManager.getQueueSongs()?.let{
+            queueSongs.clear()
+            queueSongs.addAll(it)
+            queueAdapter.clearAndAddNewDatas(queueSongs)
+        }
     }
 
     override fun onClick(v: View?) {
