@@ -366,6 +366,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     }
 
     override fun onItemClick(v: View?, position: Int) {
-//        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongByIndex(position)})
+        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongByIndex(position)})
     }
 }

@@ -214,7 +214,7 @@ class PlayService : Service() {
         broadcastIng.set(false)
     }
 
-    private fun onSongsEmpty(){
+    private fun onSongsEmpty() {
         //如果当前正在广播
         if (broadcastIng.get()) {
             return
@@ -230,7 +230,7 @@ class PlayService : Service() {
         observers.finishBroadcast()
         broadcastIng.set(false)
     }
-    
+
     private var binder = object : IPlayInterface.Stub() {
         override fun playSongs(songs: MutableList<Song>?, position: Int) {
             this@PlayService.playSongs(songs, position)
@@ -298,15 +298,15 @@ class PlayService : Service() {
                 //如果移除的歌曲在当前播放的歌曲的后面
             } else if (position > this@PlayService.currentPosition) {
                 songs.removeAt(position)
-            //如果移除的歌曲正在播放
-            }else{
+                //如果移除的歌曲正在播放
+            } else {
                 songs.removeAt(position)
                 //移除后还有歌
-                if(songs.isNotEmpty()){
+                if (songs.isNotEmpty()) {
                     when (playMode) {
                         //列表循环播放
-                        ORDER_PLAY, LOOP_PLAY ->{
-                            if(currentPosition == songs.size){
+                        ORDER_PLAY, LOOP_PLAY -> {
+                            if (currentPosition == songs.size) {
                                 currentPosition = 0
                             }
                         }
@@ -314,8 +314,8 @@ class PlayService : Service() {
                         RANDOM_PLAY -> currentPosition = (Math.random() * songs.size).toInt()
                     }
                     loadSong(songs[currentPosition])
-                //移除后已经没有歌曲了
-                }else{
+                    //移除后已经没有歌曲了
+                } else {
                     resetInfo()
                     onSongsEmpty()
                 }
@@ -343,7 +343,7 @@ class PlayService : Service() {
         }
 
         override fun playSongByIndex(position: Int) {
-            if(position != currentPosition){
+            if (position != currentPosition) {
                 currentPosition = position
                 loadSong(songs[currentPosition])
             }
@@ -388,6 +388,10 @@ class PlayService : Service() {
         onPlayStateChange()
     }
 
+    /**
+     * 这里要加锁进行同步，防止被频繁调用而报错.
+     * */
+    @Synchronized
     private fun performSong(dataSource: String) {
         if (dataSource == NULL_URL) {
             ThreadUtil.runOnUi(Runnable { showText("歌曲无法播放，自动切换下一首") })
