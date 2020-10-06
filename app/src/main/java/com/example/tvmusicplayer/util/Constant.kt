@@ -40,4 +40,11 @@ class Constant {
     object PopupWindowConstant{
         const val NEXT_PAY = "下一首播放"
     }
+    
+    object DownloadSong{
+        const val TYPE_SUCCESS = 0
+        const val TYPE_FAILED = 1
+        const val TYPE_PAUSED = 2
+        const val TYPE_CANCELED = 3
+    }
 }
