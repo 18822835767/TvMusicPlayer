@@ -47,4 +47,6 @@ interface IPlayInterface {
     void removeSong(int position);
     
     void playSongByIndex(int position);
+    
+    void download(in Song song);
 }

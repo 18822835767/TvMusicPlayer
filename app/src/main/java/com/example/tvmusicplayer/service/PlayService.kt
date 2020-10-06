@@ -243,6 +243,10 @@ class PlayService : Service() {
             return 0
         }
 
+        override fun download(song: Song?) {
+            
+        }
+
         override fun registerObserver(observer: IPlayObserver?) {
             observers.register(observer)
         }

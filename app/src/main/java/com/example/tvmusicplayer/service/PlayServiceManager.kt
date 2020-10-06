@@ -93,4 +93,8 @@ object PlayServiceManager {
     fun playSongByIndex(position: Int){
         service?.playSongByIndex(position)
     }
+    
+    fun download(song : Song){
+        service?.download(song)
+    }
 }
