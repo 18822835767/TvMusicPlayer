@@ -22,6 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="懂你的精选歌单"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginLeft="13dp"
+            android:textColor="#363636"/>
+        
     </LinearLayout>
     
 </androidx.core.widget.NestedScrollView>

@@ -9,8 +9,8 @@
     
     <com.example.tvmusicplayer.widget.CircleImage
         android:id="@+id/circle_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/ic_fm"
         android:background="#EE6363"
         android:scaleType="center"
