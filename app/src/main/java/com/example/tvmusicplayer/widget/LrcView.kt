@@ -271,7 +271,7 @@ class LrcView : View {
         var firstLine = currentLine - rows / 2
         //边界检查
         firstLine = if (firstLine < 0) 0 else firstLine
-        var lastLine = currentLine + rows / 2 + 2 //?
+        var lastLine = currentLine + rows / 2 + 2 
         //边界检查
         lastLine = if (lastLine > lyrList.size - 1) lyrList.size else lastLine
 
