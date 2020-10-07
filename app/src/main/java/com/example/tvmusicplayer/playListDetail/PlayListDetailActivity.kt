@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
@@ -73,7 +72,7 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         PlayListDetailPresenter(this)
         
         //设置RecyclerView的数据
-        adapter = PlayListDetailAdapter(mutableListOf<Song>(),R.layout.song_item)
+        adapter = PlayListDetailAdapter(mutableListOf<Song>(),R.layout.playlist_detail__item)
         adapter.setItemClickListener(this)
         manager = LinearLayoutManager(this)
         recyclerView.layoutManager = manager

@@ -88,7 +88,7 @@ class SearchFragment : Fragment(), SearchContract.OnView,
         //构造presenter
         SearchPresenter(this)
 
-        adapter = SearchAdapter(mutableListOf<Song>(), R.layout.song_item)
+        adapter = SearchAdapter(mutableListOf<Song>(), R.layout.search_item)
         adapter.setItemClickListener(this)
         manager = LinearLayoutManager(context)
         recyclerView.layoutManager = manager
