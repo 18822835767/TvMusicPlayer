@@ -11,6 +11,8 @@ import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.model.SongInfoModel
 import com.example.tvmusicplayer.model.impl.SongInfoModelImpl
+import com.example.tvmusicplayer.network.DownloadUtil
+import com.example.tvmusicplayer.network.SimpleDownloadListener
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.LOOP_PLAY
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.NULL_URL
@@ -244,7 +246,21 @@ class PlayService : Service() {
         }
 
         override fun download(song: Song?) {
-            
+            song?.let { 
+                DownloadUtil.downloadSong(it.name?:"",it.url?:"",object : SimpleDownloadListener(){
+                    override fun onProgress(progress: Int) {
+                        super.onProgress(progress)
+                    }
+
+                    override fun onSuccess() {
+                        super.onSuccess()
+                    }
+
+                    override fun onPaused() {
+                        super.onPaused()
+                    }
+                })
+            }
         }
 
         override fun registerObserver(observer: IPlayObserver?) {
