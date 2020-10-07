@@ -68,6 +68,7 @@ object DownloadUtil {
                 val b = ByteArray(1024)
                 var total = 0
                 var len = inputStream!!.read(b)
+                //这里的io操作也是需要网络的.
                 while (len != -1) {
                     total += len
                     savedFile!!.write(b, 0, len)

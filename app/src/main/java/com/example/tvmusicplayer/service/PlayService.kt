@@ -252,7 +252,17 @@ class PlayService : Service() {
                 //下载过程的监听器
                 val downloadListener = object : SimpleDownloadListener() {
                     override fun onProgress(progress: Int) {
-                        NotifyManager.downloadProgress(it.id,it.name,progress)
+                        NotifyManager.downloadProgress(it.id, it.name, progress)
+                    }
+
+                    override fun onSuccess() {
+                        showText("歌曲 ${it.name} 下载成功")
+                        NotifyManager.closeNotify(it.id)
+                    }
+
+                    override fun onFailed() {
+                        showText("歌曲 ${it.name} 下载失败")
+                        NotifyManager.closeNotify(it.id)
                     }
                 }
 
@@ -260,6 +270,8 @@ class PlayService : Service() {
                 it.url?.let { url ->
                     if (url != NULL_URL) {
                         DownloadUtil.downloadSong(it.name ?: "", it.url ?: "", downloadListener)
+                    } else {
+                        showText("资源错误")
                     }
                     return
                 }
@@ -274,12 +286,14 @@ class PlayService : Service() {
                                     song.name ?: "", song.url ?: "", downloadListener
                                 )
                             })
+                        } else {
+                            showText("资源错误")
                         }
                     }
 
                     //请求数据失败
                     override fun error(msg: String) {
-
+                        showText("请求数据失败")
                     }
                 })
             }
@@ -543,7 +557,7 @@ class PlayService : Service() {
     }
 
     private fun showText(msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        ThreadUtil.runOnUi(Runnable { Toast.makeText(this, msg, Toast.LENGTH_SHORT).show() })
     }
 
     /**

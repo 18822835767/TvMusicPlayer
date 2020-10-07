@@ -28,8 +28,8 @@ object NotifyManager {
         }
     }
 
-    fun downloadProgress(songId: Long?, name: String?, progress: Int) {
-        if (songId != null && name != null) {
+    fun downloadProgress(songId: Long?, title: String?, progress: Int) {
+        if (songId != null && title != null) {
             val builder: Notification.Builder?
             //若安卓版本大于等于8.0
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -41,7 +41,7 @@ object NotifyManager {
             }
             
             builder.setSmallIcon(R.mipmap.ic_launcher)
-            builder.setContentTitle(name)
+            builder.setContentTitle(title)
             if(progress >= 0){
                 builder.setContentText("${progress}%")
                 builder.setProgress(100,progress,false)
@@ -49,5 +49,12 @@ object NotifyManager {
             manager?.notify(songId.toInt(),builder.build())
         }
     }
+    
+    fun closeNotify(songId : Long?){
+        songId?.let { 
+            manager?.cancel(it.toInt())
+        }
+    }
+    
 
 }
