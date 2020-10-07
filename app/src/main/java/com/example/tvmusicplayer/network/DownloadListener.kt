@@ -3,7 +3,7 @@ package com.example.tvmusicplayer.network
 interface DownloadListener {
     fun onStart()
     
-    fun onProgress()
+    fun onProgress(progress : Int)
     
     fun onSuccess()
     

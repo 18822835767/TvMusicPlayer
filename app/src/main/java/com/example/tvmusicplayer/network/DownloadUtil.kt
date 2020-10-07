@@ -9,6 +9,7 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.io.RandomAccessFile
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 object DownloadUtil {
@@ -25,6 +26,17 @@ object DownloadUtil {
         .build()
 
     fun downloadSong(name: String, url: String, listener: DownloadListener): Int {
+//        var inputStream : InputStream? = null
+//        var savedFile : RandomAccessFile? = null
+//        var file : File? = null
+//        try {
+//            
+//        }catch (e : Exception){
+//            
+//        }finally {
+//            
+//        }
+        
         val contentLength = getContentLength(url)
         var downloadedLength = 0L
         //如果要下载的文件长度为0，那么返回TYPE_FAILED
@@ -51,11 +63,22 @@ object DownloadUtil {
         val response : Response = client.newCall(request).execute()
         response.body?.let { 
             val inputStream : InputStream = it.byteStream()
-            val savedFile : RandomAccessFile = RandomAccessFile(file,"rw")
+            val savedFile : RandomAccessFile = RandomAccessFile(file,"rwd")
             savedFile.seek(downloadedLength)
             //字节数组
-            val b = arrayOfNulls<Byte>(1024)
-            
+            val b = ByteArray(1024)
+            var total = 0
+            var len = inputStream.read(b)
+            while (len != -1){
+                total += len
+                savedFile.write(b,0,len)
+                //计算下载的百分比
+                val progress = ((total + downloadedLength) * 100 / contentLength).toInt()
+                listener.onProgress(progress)
+                len = inputStream.read(b)
+            }
+            it.close()
+            return TYPE_SUCCESS
         }
 
         return TYPE_FAILED
