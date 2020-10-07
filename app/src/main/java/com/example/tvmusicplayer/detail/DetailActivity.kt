@@ -361,6 +361,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     override fun getLyricsSuccess(lyricsText: String) {
         lrcView.reset()
         lrcView.setLyrics(lyricsText)
+//        lrcView.onProgress(PlayServiceManager.getCurrentPoint().toLong())
     }
 
     override fun setPresenter(presenter: DetailContract.Presenter) {

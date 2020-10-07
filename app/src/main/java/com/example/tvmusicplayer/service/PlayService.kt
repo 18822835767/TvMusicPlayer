@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.tvmusicplayer.IPlayInterface
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
+import com.example.tvmusicplayer.manager.NotifyManager
 import com.example.tvmusicplayer.model.SongInfoModel
 import com.example.tvmusicplayer.model.impl.SongInfoModelImpl
 import com.example.tvmusicplayer.network.DownloadUtil
@@ -91,6 +92,7 @@ class PlayService : Service() {
     override fun onCreate() {
         super.onCreate()
         initMediaPlayer()
+        NotifyManager.init(this)
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -249,7 +251,7 @@ class PlayService : Service() {
             song?.let { 
                 DownloadUtil.downloadSong(it.name?:"",it.url?:"",object : SimpleDownloadListener(){
                     override fun onProgress(progress: Int) {
-                        super.onProgress(progress)
+                        NotifyManager.downloadProgress(it.id,it.name,progress)
                     }
 
                     override fun onSuccess() {
