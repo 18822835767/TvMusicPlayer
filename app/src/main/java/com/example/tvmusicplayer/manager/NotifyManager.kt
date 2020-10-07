@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.os.Build
+import com.example.tvmusicplayer.R
 
 /**
  * 通知的管理者.
@@ -29,7 +30,7 @@ object NotifyManager {
 
     fun downloadProgress(songId: Long?, name: String?, progress: Int) {
         if (songId != null && name != null) {
-            var builder: Notification.Builder? = null
+            val builder: Notification.Builder?
             //若安卓版本大于等于8.0
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 builder = Notification.Builder(context, channelId)
@@ -39,6 +40,7 @@ object NotifyManager {
                 builder.setPriority(Notification.PRIORITY_DEFAULT)
             }
             
+            builder.setSmallIcon(R.mipmap.ic_launcher)
             builder.setContentTitle(name)
             if(progress >= 0){
                 builder.setContentText("${progress}%")

@@ -252,7 +252,7 @@ class PlayService : Service() {
                 //下载过程的监听器
                 val downloadListener = object : SimpleDownloadListener() {
                     override fun onProgress(progress: Int) {
-                        LogUtil.d(TAG, "进度：${progress}")
+                        NotifyManager.downloadProgress(it.id,it.name,progress)
                     }
                 }
 
