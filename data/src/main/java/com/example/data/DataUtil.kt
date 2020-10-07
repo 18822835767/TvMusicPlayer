@@ -156,7 +156,7 @@ object DataUtil {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                callback.callback(response.body.toString())
+                callback.callback(response.body?.string()?:"")
             }
 
         })
