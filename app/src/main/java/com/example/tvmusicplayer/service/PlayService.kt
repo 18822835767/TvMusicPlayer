@@ -249,34 +249,39 @@ class PlayService : Service() {
 
         override fun download(song: Song?) {
             song?.let {
+                //下载过程的监听器
+                val downloadListener = object : SimpleDownloadListener() {
+                    override fun onProgress(progress: Int) {
+                        LogUtil.d(TAG, "进度：${progress}")
+                    }
+                }
+
+                //如果之前已经为该Song请求过url,已经有数据了
+                it.url?.let { url ->
+                    if (url != NULL_URL) {
+                        DownloadUtil.downloadSong(it.name ?: "", it.url ?: "", downloadListener)
+                    }
+                    return
+                }
+
+                //url为null，说明之前没有为该song请求过数据.
                 model.getSongPlayInfo(it, object : SongInfoModel.OnSongPlayInfoListener {
+                    //请求数据成功
                     override fun getSongPlayInfoSuccess(song: Song) {
-                        if (song.url != null && song.url != NULL_URL) {
-                            DownloadUtil.downloadSong(
-                                it.name ?: "",
-                                it.url ?: "",
-                                object : SimpleDownloadListener() {
-                                    override fun onProgress(progress: Int) {
-                                        NotifyManager.downloadProgress(it.id, it.name, progress)
-                                    }
-
-                                    override fun onSuccess() {
-                                        super.onSuccess()
-                                    }
-
-                                    override fun onPaused() {
-                                        super.onPaused()
-                                    }
-                                })
+                        if (song.url != NULL_URL) {
+                            ThreadUtil.runOnThreadPool(Runnable {
+                                DownloadUtil.downloadSong(
+                                    song.name ?: "", song.url ?: "", downloadListener
+                                )
+                            })
                         }
                     }
 
+                    //请求数据失败
                     override fun error(msg: String) {
 
                     }
-
                 })
-                
             }
         }
 

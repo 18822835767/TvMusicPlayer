@@ -2,8 +2,6 @@ package com.example.tvmusicplayer.network
 
 import android.os.Environment
 import com.example.tvmusicplayer.MyApplication
-import com.example.tvmusicplayer.util.Constant.DownloadSong.TYPE_FAILED
-import com.example.tvmusicplayer.util.Constant.DownloadSong.TYPE_SUCCESS
 import com.example.tvmusicplayer.util.LogUtil
 import okhttp3.*
 import java.io.File
@@ -28,7 +26,7 @@ object DownloadUtil {
         .writeTimeout(10, TimeUnit.SECONDS)
         .build()
 
-    fun downloadSong(name: String, url: String, listener: DownloadListener): Int {
+    fun downloadSong(name: String, url: String, listener: DownloadListener){
         var inputStream: InputStream? = null
         var savedFile: RandomAccessFile? = null
         var file: File? = null
@@ -39,7 +37,7 @@ object DownloadUtil {
             //如果要下载的文件长度为0，那么返回TYPE_FAILED
             if (contentLength == 0L) {
                 listener.onFailed()
-                return TYPE_FAILED
+                return
             }
             //下载的文件存储位置
             file = File("${path}${url.substring(url.lastIndexOf("/"))}")
@@ -52,7 +50,7 @@ object DownloadUtil {
             //如果文件的字节长度相同，说明之前已经下载成功了
             if (contentLength == downloadedLength) {
                 listener.onSuccess()
-                return TYPE_SUCCESS
+                return
             }
             //Header里告诉服务器，跳过多少字节后开始下载.
             val request: Request = Request.Builder()
@@ -80,7 +78,7 @@ object DownloadUtil {
                 }
                 it.close()
                 listener.onSuccess()
-                return TYPE_SUCCESS
+                return
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -94,7 +92,7 @@ object DownloadUtil {
             }
         }
         listener.onFailed()
-        return TYPE_FAILED
+        return
     }
 
     /**
