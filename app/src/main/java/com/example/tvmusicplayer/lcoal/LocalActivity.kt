@@ -188,7 +188,7 @@ class LocalActivity : AppCompatActivity(), LocalContract.OnView,
         listPopupWindow.dismiss()
 
         if (popupArray[position] == Constant.PopupWindowConstant.NEXT_PAY) {
-            if(popupItemClickPosition != -1){
+            if (popupItemClickPosition != -1) {
                 PlayServiceManager.addNext(adapter.getItem(popupItemClickPosition))
             }
         }

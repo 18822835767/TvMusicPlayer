@@ -4,6 +4,7 @@ import android.os.Environment
 import com.example.tvmusicplayer.MyApplication
 import com.example.tvmusicplayer.util.Constant.DownloadSong.TYPE_FAILED
 import com.example.tvmusicplayer.util.Constant.DownloadSong.TYPE_SUCCESS
+import com.example.tvmusicplayer.util.LogUtil
 import okhttp3.*
 import java.io.File
 import java.io.IOException
@@ -14,6 +15,8 @@ import java.util.concurrent.TimeUnit
 
 object DownloadUtil {
 
+    private val TAG = "DownloadUtil"
+    
     /**
      * 这里文件返回路径为/storage/emulated/0/Android/data/packagename/files/Music.
      * */
@@ -40,6 +43,7 @@ object DownloadUtil {
             }
             //下载的文件存储位置
             file = File("${path}${url.substring(url.lastIndexOf("/"))}")
+            LogUtil.d(TAG,"文件存在吗？${file.exists()}")
             //如果文件已经存在，说明该文件有下载过.
             if (file.exists()) {
                 //记录已下载的文件长度

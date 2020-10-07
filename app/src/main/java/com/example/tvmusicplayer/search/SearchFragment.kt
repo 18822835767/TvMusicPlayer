@@ -275,9 +275,18 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         listPopupWindow.dismiss()
 
-        if (popupArray[position] == Constant.PopupWindowConstant.NEXT_PAY) {
-            if(popupItemClickPosition != -1){
+        if (popupItemClickPosition != -1) {
+            if (popupArray[position] == Constant.PopupWindowConstant.NEXT_PAY) {
                 PlayServiceManager.addNext(adapter.getItem(popupItemClickPosition))
+            } else if (popupArray[position] == Constant.PopupWindowConstant.DOWNLOAD) {
+                ThreadUtil.runOnThreadPool(Runnable {
+                    PlayServiceManager.download(
+                        adapter.getItem(
+                            popupItemClickPosition
+                        )
+                    )
+                })
+
             }
         }
     }

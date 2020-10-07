@@ -212,7 +212,7 @@ class PlayService : Service() {
         val size = observers.beginBroadcast()
         for (i in 0 until size) {
             val observer = observers.getBroadcastItem(i)
-            observer.onSongChange(songs[currentPosition],currentPosition)
+            observer.onSongChange(songs[currentPosition], currentPosition)
         }
         observers.finishBroadcast()
         broadcastIng.set(false)
@@ -248,20 +248,35 @@ class PlayService : Service() {
         }
 
         override fun download(song: Song?) {
-            song?.let { 
-                DownloadUtil.downloadSong(it.name?:"",it.url?:"",object : SimpleDownloadListener(){
-                    override fun onProgress(progress: Int) {
-                        NotifyManager.downloadProgress(it.id,it.name,progress)
+            song?.let {
+                model.getSongPlayInfo(it, object : SongInfoModel.OnSongPlayInfoListener {
+                    override fun getSongPlayInfoSuccess(song: Song) {
+                        if (song.url != null && song.url != NULL_URL) {
+                            DownloadUtil.downloadSong(
+                                it.name ?: "",
+                                it.url ?: "",
+                                object : SimpleDownloadListener() {
+                                    override fun onProgress(progress: Int) {
+                                        NotifyManager.downloadProgress(it.id, it.name, progress)
+                                    }
+
+                                    override fun onSuccess() {
+                                        super.onSuccess()
+                                    }
+
+                                    override fun onPaused() {
+                                        super.onPaused()
+                                    }
+                                })
+                        }
                     }
 
-                    override fun onSuccess() {
-                        super.onSuccess()
+                    override fun error(msg: String) {
+
                     }
 
-                    override fun onPaused() {
-                        super.onPaused()
-                    }
                 })
+                
             }
         }
 
