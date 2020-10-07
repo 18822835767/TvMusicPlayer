@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.appcompat.widget.ListPopupWindow
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,12 +19,14 @@ import com.example.tvmusicplayer.adapter.SearchAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.service.PlayServiceManager
+import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.Constant.SearchSongConstant.SEARCH_TYPE
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
 
 class SearchFragment : Fragment(), SearchContract.OnView,
-    BaseRecyclerViewAdapter.OnItemClickListener {
+    BaseRecyclerViewAdapter.OnItemClickListener, SearchAdapter.OnPopupClickListener,
+    AdapterView.OnItemClickListener {
 
     private val TAG = "SearchFragment"
 
@@ -30,6 +35,8 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SearchAdapter
     private lateinit var manager: LinearLayoutManager
+    private lateinit var listPopupWindow: ListPopupWindow
+    private lateinit var popupAdapter: ArrayAdapter<String>
 
     /**
      * 分页加载的数量.
@@ -55,6 +62,16 @@ class SearchFragment : Fragment(), SearchContract.OnView,
      * 记录最新搜索的关键词.
      * */
     private var lastKeyWord: String = ""
+
+    private val popupArray = arrayOf(
+        Constant.PopupWindowConstant.NEXT_PAY,
+        Constant.PopupWindowConstant.DOWNLOAD
+    )
+
+    /**
+     * 记录点击的popup的Song在Adapter中的位置.
+     * */
+    private var popupItemClickPosition = -1
 
     companion object {
         fun newInstance(): SearchFragment {
@@ -90,6 +107,7 @@ class SearchFragment : Fragment(), SearchContract.OnView,
 
         adapter = SearchAdapter(mutableListOf<Song>(), R.layout.search_item)
         adapter.setItemClickListener(this)
+        adapter.setOnPopupClickListener(this)
         manager = LinearLayoutManager(context)
         recyclerView.layoutManager = manager
         recyclerView.adapter = adapter
@@ -100,6 +118,22 @@ class SearchFragment : Fragment(), SearchContract.OnView,
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        context?.let {
+            //设置弹窗数据
+            listPopupWindow = ListPopupWindow(it)
+            popupAdapter = ArrayAdapter(it, android.R.layout.simple_list_item_1, popupArray)
+            listPopupWindow.setAdapter(popupAdapter)
+            //设置宽度和高度
+            val density = this.resources.displayMetrics.density.toInt()//值是3.0
+            val itemHeight =
+                this.resources.getDimensionPixelOffset(R.dimen.popup_item_height)//55dp->165
+            listPopupWindow.setContentWidth((125 * density))
+            listPopupWindow.height = popupArray.size * itemHeight
+//        listPopupWindow.horizontalOffset = (-25 * density) 这句话好像没作用
+            listPopupWindow.isModal = true
+            listPopupWindow.setOnItemClickListener(this)
+        }
     }
 
     private fun initEvent() {
@@ -222,6 +256,29 @@ class SearchFragment : Fragment(), SearchContract.OnView,
     }
 
     override fun onItemClick(v: View?, position: Int) {
-        ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.playSongs(adapter.getItems(),position)})
+        ThreadUtil.runOnThreadPool(Runnable {
+            PlayServiceManager.playSongs(
+                adapter.getItems(),
+                position
+            )
+        })
+    }
+
+    override fun onPopupClick(v: View?, position: Int) {
+        v?.let {
+            popupItemClickPosition = position
+            listPopupWindow.anchorView = it
+            listPopupWindow.show()
+        }
+    }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        listPopupWindow.dismiss()
+
+        if (popupArray[position] == Constant.PopupWindowConstant.NEXT_PAY) {
+            if(popupItemClickPosition != -1){
+                PlayServiceManager.addNext(adapter.getItem(popupItemClickPosition))
+            }
+        }
     }
 }

@@ -39,6 +39,7 @@ class Constant {
     
     object PopupWindowConstant{
         const val NEXT_PAY = "下一首播放"
+        const val DOWNLOAD = "下载"
     }
     
     object DownloadSong{
