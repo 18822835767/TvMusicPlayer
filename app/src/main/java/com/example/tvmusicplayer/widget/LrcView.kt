@@ -339,7 +339,7 @@ class LrcView : View {
 
                 currentLine = i - 1
 
-                scroller.abortAnimation()//? 若有未完成的滚动，完成它，终止
+                scroller.abortAnimation()//若有未完成的滚动，终止(不继续滚动了)
                 scroller.startScroll(i, 0, 0, scrollHeight, SCROLL_TIME)//这里的i用于记录下一行的行数
                 postInvalidate()
                 break
@@ -436,7 +436,7 @@ class LrcView : View {
         currentLine = -1
         nextTime = 0
         offSetY = 0F
-        postInvalidate()//?
+        postInvalidate()
     }
 
     /**
