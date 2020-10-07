@@ -165,13 +165,15 @@ class LrcView : View {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec) //?
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         //重新设置View的高度
         val measureHeightSpec = MeasureSpec.makeMeasureSpec(lrcHeight, MeasureSpec.AT_MOST)
         super.onMeasure(widthMeasureSpec, measureHeightSpec)
     }
 
-    //?
+    /**
+     * 在控件大小发生改变时调用,在这里去获取控件的宽度.
+     * */
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         viewWidth = measuredWidth
@@ -188,11 +190,11 @@ class LrcView : View {
     /**
      * 清空歌词.
      * */
-    fun clearLyrics(){
+    fun clearLyrics() {
         lyrList.clear()
         invalidate()
     }
-    
+
 
     /**
      * 解析歌词的文本.
@@ -230,7 +232,7 @@ class LrcView : View {
 
     override fun onDraw(canvas: Canvas?) {
         //得到中心的Y坐标
-        val centerY = (measuredHeight + textBounds.height()) / 2 //?
+        val centerY = (measuredHeight + textBounds.height()) / 2 
         //如果歌词列表是空的，那么就提示无歌词
         if (lyrList.isEmpty()) {
             canvas?.drawText(
@@ -240,7 +242,7 @@ class LrcView : View {
             return
         }
 
-        val span = textBounds.height() + dividerHeight //?
+        val span = textBounds.height() + dividerHeight 
 
         var j = 1
         //如果current等于-1，说明当前还未到第一句歌词的开始时间
