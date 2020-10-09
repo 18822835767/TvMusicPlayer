@@ -37,7 +37,7 @@ class DownloadSongModelImpl : DownloadSongModel {
         DBManager.database?.let {db-> 
             var path : String? = null
             val cursor = db.query(Constant.DBConstant.DOWNLOAD_TABLE, arrayOf("url"),
-                "song_id = ", arrayOf(songId.toString()),null,null,
+                "song_id=?", arrayOf(songId.toString()),null,null,
                 null)
             if(cursor.moveToFirst()){
                 path = cursor.getString(cursor.getColumnIndex("url"))

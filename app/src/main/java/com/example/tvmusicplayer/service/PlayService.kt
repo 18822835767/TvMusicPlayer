@@ -141,7 +141,7 @@ class PlayService : Service() {
             song.id?.let { songId ->
                 daoModel.querySongPath(songId, object : DownloadSongModel.OnListener {
                     override fun querySongPathSuccess(path: String?) {
-                        LogUtil.d("abcde","查询到的path为空？${path == null}")
+//                        LogUtil.d("abcde","查询到的path为空？${path == null}")
                         path?.let {
                             if (File(it).exists()) {
                                 performSong(it)
