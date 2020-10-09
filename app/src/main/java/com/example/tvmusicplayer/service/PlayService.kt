@@ -255,9 +255,10 @@ class PlayService : Service() {
                         NotifyManager.downloadProgress(it.id, it.name, progress)
                     }
 
-                    override fun onSuccess() {
+                    override fun onSuccess(localPath : String) {
                         showText("歌曲 ${it.name} 下载成功")
                         NotifyManager.closeNotify(it.id)
+//                        LogUtil.d("abcde","路径：${localPath}")
                     }
 
                     override fun onFailed() {

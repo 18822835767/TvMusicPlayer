@@ -49,7 +49,7 @@ object DownloadUtil {
             }
             //如果文件的字节长度相同，说明之前已经下载成功了
             if (contentLength == downloadedLength) {
-                listener.onSuccess()
+                listener.onSuccess(file.path)
                 return
             }
             //Header里告诉服务器，跳过多少字节后开始下载.
@@ -78,7 +78,7 @@ object DownloadUtil {
                     len = inputStream!!.read(b)
                 }
                 it.close()
-                listener.onSuccess()
+                listener.onSuccess(file.path)
                 return
             }
         } catch (e: Exception) {

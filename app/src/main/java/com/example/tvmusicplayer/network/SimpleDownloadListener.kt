@@ -7,7 +7,7 @@ abstract class SimpleDownloadListener : DownloadListener{
     override fun onProgress(progress : Int) {
     }
 
-    override fun onSuccess() {
+    override fun onSuccess(localPath : String) {
     }
 
     override fun onFailed() {

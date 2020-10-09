@@ -5,7 +5,7 @@ interface DownloadListener {
     
     fun onProgress(progress : Int)
     
-    fun onSuccess()
+    fun onSuccess(localPath : String)
     
     fun onFailed()
     
