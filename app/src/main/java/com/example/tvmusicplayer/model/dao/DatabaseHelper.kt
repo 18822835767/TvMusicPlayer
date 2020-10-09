@@ -33,7 +33,10 @@ class DatabaseHelper(
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-
+            db?.let { 
+                it.execSQL("drop table if exists DownloadSong")
+                onCreate(it)
+            }
     }
 
 }

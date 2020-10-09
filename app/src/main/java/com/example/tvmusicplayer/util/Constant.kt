@@ -48,7 +48,7 @@ class Constant {
         //下载的歌曲的表的名字.
         const val DOWNLOAD_TABLE = "DownloadSong"
         //当前的版本
-        const val CURRENT_VERSION = 2
+        const val CURRENT_VERSION = 3
         
 //        object DownloadSongTableFields{
 //            const val DOWNLOAD_ID = "download_id"
