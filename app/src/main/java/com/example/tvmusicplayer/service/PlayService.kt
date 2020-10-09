@@ -10,7 +10,9 @@ import com.example.tvmusicplayer.IPlayInterface
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.manager.NotifyManager
+import com.example.tvmusicplayer.model.DownloadSongModel
 import com.example.tvmusicplayer.model.SongInfoModel
+import com.example.tvmusicplayer.model.impl.DownloadSongModelImpl
 import com.example.tvmusicplayer.model.impl.SongInfoModelImpl
 import com.example.tvmusicplayer.network.DownloadUtil
 import com.example.tvmusicplayer.network.SimpleDownloadListener
@@ -24,6 +26,7 @@ import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_STOP
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.RANDOM_PLAY
 import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.ThreadUtil
+import java.io.File
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -34,7 +37,8 @@ class PlayService : Service() {
     private var timer: Timer? = null
     private var songs = mutableListOf<Song>()
     private var observers = RemoteCallbackList<IPlayObserver>()
-    private var model: SongInfoModel = SongInfoModelImpl()
+    private var infoModel: SongInfoModel = SongInfoModelImpl()
+    private var daoModel: DownloadSongModel = DownloadSongModelImpl()
     private var broadcastIng: AtomicBoolean = AtomicBoolean(false)
 
     /**
@@ -134,15 +138,29 @@ class PlayService : Service() {
     private fun loadSong(song: Song) {
         //在线歌曲
         if (song.online) {
-            //如果url是空，那么去请求url的数据
-            if (song.url == null) {
-                model.getSongPlayInfo(song, listener)
-                return
-            }
+            song.id?.let { songId ->
+                daoModel.querySongPath(songId, object : DownloadSongModel.OnListener {
+                    override fun querySongPathSuccess(path: String?) {
+                        LogUtil.d("abcde","查询到的path为空？${path == null}")
+                        path?.let {
+                            if (File(it).exists()) {
+                                performSong(it)
+                                return
+                            }
+                        }
 
-            //如果url不为空，那么请求歌曲的播放
-            song.url?.let {
-                performSong(it)
+                        //如果url是空，那么去请求url的数据
+                        if (song.url == null) {
+                            infoModel.getSongPlayInfo(song, listener)
+                            return
+                        }
+
+                        //如果url不为空，那么请求歌曲的播放
+                        song.url?.let {
+                            performSong(it)
+                        }
+                    }
+                })
             }
             //本地歌曲
         } else {
@@ -255,7 +273,7 @@ class PlayService : Service() {
                         NotifyManager.downloadProgress(it.id, it.name, progress)
                     }
 
-                    override fun onSuccess(localPath : String) {
+                    override fun onSuccess(localPath: String) {
                         showText("歌曲 ${it.name} 下载成功")
                         NotifyManager.closeNotify(it.id)
 //                        LogUtil.d("abcde","路径：${localPath}")
@@ -278,7 +296,7 @@ class PlayService : Service() {
                 }
 
                 //url为null，说明之前没有为该song请求过数据.
-                model.getSongPlayInfo(it, object : SongInfoModel.OnSongPlayInfoListener {
+                infoModel.getSongPlayInfo(it, object : SongInfoModel.OnSongPlayInfoListener {
                     //请求数据成功
                     override fun getSongPlayInfoSuccess(song: Song) {
                         if (song.url != NULL_URL) {

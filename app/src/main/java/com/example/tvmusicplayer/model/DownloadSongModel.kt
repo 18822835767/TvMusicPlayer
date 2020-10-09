@@ -10,7 +10,7 @@ interface DownloadSongModel {
     
     fun querySongPath(songId : Long, listener : OnListener)
     
-    interface OnListener : BaseModelListener{
+    interface OnListener{
         fun querySongPathSuccess(path : String?)
     }
 }

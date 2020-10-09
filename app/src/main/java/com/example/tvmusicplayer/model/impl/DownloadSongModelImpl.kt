@@ -36,7 +36,7 @@ class DownloadSongModelImpl : DownloadSongModel {
     override fun querySongPath(songId: Long, listener: DownloadSongModel.OnListener) {
         DBManager.database?.let {db-> 
             var path : String? = null
-            var cursor = db.query(Constant.DBConstant.DOWNLOAD_TABLE, arrayOf("url"),
+            val cursor = db.query(Constant.DBConstant.DOWNLOAD_TABLE, arrayOf("url"),
                 "song_id = ", arrayOf(songId.toString()),null,null,
                 null)
             if(cursor.moveToFirst()){

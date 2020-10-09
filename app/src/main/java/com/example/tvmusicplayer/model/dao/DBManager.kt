@@ -16,7 +16,7 @@ object DBManager {
         }
     }
     
-    fun onDestroy(){
+    fun onClose(){
         helper?.close()
     }
 }
