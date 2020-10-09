@@ -36,9 +36,18 @@ class Constant {
         //要搜索的类型，相关数值和网易云接口需要的数据有关.
         const val SEARCH_TYPE: Int = 1
     }
-    
-    object PopupWindowConstant{
+
+    object PopupWindowConstant {
         const val NEXT_PAY = "下一首播放"
         const val DOWNLOAD = "下载"
+    }
+
+    object DBConstant {
+        //数据库的名字.
+        const val DB_NAME = "TvMusicPlayer.db"
+        //下载的歌曲的表的名字.
+        const val DOWNLOAD_TABLE = "DownloadSong"
+        //当前的版本
+        const val CURRENT_VERSION = 1
     }
 }
