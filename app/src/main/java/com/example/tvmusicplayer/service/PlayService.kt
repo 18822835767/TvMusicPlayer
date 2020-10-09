@@ -276,6 +276,9 @@ class PlayService : Service() {
                     override fun onSuccess(localPath: String) {
                         showText("歌曲 ${it.name} 下载成功")
                         NotifyManager.closeNotify(it.id)
+                        //将数据插入数据库中
+                        song.url = localPath
+                        daoModel.insert(song)
 //                        LogUtil.d("abcde","路径：${localPath}")
                     }
 

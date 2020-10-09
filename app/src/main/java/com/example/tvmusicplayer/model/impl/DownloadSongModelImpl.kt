@@ -6,10 +6,12 @@ import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.model.DownloadSongModel
 import com.example.tvmusicplayer.model.dao.DBManager
 import com.example.tvmusicplayer.util.Constant
+import com.example.tvmusicplayer.util.LogUtil
 
 class DownloadSongModelImpl : DownloadSongModel {
     override fun insert(song: Song) {
         DBManager.database?.let { db ->
+//            LogUtil.d("abcde","song:${song.toString()}")
             val values = ContentValues()
             values.put("song_id", song.id)
             values.put("url", song.url)
