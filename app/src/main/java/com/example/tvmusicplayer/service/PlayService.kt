@@ -486,6 +486,8 @@ class PlayService : Service() {
             stopTimer()
         }
 
+        LogUtil.d(TAG,"dataSource:${dataSource}")
+        
         mediaPlayer?.let {
             hasReset = true
             it.reset()
