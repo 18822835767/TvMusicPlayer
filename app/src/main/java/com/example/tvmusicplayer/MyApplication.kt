@@ -61,9 +61,7 @@ class MyApplication : Application() {
         }
         
     }
-
     
-
     /**
      *
      * 判断是不是UI主进程，因为有些东西只能在UI主进程初始化
