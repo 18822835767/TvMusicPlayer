@@ -31,7 +31,7 @@ class DownloadSongModelImpl : DownloadSongModel {
 
     override fun delete(songId: Long) {
         DBManager.database?.delete(
-            Constant.DBConstant.DOWNLOAD_TABLE, "song_id = ", arrayOf(songId.toString())
+            Constant.DBConstant.DOWNLOAD_TABLE, "song_id=?", arrayOf(songId.toString())
         )
     }
 
