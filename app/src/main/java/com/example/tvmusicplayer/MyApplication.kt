@@ -9,6 +9,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Process
 import com.example.tvmusicplayer.model.LoginModel
+import com.example.tvmusicplayer.model.dao.DBManager
 import com.example.tvmusicplayer.model.impl.LoginModelImpl
 import com.example.tvmusicplayer.service.PlayService
 import com.example.tvmusicplayer.service.PlayServiceManager
@@ -39,6 +40,8 @@ class MyApplication : Application() {
         
         app = this
         
+        DBManager.onInit(this)
+        
         val pid = Process.myPid()
         val process : String = getAppNameByPID(this,pid)?:"Null_process"
         LogUtil.d(TAG,"MyApplication onCreate,processName : $process")
@@ -58,7 +61,9 @@ class MyApplication : Application() {
         }
         
     }
+
     
+
     /**
      *
      * 判断是不是UI主进程，因为有些东西只能在UI主进程初始化
