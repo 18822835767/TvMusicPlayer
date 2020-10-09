@@ -8,9 +8,9 @@ interface DownloadSongModel {
     
     fun delete(songId : Long)
     
-    fun querySong(songId : Long,listener : OnListener)
+    fun querySongPath(songId : Long, listener : OnListener)
     
     interface OnListener : BaseModelListener{
-        fun querySongSuccess(song : Song)
+        fun querySongPathSuccess(path : String?)
     }
 }

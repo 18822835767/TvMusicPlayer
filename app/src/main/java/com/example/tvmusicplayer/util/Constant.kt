@@ -49,5 +49,17 @@ class Constant {
         const val DOWNLOAD_TABLE = "DownloadSong"
         //当前的版本
         const val CURRENT_VERSION = 1
+        
+//        object DownloadSongTableFields{
+//            const val DOWNLOAD_ID = "download_id"
+//            const val SONG_ID = "song_id"
+//            const val URL = "url"
+//            const val NAME = "name"
+//            const val BR = "br"
+//            const val ARTIST_NAME = "artist_name"
+//            const val PIC_URL = "pic_url"
+//            const val FIRST_LETTER = "first_letter"
+//            const val ONLINE = "online"
+//        }
     }
 }
