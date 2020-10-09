@@ -277,8 +277,8 @@ class PlayService : Service() {
                         showText("歌曲 ${it.name} 下载成功")
                         NotifyManager.closeNotify(it.id)
                         //将数据插入数据库中
-                        song.url = localPath
-                        daoModel.insert(song)
+                        it.url = localPath
+                        daoModel.insert(it)
 //                        LogUtil.d("abcde","路径：${localPath}")
                     }
 
