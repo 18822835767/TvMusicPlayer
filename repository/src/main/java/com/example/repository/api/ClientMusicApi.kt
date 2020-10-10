@@ -54,6 +54,6 @@ interface ClientMusicApi {
      * 获取推荐的新音乐.
      * url：baseUrl/personalized/newsong
      * */
-    fun getRecommendNewSong()
+    fun getRecommendNewSong(callback : RequestCallBack<RecommendNewSong>)
     
 }

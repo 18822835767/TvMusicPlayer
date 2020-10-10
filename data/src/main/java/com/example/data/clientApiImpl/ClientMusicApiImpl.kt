@@ -180,7 +180,7 @@ class ClientMusicApiImpl : ClientMusicApi {
         
     }
 
-    override fun getRecommendNewSong() {
+    override fun getRecommendNewSong(callback : RequestCallBack<RecommendNewSong>) {
         
     }
 
