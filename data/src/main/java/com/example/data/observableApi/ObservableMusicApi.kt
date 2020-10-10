@@ -24,4 +24,13 @@ interface ObservableMusicApi {
 
     @GET("/lyric")
     fun getSongLyric(@Query("id")id: Long) : Observable<LyricJson>
+
+    @GET("/personalized")
+    fun getRecommendPlayList(@Query("limit")limit: Int) : Observable<RecommendPlayList>
+
+    @GET("/recommend/resource")
+    fun getDailyRecommendPlayList() : Observable<DailyRecommendPlayList>
+
+    @GET("/personalized/newsong")
+    fun getRecommendNewSong() : Observable<RecommendNewSong>
 }

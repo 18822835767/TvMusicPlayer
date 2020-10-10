@@ -51,11 +51,55 @@ class ClientSearchApiImpl : ClientSearchApi{
     }
 
     override fun getDefaultKeywords(callBack: RequestCallBack<SearchDefaultJson>) {
-        
+        DataUtil.observableSearchApi.getDefaultKeywords()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<SearchDefaultJson>{
+                override fun onComplete() {
+                    LogUtil.d(TAG, "onComplete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    LogUtil.d(TAG, "onSubscribe")
+                }
+
+                override fun onNext(t: SearchDefaultJson) {
+                    LogUtil.d(TAG, "onNext")
+                    callBack.callback(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    LogUtil.d(TAG, "onError" + e.message)
+                    callBack.error(e.message ?: "UnKnown_error")
+                }
+
+            })
     }
 
     override fun getHotList(callBack: RequestCallBack<HotList>) {
-        
+        DataUtil.observableSearchApi.getHotList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<HotList>{
+                override fun onComplete() {
+                    LogUtil.d(TAG, "onComplete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    LogUtil.d(TAG, "onSubscribe")
+                }
+
+                override fun onNext(t: HotList) {
+                    LogUtil.d(TAG, "onNext")
+                    callBack.callback(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    LogUtil.d(TAG, "onError" + e.message)
+                    callBack.error(e.message ?: "UnKnown_error")
+                }
+
+            })
     }
 
 }
