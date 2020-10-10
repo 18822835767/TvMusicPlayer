@@ -5,6 +5,7 @@ import com.example.data.DataUtil
 import com.example.data.util.LogUtil
 import com.example.repository.RequestCallBack
 import com.example.repository.api.ClientSearchApi
+import com.example.repository.bean.HotList
 import com.example.repository.bean.SearchDefaultJson
 import com.example.repository.bean.SearchSongJson
 import io.reactivex.Observer
@@ -50,7 +51,11 @@ class ClientSearchApiImpl : ClientSearchApi{
     }
 
     override fun getDefaultKeywords(callBack: RequestCallBack<SearchDefaultJson>) {
-        TODO("Not yet implemented")
+        
+    }
+
+    override fun getHotList(callBack: RequestCallBack<HotList>) {
+        
     }
 
 }

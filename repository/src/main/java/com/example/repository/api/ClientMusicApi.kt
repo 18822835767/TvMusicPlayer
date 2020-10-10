@@ -38,4 +38,22 @@ interface ClientMusicApi {
      * */
     fun getSongLyric(id: Long, callBack: RequestCallBack<LyricJson>)
 
+    /**
+     * 获取推荐歌单，无需登录.
+     * url：baseUrl/personalized?limit=...
+     * */
+    fun getRecommendPlayList(limit : Int,callBack: RequestCallBack<RecommendPlayList>)
+
+    /**
+     * 获取每日推荐歌单，需要登录.
+     * url：baseUrl/recommend/resource
+     * */
+    fun getDailyRecommendPlayList(callback : RequestCallBack<DailyRecommendPlayList>)
+
+    /**
+     * 获取推荐的新音乐.
+     * url：baseUrl/personalized/newsong
+     * */
+    fun getRecommendNewSong()
+    
 }

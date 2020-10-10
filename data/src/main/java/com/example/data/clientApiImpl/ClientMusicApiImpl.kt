@@ -172,4 +172,16 @@ class ClientMusicApiImpl : ClientMusicApi {
             })
     }
 
+    override fun getRecommendPlayList(limit: Int, callBack: RequestCallBack<RecommendPlayList>) {
+        
+    }
+
+    override fun getDailyRecommendPlayList(callback: RequestCallBack<DailyRecommendPlayList>) {
+        
+    }
+
+    override fun getRecommendNewSong() {
+        
+    }
+
 }
