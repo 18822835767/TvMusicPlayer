@@ -21,4 +21,7 @@ interface ObservableLoginApi {
     
     @GET("/logout")
     fun logout() : Observable<Unit>
+    
+    @GET("/login/refresh")
+    fun refreshLogin() : Observable<Unit>
 }
