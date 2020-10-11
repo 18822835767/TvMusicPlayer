@@ -40,6 +40,9 @@ object NotifyManager {
     var remoteCommunicator : RemoteCommunicator? = null
 
     private val observer = object : SimplePlayObserver(){
+        /**
+         * 好奇怪，这里是运行在main线程里的？是注册观察者的时候与服务端在同一个进程的原因吗？
+         * */
         override fun onPlayStateChange(playState: Int) {
             when (playState) {
                 PLAY_STATE_PLAY -> {
@@ -54,7 +57,13 @@ object NotifyManager {
         }
 
         override fun onSongChange(song: Song?, position: Int) {
-            
+            song?.let {s-> 
+                remoteCtrlView?.let {
+                    it.setTextViewText(R.id.song_name,s.name?:"")
+                    it.setTextViewText(R.id.singer_name,s.artistName?:"")
+                    updateCtrlView()
+                }
+            }
         }
 
         override fun onSongsEmpty() {

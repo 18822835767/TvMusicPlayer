@@ -77,6 +77,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     }
 
     private var observer: SimplePlayObserver = object : SimplePlayObserver() {
+        /**
+         * 运行在客户端的binder线程里面.
+         * */
         override fun onPlayStateChange(playState: Int) {
             ThreadUtil.runOnUi(Runnable {
                 when (playState) {
