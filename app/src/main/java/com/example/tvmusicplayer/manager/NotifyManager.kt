@@ -13,8 +13,12 @@ import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.detail.DetailActivity
+import com.example.tvmusicplayer.service.SimplePlayObserver
 import com.example.tvmusicplayer.util.Constant
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
 import com.example.tvmusicplayer.util.LogUtil
 
 /**
@@ -32,9 +36,31 @@ object NotifyManager {
     private var remoteCtrlView: RemoteViews? = null
     private var ctrlNotification: Notification? = null
     private val receiver = SongCtrlReceiver()
-    
     var remoteClickListener : RemoteClickListener? = null
 
+    private val observer = object : SimplePlayObserver(){
+        override fun onPlayStateChange(playState: Int) {
+            when (playState) {
+                PLAY_STATE_PLAY -> {
+                    remoteCtrlView?.setImageViewResource(R.id.remote_action,R.drawable.ic_remote_pause)
+                    updateCtrlView()
+                }
+                PLAY_STATE_PAUSE -> {
+                    remoteCtrlView?.setImageViewResource(R.id.remote_action,R.drawable.ic_remote_play)
+                    updateCtrlView()
+                }
+            }
+        }
+
+        override fun onSongChange(song: Song?, position: Int) {
+            
+        }
+
+        override fun onSongsEmpty() {
+            
+        }
+    }
+    
     fun init(context: Context) {
         this.context = context
         manager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager?
@@ -62,6 +88,7 @@ object NotifyManager {
                 setCtrlClickEvent()
                 LogUtil.d(TAG, "展示音乐播放的RemoteView")
                 manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, ctrlNotification)
+                
             }
         }
     }
@@ -142,7 +169,13 @@ object NotifyManager {
         context?.unregisterReceiver(receiver)
     }
 
-
+    /**
+     * 更新RemoteView.
+     * */
+    private fun updateCtrlView(){
+        manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, ctrlNotification)
+    }
+    
     fun downloadProgress(songId: Long?, title: String?, progress: Int) {
         if (songId != null && title != null) {
             val builder: Notification.Builder?
