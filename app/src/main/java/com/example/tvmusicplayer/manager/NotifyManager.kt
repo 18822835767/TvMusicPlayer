@@ -3,6 +3,7 @@ package com.example.tvmusicplayer.manager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
@@ -12,6 +13,7 @@ import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.detail.DetailActivity
 import com.example.tvmusicplayer.util.Constant
 import com.example.tvmusicplayer.util.LogUtil
 
@@ -28,6 +30,7 @@ object NotifyManager {
     private val channelName = "channel_name"
     private val channelId = "channel_id"
     private var remoteCtrlView: RemoteViews? = null
+    private var ctrlNotification: Notification? = null
     private val receiver = SongCtrlReceiver()
 
     fun init(context: Context) {
@@ -48,14 +51,59 @@ object NotifyManager {
             context?.let { context ->
                 remoteCtrlView = RemoteViews(context.packageName, R.layout.play_ctrl_notification)
                 val builder = NotificationCompat.Builder(context, channelId)
-                builder.setSmallIcon(R.drawable.ic_notify)
+                ctrlNotification = builder.setSmallIcon(R.drawable.ic_notify)
                     .setContentTitle("音乐播放器")
                     .setContentText("控制一下")
                     .setOngoing(true)
                     .setCustomBigContentView(remoteCtrlView)
+                    .build()
+                setCtrlClickEvent()
                 LogUtil.d(TAG, "展示音乐播放的RemoteView")
-                manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, builder.build())
+                manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, ctrlNotification)
             }
+        }
+    }
+
+    /**
+     * 为RemoteView增加点击事件的监听.
+     * */
+    private fun setCtrlClickEvent() {
+        //启动歌曲详情页的活动
+        ctrlNotification?.contentIntent = PendingIntent.getActivity(
+            context, 0,
+            Intent(context, DetailActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        //发送一系列的广播.
+        remoteCtrlView?.let {
+
+            it.setOnClickPendingIntent(
+                R.id.remote_cancel, PendingIntent.getBroadcast(
+                    context, 0, Intent(Constant.RemoteSongCtrlConstant.CTRL_CANCEL),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
+
+            it.setOnClickPendingIntent(
+                R.id.remote_pre, PendingIntent.getBroadcast(
+                    context, 0, Intent(Constant.RemoteSongCtrlConstant.CTRL_PRE),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
+
+            it.setOnClickPendingIntent(
+                R.id.remote_action, PendingIntent.getBroadcast(
+                    context, 0, Intent(Constant.RemoteSongCtrlConstant.CTRL_ACTION),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
+
+            it.setOnClickPendingIntent(
+                R.id.remote_next, PendingIntent.getBroadcast(
+                    context, 0, Intent(Constant.RemoteSongCtrlConstant.CTRL_NEXT),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
         }
     }
 
@@ -67,6 +115,7 @@ object NotifyManager {
             LogUtil.d(TAG, "关闭音乐播放的RemoteView")
             manager?.cancel(Constant.RemoteSongCtrlConstant.CTRL_ID)
             remoteCtrlView = null
+            ctrlNotification = null
         }
     }
 
@@ -90,6 +139,7 @@ object NotifyManager {
         LogUtil.d(TAG, "取消注册广播接收器")
         context?.unregisterReceiver(receiver)
     }
+
 
     fun downloadProgress(songId: Long?, title: String?, progress: Int) {
         if (songId != null && title != null) {
@@ -121,7 +171,25 @@ object NotifyManager {
 
     private class SongCtrlReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let { i ->
+                when (i.action) {
+                    Constant.RemoteSongCtrlConstant.CTRL_ACTION -> {
 
+                    }
+
+                    Constant.RemoteSongCtrlConstant.CTRL_CANCEL -> {
+
+                    }
+
+                    Constant.RemoteSongCtrlConstant.CTRL_NEXT -> {
+
+                    }
+
+                    Constant.RemoteSongCtrlConstant.CTRL_PRE -> {
+
+                    }
+                }
+            }
         }
     }
 }
