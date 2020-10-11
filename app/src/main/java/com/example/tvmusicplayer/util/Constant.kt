@@ -62,4 +62,8 @@ class Constant {
 //            const val ONLINE = "online"
 //        }
     }
+    
+    object RemoteSongCtrlConstant{
+        const val CTRL_ID = 1
+    }
 }

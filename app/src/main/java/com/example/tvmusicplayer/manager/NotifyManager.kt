@@ -6,18 +6,22 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.os.Build
+import android.widget.RemoteViews
+import androidx.core.app.NotificationCompat
 import com.example.tvmusicplayer.R
 
 /**
  * 通知的管理者.
  * */
 object NotifyManager {
+    
     private var manager: NotificationManager? = null
     private var channel: NotificationChannel? = null
     private var context: Context? = null
     private val channelName = "channel_name"
     private val channelId = "channel_id"
-
+    private var remoteCtrlView : RemoteViews? = null
+    
     fun init(context: Context) {
         this.context = context
         manager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager?
@@ -28,6 +32,19 @@ object NotifyManager {
         }
     }
 
+    /**
+     * 展示通知栏的RemoteView.
+     * */
+    fun showCtrlView(){
+        if(remoteCtrlView == null){
+            context?.let {context ->  
+                remoteCtrlView = RemoteViews(context.packageName,R.layout.play_ctrl_notification)
+                val builder = NotificationCompat.Builder(context, channelId)
+                
+            }
+        }
+    }
+    
     fun downloadProgress(songId: Long?, title: String?, progress: Int) {
         if (songId != null && title != null) {
             val builder: Notification.Builder?
@@ -40,7 +57,7 @@ object NotifyManager {
                 builder.setPriority(Notification.PRIORITY_DEFAULT)
             }
             
-            builder.setSmallIcon(R.mipmap.ic_launcher)
+            builder.setSmallIcon(R.drawable.ic_app_icon)
             builder.setContentTitle(title)
             if(progress >= 0){
                 builder.setContentText("${progress}%")
@@ -55,6 +72,4 @@ object NotifyManager {
             manager?.cancel(it.toInt())
         }
     }
-    
-
 }
