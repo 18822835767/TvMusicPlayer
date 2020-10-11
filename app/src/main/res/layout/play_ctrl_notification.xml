@@ -1,42 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="120dp"
     android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/play_cover"
-        android:layout_width="60dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
-        android:src="@drawable/album_default_view"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/empty_grey"/>
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_remote_cancel"
-            android:layout_gravity="end"
-            android:layout_margin="3dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+            
+            <LinearLayout
+                android:layout_width="190dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/song_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="歌曲名字"
+                    android:textSize="16sp"
+                    android:textColor="#212121"/>
+
+                <TextView
+                    android:id="@+id/singer_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#888888"
+                    android:textSize="13sp"
+                    android:text="歌手"/>
+                
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_remote_cancel"
+                    android:layout_gravity="end"
+                    android:layout_margin="5dp"/>
+                
+            </FrameLayout>
+            
+        </LinearLayout>
         
-        <TextView
-            android:id="@+id/song_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="歌曲名字"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/singer_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="歌手"/>
-
     </LinearLayout>
     
 </LinearLayout>

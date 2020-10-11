@@ -111,6 +111,7 @@ class PlayService : Service() {
             // todo 增加监听
             it.setOnPreparedListener { mp ->
                 if (mp != null) {
+                    NotifyManager.showCtrlView()
                     mp.start()
                     onSongChange()
                     currentState = PLAY_STATE_PLAY

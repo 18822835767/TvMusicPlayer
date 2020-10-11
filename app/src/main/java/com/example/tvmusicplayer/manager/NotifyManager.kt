@@ -9,6 +9,7 @@ import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.tvmusicplayer.R
+import com.example.tvmusicplayer.util.Constant
 
 /**
  * 通知的管理者.
@@ -40,7 +41,12 @@ object NotifyManager {
             context?.let {context ->  
                 remoteCtrlView = RemoteViews(context.packageName,R.layout.play_ctrl_notification)
                 val builder = NotificationCompat.Builder(context, channelId)
-                
+                builder.setSmallIcon(R.drawable.ic_notify)
+                    .setContentTitle("音乐播放器")
+                    .setContentText("控制一下")
+                    .setOngoing(true)
+                    .setCustomBigContentView(remoteCtrlView)
+                manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID,builder.build())
             }
         }
     }
@@ -57,7 +63,7 @@ object NotifyManager {
                 builder.setPriority(Notification.PRIORITY_DEFAULT)
             }
             
-            builder.setSmallIcon(R.drawable.ic_app_icon)
+            builder.setSmallIcon(R.drawable.ic_notify)
             builder.setContentTitle(title)
             if(progress >= 0){
                 builder.setContentText("${progress}%")
