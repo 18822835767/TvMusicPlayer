@@ -86,7 +86,7 @@ object NotifyManager {
     /**
      * 取消注册广播接收器.
      * */
-    fun unRegisterReceiver() {
+    fun unRegisterRemoteReceiver() {
         LogUtil.d(TAG, "取消注册广播接收器")
         context?.unregisterReceiver(receiver)
     }

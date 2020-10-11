@@ -97,6 +97,8 @@ class PlayService : Service() {
         super.onCreate()
         initMediaPlayer()
         NotifyManager.init(this)
+        NotifyManager.registerRemoteReceiver()
+        
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -183,6 +185,7 @@ class PlayService : Service() {
             it.release()
             mediaPlayer = null
         }
+        NotifyManager.unRegisterRemoteReceiver()
         NotifyManager.closeCtrlView()
         super.onDestroy()
     }
