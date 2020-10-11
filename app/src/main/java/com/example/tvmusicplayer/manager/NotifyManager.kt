@@ -12,6 +12,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.detail.DetailActivity
@@ -36,7 +37,7 @@ object NotifyManager {
     private var remoteCtrlView: RemoteViews? = null
     private var ctrlNotification: Notification? = null
     private val receiver = SongCtrlReceiver()
-    var remoteClickListener : RemoteClickListener? = null
+    var remoteCommunicator : RemoteCommunicator? = null
 
     private val observer = object : SimplePlayObserver(){
         override fun onPlayStateChange(playState: Int) {
@@ -88,7 +89,8 @@ object NotifyManager {
                 setCtrlClickEvent()
                 LogUtil.d(TAG, "展示音乐播放的RemoteView")
                 manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, ctrlNotification)
-                
+                //注册音乐播放的观察者
+                remoteCommunicator?.registerObserver(observer)
             }
         }
     }
@@ -145,6 +147,8 @@ object NotifyManager {
             manager?.cancel(Constant.RemoteSongCtrlConstant.CTRL_ID)
             remoteCtrlView = null
             ctrlNotification = null
+            //取消音乐播放观察者的注册
+            remoteCommunicator?.unRegisterObserver(observer)
         }
     }
 
@@ -209,19 +213,19 @@ object NotifyManager {
             intent?.let { i ->
                 when (i.action) {
                     Constant.RemoteSongCtrlConstant.CTRL_ACTION -> {
-                        remoteClickListener?.action()
+                        remoteCommunicator?.action()
                     }
 
                     Constant.RemoteSongCtrlConstant.CTRL_CANCEL -> {
-                        remoteClickListener?.cancel()
+                        remoteCommunicator?.cancel()
                     }
 
                     Constant.RemoteSongCtrlConstant.CTRL_NEXT -> {
-                        remoteClickListener?.next()
+                        remoteCommunicator?.next()
                     }
 
                     Constant.RemoteSongCtrlConstant.CTRL_PRE -> {
-                        remoteClickListener?.pre()
+                        remoteCommunicator?.pre()
                     }
                     else -> {
                         
@@ -231,10 +235,13 @@ object NotifyManager {
         }
     }
     
-    interface RemoteClickListener{
+    interface RemoteCommunicator{
         fun action()
         fun cancel()
         fun next()
         fun pre()
+        
+        fun registerObserver(observer : IPlayObserver)
+        fun unRegisterObserver(observer : IPlayObserver)
     }
 }

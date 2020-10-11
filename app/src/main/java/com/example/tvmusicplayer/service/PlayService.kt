@@ -93,7 +93,7 @@ class PlayService : Service() {
             }
         }
     
-    private val remoteClickListener = object : NotifyManager.RemoteClickListener{
+    private val remoteCommunicator = object : NotifyManager.RemoteCommunicator{
         override fun action() {
             playOrPause()
         }
@@ -110,6 +110,14 @@ class PlayService : Service() {
             playPreSong()
         }
 
+        override fun registerObserver(observer: IPlayObserver) {
+            this@PlayService.observers.register(observer)
+        }
+
+        override fun unRegisterObserver(observer: IPlayObserver) {
+            this@PlayService.observers.unregister(observer)
+        }
+
     }
 
     override fun onCreate() {
@@ -117,7 +125,7 @@ class PlayService : Service() {
         initMediaPlayer()
         NotifyManager.init(this)
         NotifyManager.registerRemoteReceiver()
-        NotifyManager.remoteClickListener = remoteClickListener
+        NotifyManager.remoteCommunicator = remoteCommunicator
         
     }
 
