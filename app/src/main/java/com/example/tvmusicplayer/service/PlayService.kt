@@ -92,12 +92,32 @@ class PlayService : Service() {
                 playNextSong()
             }
         }
+    
+    private val remoteClickListener = object : NotifyManager.RemoteClickListener{
+        override fun action() {
+            playOrPause()
+        }
+
+        override fun cancel() {
+           
+        }
+
+        override fun next() {
+           playNextSong()    
+        }
+
+        override fun pre() {
+            playPreSong()
+        }
+
+    }
 
     override fun onCreate() {
         super.onCreate()
         initMediaPlayer()
         NotifyManager.init(this)
         NotifyManager.registerRemoteReceiver()
+        NotifyManager.remoteClickListener = remoteClickListener
         
     }
 

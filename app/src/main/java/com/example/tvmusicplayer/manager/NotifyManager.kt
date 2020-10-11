@@ -32,6 +32,8 @@ object NotifyManager {
     private var remoteCtrlView: RemoteViews? = null
     private var ctrlNotification: Notification? = null
     private val receiver = SongCtrlReceiver()
+    
+    var remoteClickListener : RemoteClickListener? = null
 
     fun init(context: Context) {
         this.context = context
@@ -174,22 +176,32 @@ object NotifyManager {
             intent?.let { i ->
                 when (i.action) {
                     Constant.RemoteSongCtrlConstant.CTRL_ACTION -> {
-
+                        remoteClickListener?.action()
                     }
 
                     Constant.RemoteSongCtrlConstant.CTRL_CANCEL -> {
-
+                        remoteClickListener?.cancel()
                     }
 
                     Constant.RemoteSongCtrlConstant.CTRL_NEXT -> {
-
+                        remoteClickListener?.next()
                     }
 
                     Constant.RemoteSongCtrlConstant.CTRL_PRE -> {
-
+                        remoteClickListener?.pre()
+                    }
+                    else -> {
+                        
                     }
                 }
             }
         }
+    }
+    
+    interface RemoteClickListener{
+        fun action()
+        fun cancel()
+        fun next()
+        fun pre()
     }
 }
