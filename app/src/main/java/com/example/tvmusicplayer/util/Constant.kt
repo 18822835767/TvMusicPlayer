@@ -65,5 +65,10 @@ class Constant {
     
     object RemoteSongCtrlConstant{
         const val CTRL_ID = 1
+        
+        const val CTRL_ACTION = "CTRL_ACTION"
+        const val CTRL_PRE = "CTRL_PRE"
+        const val CTRL_NEXT = "CTRL_NEXT"
+        const val CTRL_CANCEL = "CTRL_CANCEL"
     }
 }
