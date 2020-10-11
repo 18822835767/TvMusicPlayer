@@ -15,14 +15,14 @@ import com.example.tvmusicplayer.util.Constant
  * 通知的管理者.
  * */
 object NotifyManager {
-    
+
     private var manager: NotificationManager? = null
     private var channel: NotificationChannel? = null
     private var context: Context? = null
     private val channelName = "channel_name"
     private val channelId = "channel_id"
-    private var remoteCtrlView : RemoteViews? = null
-    
+    private var remoteCtrlView: RemoteViews? = null
+
     fun init(context: Context) {
         this.context = context
         manager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager?
@@ -36,21 +36,31 @@ object NotifyManager {
     /**
      * 展示通知栏的RemoteView.
      * */
-    fun showCtrlView(){
-        if(remoteCtrlView == null){
-            context?.let {context ->  
-                remoteCtrlView = RemoteViews(context.packageName,R.layout.play_ctrl_notification)
+    fun showCtrlView() {
+        if (remoteCtrlView == null) {
+            context?.let { context ->
+                remoteCtrlView = RemoteViews(context.packageName, R.layout.play_ctrl_notification)
                 val builder = NotificationCompat.Builder(context, channelId)
                 builder.setSmallIcon(R.drawable.ic_notify)
                     .setContentTitle("音乐播放器")
                     .setContentText("控制一下")
                     .setOngoing(true)
                     .setCustomBigContentView(remoteCtrlView)
-                manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID,builder.build())
+                manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, builder.build())
             }
         }
     }
-    
+
+    /**
+     * 关掉通知栏的RemoteView.
+     * */
+    fun closeCtrlView() {
+        if(remoteCtrlView != null){
+            manager?.cancel(Constant.RemoteSongCtrlConstant.CTRL_ID)
+            remoteCtrlView = null
+        }
+    }
+
     fun downloadProgress(songId: Long?, title: String?, progress: Int) {
         if (songId != null && title != null) {
             val builder: Notification.Builder?
@@ -62,19 +72,19 @@ object NotifyManager {
                 builder = Notification.Builder(context)
                 builder.setPriority(Notification.PRIORITY_DEFAULT)
             }
-            
+
             builder.setSmallIcon(R.drawable.ic_notify)
             builder.setContentTitle(title)
-            if(progress >= 0){
+            if (progress >= 0) {
                 builder.setContentText("${progress}%")
-                builder.setProgress(100,progress,false)
+                builder.setProgress(100, progress, false)
             }
-            manager?.notify(songId.toInt(),builder.build())
+            manager?.notify(songId.toInt(), builder.build())
         }
     }
-    
-    fun closeNotify(songId : Long?){
-        songId?.let { 
+
+    fun closeNotify(songId: Long?) {
+        songId?.let {
             manager?.cancel(it.toInt())
         }
     }

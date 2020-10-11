@@ -183,6 +183,7 @@ class PlayService : Service() {
             it.release()
             mediaPlayer = null
         }
+        NotifyManager.closeCtrlView()
         super.onDestroy()
     }
 
