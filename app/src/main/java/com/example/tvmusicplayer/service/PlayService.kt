@@ -99,7 +99,10 @@ class PlayService : Service() {
         }
 
         override fun cancel() {
-           
+            //如果当前正处于播放状态,那么暂停播放
+           if(currentState == PLAY_STATE_PLAY){
+               playOrPause()
+           }
         }
 
         override fun next() {
@@ -489,6 +492,8 @@ class PlayService : Service() {
             }
             PLAY_STATE_PAUSE -> {
                 mediaPlayer?.let {
+//                    //当从暂停到播放时，去展示通知的RemoteView.
+//                    NotifyManager.showCtrlView()
                     it.start()
                     currentState = PLAY_STATE_PLAY
                     startTimer()

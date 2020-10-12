@@ -231,6 +231,7 @@ object NotifyManager {
                     }
 
                     Constant.RemoteSongCtrlConstant.CTRL_CANCEL -> {
+                        closeCtrlView()
                         remoteCommunicator?.cancel()
                     }
 
