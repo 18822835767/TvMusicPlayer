@@ -178,8 +178,7 @@ object NotifyManager {
      * */
     private fun initUIInfo() {
         remoteCommunicator?.getCurrentSong()?.let {s-> 
-            remoteCtrlView?.let { 
-                it.setImageViewResource(R.id.remote_action, R.drawable.ic_remote_pause)
+            remoteCtrlView?.let {
                 it.setTextViewText(R.id.song_name, s.name?:"")
                 it.setTextViewText(R.id.singer_name, s.artistName?:"")
             }
