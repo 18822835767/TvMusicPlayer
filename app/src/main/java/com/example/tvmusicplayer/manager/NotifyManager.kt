@@ -41,7 +41,7 @@ object NotifyManager {
 
     private val observer = object : SimplePlayObserver(){
         /**
-         * 好奇怪，这里是运行在main线程里的？是注册观察者的时候与服务端在同一个进程的原因吗？
+         * 好奇怪，这里是运行在main线程里的？
          * */
         override fun onPlayStateChange(playState: Int) {
             when (playState) {
@@ -67,7 +67,12 @@ object NotifyManager {
         }
 
         override fun onSongsEmpty() {
-            
+            remoteCtrlView?.let {
+                it.setTextViewText(R.id.song_name,"歌曲名字")
+                it.setTextViewText(R.id.singer_name,"歌手")
+                it.setImageViewResource(R.id.remote_action,R.drawable.ic_remote_play)
+                updateCtrlView()
+            }
         }
     }
     
