@@ -389,11 +389,7 @@ class PlayService : Service() {
         }
 
         override fun getCurrentSong(): Song? {
-            return if (currentPosition >= 0 && currentPosition < songs.size) {
-                songs[currentPosition]
-            } else {
-                null
-            }
+            return this@PlayService.getCurrentSong()
         }
 
         override fun playPre() {
@@ -477,6 +473,14 @@ class PlayService : Service() {
 
     }
 
+    private fun getCurrentSong() : Song?{
+        return if (currentPosition >= 0 && currentPosition < songs.size) {
+            songs[currentPosition]
+        } else {
+            null
+        }
+    }
+    
     private fun playOrPause() {
         if (songs.size == 0) {
             //todo 给点没有歌的提示
