@@ -121,6 +121,10 @@ class PlayService : Service() {
             this@PlayService.observers.unregister(observer)
         }
 
+        override fun getCurrentSong(): Song? {
+            return this@PlayService.getCurrentSong()
+        }
+
     }
 
     override fun onCreate() {
@@ -496,8 +500,8 @@ class PlayService : Service() {
             }
             PLAY_STATE_PAUSE -> {
                 mediaPlayer?.let {
-//                    //当从暂停到播放时，去展示通知的RemoteView.
-//                    NotifyManager.showCtrlView()
+                    //当从暂停到播放时，去展示通知的RemoteView.
+                    NotifyManager.showCtrlView()
                     it.start()
                     currentState = PLAY_STATE_PLAY
                     startTimer()

@@ -37,30 +37,36 @@ object NotifyManager {
     private var remoteCtrlView: RemoteViews? = null
     private var ctrlNotification: Notification? = null
     private val receiver = SongCtrlReceiver()
-    var remoteCommunicator : RemoteCommunicator? = null
+    var remoteCommunicator: RemoteCommunicator? = null
 
-    private val observer = object : SimplePlayObserver(){
+    private val observer = object : SimplePlayObserver() {
         /**
          * 好奇怪，这里是运行在main线程里的？
          * */
         override fun onPlayStateChange(playState: Int) {
             when (playState) {
                 PLAY_STATE_PLAY -> {
-                    remoteCtrlView?.setImageViewResource(R.id.remote_action,R.drawable.ic_remote_pause)
+                    remoteCtrlView?.setImageViewResource(
+                        R.id.remote_action,
+                        R.drawable.ic_remote_pause
+                    )
                     updateCtrlView()
                 }
                 PLAY_STATE_PAUSE -> {
-                    remoteCtrlView?.setImageViewResource(R.id.remote_action,R.drawable.ic_remote_play)
+                    remoteCtrlView?.setImageViewResource(
+                        R.id.remote_action,
+                        R.drawable.ic_remote_play
+                    )
                     updateCtrlView()
                 }
             }
         }
 
         override fun onSongChange(song: Song?, position: Int) {
-            song?.let {s-> 
+            song?.let { s ->
                 remoteCtrlView?.let {
-                    it.setTextViewText(R.id.song_name,s.name?:"")
-                    it.setTextViewText(R.id.singer_name,s.artistName?:"")
+                    it.setTextViewText(R.id.song_name, s.name ?: "")
+                    it.setTextViewText(R.id.singer_name, s.artistName ?: "")
                     updateCtrlView()
                 }
             }
@@ -68,14 +74,14 @@ object NotifyManager {
 
         override fun onSongsEmpty() {
             remoteCtrlView?.let {
-                it.setTextViewText(R.id.song_name,"歌曲名字")
-                it.setTextViewText(R.id.singer_name,"歌手")
-                it.setImageViewResource(R.id.remote_action,R.drawable.ic_remote_play)
+                it.setTextViewText(R.id.song_name, "歌曲名字")
+                it.setTextViewText(R.id.singer_name, "歌手")
+                it.setImageViewResource(R.id.remote_action, R.drawable.ic_remote_play)
                 updateCtrlView()
             }
         }
     }
-    
+
     fun init(context: Context) {
         this.context = context
         manager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager?
@@ -101,6 +107,7 @@ object NotifyManager {
                     .setCustomBigContentView(remoteCtrlView)
                     .build()
                 setCtrlClickEvent()
+                initUIInfo()
                 LogUtil.d(TAG, "展示音乐播放的RemoteView")
                 manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, ctrlNotification)
                 //注册音乐播放的观察者
@@ -167,6 +174,19 @@ object NotifyManager {
     }
 
     /**
+     * 当RemoteView弹出时，初始化一些信息.
+     * */
+    private fun initUIInfo() {
+        remoteCommunicator?.getCurrentSong()?.let {s-> 
+            remoteCtrlView?.let { 
+                it.setImageViewResource(R.id.remote_action, R.drawable.ic_remote_pause)
+                it.setTextViewText(R.id.song_name, s.name?:"")
+                it.setTextViewText(R.id.singer_name, s.artistName?:"")
+            }
+        }
+    }
+
+    /**
      * 注册广播接收器.
      * */
     fun registerRemoteReceiver() {
@@ -190,10 +210,10 @@ object NotifyManager {
     /**
      * 更新RemoteView.
      * */
-    private fun updateCtrlView(){
+    private fun updateCtrlView() {
         manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, ctrlNotification)
     }
-    
+
     fun downloadProgress(songId: Long?, title: String?, progress: Int) {
         if (songId != null && title != null) {
             val builder: Notification.Builder?
@@ -243,20 +263,22 @@ object NotifyManager {
                         remoteCommunicator?.pre()
                     }
                     else -> {
-                        
+
                     }
                 }
             }
         }
     }
-    
-    interface RemoteCommunicator{
+
+    interface RemoteCommunicator {
         fun action()
         fun cancel()
         fun next()
         fun pre()
-        
-        fun registerObserver(observer : IPlayObserver)
-        fun unRegisterObserver(observer : IPlayObserver)
+
+        fun registerObserver(observer: IPlayObserver)
+        fun unRegisterObserver(observer: IPlayObserver)
+
+        fun getCurrentSong(): Song?
     }
 }
