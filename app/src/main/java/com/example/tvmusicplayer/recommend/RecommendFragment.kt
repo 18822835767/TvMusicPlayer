@@ -14,11 +14,14 @@ import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.CircleButtonAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.CircleButtonBean
+import com.example.tvmusicplayer.bean.PlayList
+import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.widget.BannerViewPager
 
 class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListener,
     RecommendContract.OnView {
 
+    private val TAG = "RecommendFragment"
     private lateinit var banner: BannerViewPager
     private lateinit var circleButtonRv: RecyclerView
     private lateinit var circleButtonAdapter: CircleButtonAdapter
@@ -55,6 +58,7 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
     private fun initData() {
         RecommendPresenter(this)
         presenter.getBanner(1)
+        presenter.getRecommendPlayList(10)
         
         //推荐面的一排圆形按钮
         circleButtonText.add(CircleButtonBean("每日推荐", R.drawable.ic_tuijian))
@@ -82,6 +86,12 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
 
     override fun getBannerSuccess(list: MutableList<String>) {
         banner.setData(list)
+    }
+
+    override fun getRecommendPlayListSuccess(list: MutableList<PlayList>) {
+//        list.forEach { 
+//            LogUtil.d(TAG,"id:${it.id},name:${it.name},picUrl:${it.coverImgUrl}")
+//        }
     }
 
     override fun setPresenter(presenter: RecommendContract.Presenter) {
