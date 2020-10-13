@@ -221,8 +221,8 @@ class LrcView : View {
             }
             //开始时的时间
             val time = element.substring(element.indexOf("["), element.indexOf("]") + 1)
-            //如果时间的格式不为[xx:xx:多个数字]，那么直接丢弃
-            val regex = "\\[\\d{2}:\\d{2}.\\d+]"
+            //如果时间的格式不为[xx:xx.多个数字]，那么直接丢弃
+            val regex = "\\[\\d{2}:\\d{2}\\.\\d+]"
             if(!Pattern.matches(regex,time)){
                 continue
             }
