@@ -13,6 +13,7 @@ import android.view.ViewConfiguration
 import android.widget.Scroller
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Lyrics
+import java.util.regex.Pattern
 import kotlin.math.abs
 
 /**
@@ -207,8 +208,8 @@ class LrcView : View {
         val lyricsArray: List<String> = lyricText.split("\n")
         //每一行文本，包括 歌词 与 时间
         for (element in lyricsArray) {
-            //如果没有[]，即包围时间的左括号，直接丢弃
-            if (element.indexOf("[") == -1) {
+            //如果没有[],直接丢弃
+            if (element.indexOf("[") == -1 || element.indexOf("]") == -1) {
                 continue
             }
             //歌词
@@ -219,6 +220,11 @@ class LrcView : View {
             }
             //开始时的时间
             val time = element.substring(element.indexOf("["), element.indexOf("]") + 1)
+            //如果时间的格式不为[xx:xx:多个数字]，那么直接丢弃
+            val regex = "\\[\\d{2}:\\d{2}.\\d+]"
+            if(!Pattern.matches(regex,time)){
+                continue
+            }
             if (time.contains(".")) {
                 val min = time.substring(time.indexOf("[") + 1, time.indexOf("[") + 3)
                 val second = time.substring(time.indexOf(":") + 1, time.indexOf(":") + 3)
