@@ -12,9 +12,6 @@ import android.content.IntentFilter
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.NotificationTarget
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Song
@@ -41,12 +38,7 @@ object NotifyManager {
     private var ctrlNotification: Notification? = null
     private val receiver = SongCtrlReceiver()
     var remoteCommunicator: RemoteCommunicator? = null
-
-    /**
-     * 利用这个去进行RemoteView的图片的更新.
-     * */
-    private var target: NotificationTarget? = null
-
+    
     private val observer = object : SimplePlayObserver() {
         /**
          * 好奇怪，这里是运行在main线程里的？
@@ -85,14 +77,6 @@ object NotifyManager {
                 it.setTextViewText(R.id.singer_name, "歌手")
                 it.setImageViewResource(R.id.remote_action, R.drawable.ic_remote_play)
                 
-                context?.let {c-> 
-                    target?.let {t-> 
-                        Glide.with(c)
-                            .asBitmap()
-                            .load(R.drawable.empty_grey)
-                            .into(t)
-                    }
-                }
                 updateCtrlView()
             }
         }
@@ -126,8 +110,6 @@ object NotifyManager {
                 initUIInfo()
                 LogUtil.d(TAG, "展示音乐播放的RemoteView")
                 manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, ctrlNotification)
-                target = NotificationTarget(context, R.id.play_cover, remoteCtrlView,
-                    ctrlNotification,Constant.RemoteSongCtrlConstant.CTRL_ID)
                 //注册音乐播放的观察者
                 remoteCommunicator?.registerObserver(observer)
             }
@@ -186,7 +168,6 @@ object NotifyManager {
             manager?.cancel(Constant.RemoteSongCtrlConstant.CTRL_ID)
             remoteCtrlView = null
             ctrlNotification = null
-            target = null
             //取消音乐播放观察者的注册
             remoteCommunicator?.unRegisterObserver(observer)
         }
@@ -206,31 +187,6 @@ object NotifyManager {
     private fun setSongInfo(remoteViews: RemoteViews, song : Song){
         remoteViews.setTextViewText(R.id.song_name, song.name ?: "")
         remoteViews.setTextViewText(R.id.singer_name, song.artistName ?: "")
-        context?.let {c->
-            //如果是在线歌曲
-            if(song.online){
-                val options : RequestOptions = RequestOptions()
-                    .placeholder(R.drawable.empty_grey)
-                    .error(R.drawable.empty_grey)
-
-                target?.let {t->
-                    Glide.with(c)
-                        .asBitmap()
-                        .load(song.picUrl)
-                        .apply(options)
-                        .into(t)
-                }
-
-                //如果是本地歌曲
-            }else{
-                target?.let {t->
-                    Glide.with(c)
-                        .asBitmap()
-                        .load(R.drawable.empty_grey)
-                        .into(t)
-                }
-            }
-        }
     }
 
     /**
