@@ -41,6 +41,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="新歌推送"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginStart="13dp"
+            android:textColor="#363636"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommend_newsong_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"/>
         
     </LinearLayout>
     

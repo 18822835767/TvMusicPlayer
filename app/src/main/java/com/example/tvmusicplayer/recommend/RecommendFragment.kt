@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.CircleButtonAdapter
+import com.example.tvmusicplayer.adapter.RecommendNewSongAdapter
 import com.example.tvmusicplayer.adapter.RecommendPlayListAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.CircleButtonBean
@@ -30,6 +31,8 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
     private lateinit var presenter: RecommendContract.Presenter
     private lateinit var playListRv : RecyclerView
     private lateinit var playListAdapter : RecommendPlayListAdapter
+    private lateinit var newSongRv : RecyclerView
+    private lateinit var newSongAdapter : RecommendNewSongAdapter
     
     private var circleButtonText = mutableListOf<CircleButtonBean>()
 
@@ -52,6 +55,7 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
         banner = view.findViewById(R.id.banner_view_pager)
         circleButtonRv = view.findViewById(R.id.circle_button_rv)
         playListRv = view.findViewById(R.id.recommend_playlist_rv)
+        newSongRv = view.findViewById(R.id.recommend_newsong_rv)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -97,6 +101,20 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
         playListManager.orientation = LinearLayoutManager.HORIZONTAL
         playListRv.adapter = playListAdapter
         playListRv.layoutManager = playListManager
+        
+        //推荐新歌曲
+        newSongAdapter = RecommendNewSongAdapter(mutableListOf(),R.layout.recommend_newsong_item)
+        //设置监听
+        newSongAdapter.setItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View?, position: Int) {
+                
+            }
+
+        })
+        val newSongManager = LinearLayoutManager(context)
+        newSongManager.orientation = LinearLayoutManager.HORIZONTAL
+        newSongRv.adapter = newSongAdapter
+        newSongRv.layoutManager = newSongManager
     }
 
     override fun onItemClick(v: View?, position: Int) {
@@ -118,7 +136,8 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
     }
 
     override fun getRecommendNewSongSuccess(list: MutableList<Song>) {
-        list.forEach { song -> LogUtil.d(TAG,song.toString()) }
+        newSongAdapter.clearAndAddNewDatas(list)
+//        list.forEach { song -> LogUtil.d(TAG,song.toString()) }
     }
 
     override fun setPresenter(presenter: RecommendContract.Presenter) {
