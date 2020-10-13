@@ -12,6 +12,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.bumptech.glide.request.target.NotificationTarget
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.bean.Song
@@ -38,6 +39,11 @@ object NotifyManager {
     private var ctrlNotification: Notification? = null
     private val receiver = SongCtrlReceiver()
     var remoteCommunicator: RemoteCommunicator? = null
+
+    /**
+     * 利用这个去进行RemoteView的图片的更新.
+     * */
+    private var target: NotificationTarget? = null
 
     private val observer = object : SimplePlayObserver() {
         /**
@@ -110,6 +116,8 @@ object NotifyManager {
                 initUIInfo()
                 LogUtil.d(TAG, "展示音乐播放的RemoteView")
                 manager?.notify(Constant.RemoteSongCtrlConstant.CTRL_ID, ctrlNotification)
+                target = NotificationTarget(context, R.id.play_cover, remoteCtrlView,
+                    ctrlNotification,Constant.RemoteSongCtrlConstant.CTRL_ID)
                 //注册音乐播放的观察者
                 remoteCommunicator?.registerObserver(observer)
             }
@@ -177,10 +185,10 @@ object NotifyManager {
      * 当RemoteView弹出时，初始化一些信息.
      * */
     private fun initUIInfo() {
-        remoteCommunicator?.getCurrentSong()?.let {s-> 
+        remoteCommunicator?.getCurrentSong()?.let { s ->
             remoteCtrlView?.let {
-                it.setTextViewText(R.id.song_name, s.name?:"")
-                it.setTextViewText(R.id.singer_name, s.artistName?:"")
+                it.setTextViewText(R.id.song_name, s.name ?: "")
+                it.setTextViewText(R.id.singer_name, s.artistName ?: "")
             }
         }
     }
