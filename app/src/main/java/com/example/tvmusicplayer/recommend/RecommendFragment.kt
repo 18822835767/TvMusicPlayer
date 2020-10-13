@@ -15,7 +15,9 @@ import com.example.tvmusicplayer.adapter.RecommendPlayListAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.CircleButtonBean
 import com.example.tvmusicplayer.bean.PlayList
+import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.playListDetail.PlayListDetailActivity
+import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.widget.BannerViewPager
 
 class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListener,
@@ -62,6 +64,7 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
         RecommendPresenter(this)
         presenter.getBanner(1)
         presenter.getRecommendPlayList(10)
+        presenter.getRecommendNewSong()
         
         //推荐面的一排圆形按钮
         circleButtonText.add(CircleButtonBean("每日推荐", R.drawable.ic_tuijian))
@@ -112,6 +115,10 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
 //        list.forEach { 
 //            LogUtil.d(TAG,"id:${it.id},name:${it.name},picUrl:${it.coverImgUrl}")
 //        }
+    }
+
+    override fun getRecommendNewSongSuccess(list: MutableList<Song>) {
+        list.forEach { song -> LogUtil.d(TAG,song.toString()) }
     }
 
     override fun setPresenter(presenter: RecommendContract.Presenter) {

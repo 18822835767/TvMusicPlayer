@@ -1,6 +1,7 @@
 package com.example.tvmusicplayer.recommend
 
 import com.example.tvmusicplayer.bean.PlayList
+import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.model.RecommendModel
 import com.example.tvmusicplayer.model.impl.RecommendModelImpl
 
@@ -22,6 +23,10 @@ class RecommendPresenter(var onView : RecommendContract.OnView) : RecommendContr
         model.getRecommendPlayList(limit,this)
     }
 
+    override fun getRecommendNewSong() {
+        model.getRecommendNewSong(this)
+    }
+
     override fun start() {
     }
 
@@ -31,6 +36,10 @@ class RecommendPresenter(var onView : RecommendContract.OnView) : RecommendContr
 
     override fun getRecommendPlayListSuccess(list: MutableList<PlayList>) {
         onView.getRecommendPlayListSuccess(list)
+    }
+
+    override fun getRecommendNewSongSuccess(list: MutableList<Song>) {
+        onView.getRecommendNewSongSuccess(list)
     }
 
     override fun error(msg: String) {
