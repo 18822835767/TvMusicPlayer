@@ -1,6 +1,5 @@
 package com.example.tvmusicplayer.recommend
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tvmusicplayer.R
 import com.example.tvmusicplayer.adapter.CircleButtonAdapter
+import com.example.tvmusicplayer.adapter.RecommendPlayListAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.CircleButtonBean
 import com.example.tvmusicplayer.bean.PlayList
-import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.widget.BannerViewPager
 
 class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListener,
@@ -26,7 +25,9 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
     private lateinit var circleButtonRv: RecyclerView
     private lateinit var circleButtonAdapter: CircleButtonAdapter
     private lateinit var presenter: RecommendContract.Presenter
-
+    private lateinit var playListRv : RecyclerView
+    private lateinit var playListAdapter : RecommendPlayListAdapter
+    
     private var circleButtonText = mutableListOf<CircleButtonBean>()
 
     companion object {
@@ -47,6 +48,7 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
         super.onViewCreated(view, savedInstanceState)
         banner = view.findViewById(R.id.banner_view_pager)
         circleButtonRv = view.findViewById(R.id.circle_button_rv)
+        playListRv = view.findViewById(R.id.recommend_playlist_rv)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -71,10 +73,17 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
         circleButtonText.add(CircleButtonBean("游戏专区", R.drawable.ic_game))
         circleButtonAdapter = CircleButtonAdapter(circleButtonText, R.layout.circle_button_item)
         circleButtonAdapter.setItemClickListener(this)
-        val manager = LinearLayoutManager(context)
-        manager.orientation = LinearLayoutManager.HORIZONTAL
+        val circleButtonManager = LinearLayoutManager(context)
+        circleButtonManager.orientation = LinearLayoutManager.HORIZONTAL
         circleButtonRv.adapter = circleButtonAdapter
-        circleButtonRv.layoutManager = manager
+        circleButtonRv.layoutManager = circleButtonManager
+        
+        //推荐歌单
+        playListAdapter = RecommendPlayListAdapter(mutableListOf(),R.layout.recommend_playlist_item)
+        val playListManager = LinearLayoutManager(context)
+        playListManager.orientation = LinearLayoutManager.HORIZONTAL
+        playListRv.adapter = playListAdapter
+        playListRv.layoutManager = playListManager
     }
 
     override fun onItemClick(v: View?, position: Int) {
@@ -89,6 +98,7 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
     }
 
     override fun getRecommendPlayListSuccess(list: MutableList<PlayList>) {
+        playListAdapter.clearAndAddNewDatas(list)
 //        list.forEach { 
 //            LogUtil.d(TAG,"id:${it.id},name:${it.name},picUrl:${it.coverImgUrl}")
 //        }
