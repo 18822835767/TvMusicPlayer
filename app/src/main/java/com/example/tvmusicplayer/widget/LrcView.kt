@@ -199,6 +199,7 @@ class LrcView : View {
 
     /**
      * 解析歌词的文本.
+     * 歌词解析有时间要优化一下.
      * */
     private fun parseLyrics(lyricText: String): MutableList<Lyrics> {
         val lryList = mutableListOf<Lyrics>()
