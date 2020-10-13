@@ -15,6 +15,7 @@ import com.example.tvmusicplayer.adapter.RecommendPlayListAdapter
 import com.example.tvmusicplayer.base.BaseRecyclerViewAdapter
 import com.example.tvmusicplayer.bean.CircleButtonBean
 import com.example.tvmusicplayer.bean.PlayList
+import com.example.tvmusicplayer.playListDetail.PlayListDetailActivity
 import com.example.tvmusicplayer.widget.BannerViewPager
 
 class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListener,
@@ -80,6 +81,15 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
         
         //推荐歌单
         playListAdapter = RecommendPlayListAdapter(mutableListOf(),R.layout.recommend_playlist_item)
+        //设置监听
+        playListAdapter.setItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View?, position: Int) {
+                context?.let {
+                    val playList = playListAdapter.getItem(position)
+                    PlayListDetailActivity.actionStart(playList,it)
+                }
+            }
+        })
         val playListManager = LinearLayoutManager(context)
         playListManager.orientation = LinearLayoutManager.HORIZONTAL
         playListRv.adapter = playListAdapter

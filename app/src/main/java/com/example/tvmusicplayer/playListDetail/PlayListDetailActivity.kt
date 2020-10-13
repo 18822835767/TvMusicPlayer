@@ -77,18 +77,6 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         manager = LinearLayoutManager(this)
         recyclerView.layoutManager = manager
         recyclerView.adapter = adapter
-        //添加分割线
-//        recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
-        
-//        //设置歌单名字和图片在相应控件上
-//        playList?.let { 
-//            playlistNameTv.text = it.name 
-//            Picasso.get().load(it.coverImgUrl)
-//                .resize(100,100)
-//                .placeholder(R.drawable.empty_photo)
-//                .error(R.drawable.load_error)
-//                .into(playListCoverIv)
-//        }
         
         //获取歌单中的歌曲数据
         playList?.id?.let {presenter.getPlayListDetail(it)}
