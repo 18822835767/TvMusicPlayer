@@ -73,7 +73,7 @@ object NotifyManager {
         override fun onSongChange(song: Song?, position: Int) {
             song?.let { s ->
                 remoteCtrlView?.let {
-                    setUIInfo(it,s)
+                    setSongInfo(it,s)
                     updateCtrlView()
                 }
             }
@@ -84,6 +84,15 @@ object NotifyManager {
                 it.setTextViewText(R.id.song_name, "歌曲名字")
                 it.setTextViewText(R.id.singer_name, "歌手")
                 it.setImageViewResource(R.id.remote_action, R.drawable.ic_remote_play)
+                
+                context?.let {c-> 
+                    target?.let {t-> 
+                        Glide.with(c)
+                            .asBitmap()
+                            .load(R.drawable.empty_grey)
+                            .into(t)
+                    }
+                }
                 updateCtrlView()
             }
         }
@@ -189,12 +198,12 @@ object NotifyManager {
     private fun initUIInfo() {
         remoteCommunicator?.getCurrentSong()?.let { s ->
             remoteCtrlView?.let {
-                setUIInfo(it,s)
+                setSongInfo(it,s)
             }
         }
     }
     
-    private fun setUIInfo(remoteViews: RemoteViews,song : Song){
+    private fun setSongInfo(remoteViews: RemoteViews, song : Song){
         remoteViews.setTextViewText(R.id.song_name, song.name ?: "")
         remoteViews.setTextViewText(R.id.singer_name, song.artistName ?: "")
         context?.let {c->
