@@ -18,7 +18,9 @@ import com.example.tvmusicplayer.bean.CircleButtonBean
 import com.example.tvmusicplayer.bean.PlayList
 import com.example.tvmusicplayer.bean.Song
 import com.example.tvmusicplayer.playListDetail.PlayListDetailActivity
+import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.util.LogUtil
+import com.example.tvmusicplayer.util.ThreadUtil
 import com.example.tvmusicplayer.widget.BannerViewPager
 
 class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListener,
@@ -107,7 +109,8 @@ class RecommendFragment : Fragment(), BaseRecyclerViewAdapter.OnItemClickListene
         //设置监听
         newSongAdapter.setItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener{
             override fun onItemClick(v: View?, position: Int) {
-                
+                ThreadUtil.runOnThreadPool(Runnable { 
+                    PlayServiceManager.playSongs(newSongAdapter.getItems(),position) })
             }
 
         })
