@@ -12,6 +12,8 @@ import android.content.IntentFilter
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.NotificationTarget
 import com.example.tvmusicplayer.IPlayObserver
 import com.example.tvmusicplayer.R
@@ -71,8 +73,7 @@ object NotifyManager {
         override fun onSongChange(song: Song?, position: Int) {
             song?.let { s ->
                 remoteCtrlView?.let {
-                    it.setTextViewText(R.id.song_name, s.name ?: "")
-                    it.setTextViewText(R.id.singer_name, s.artistName ?: "")
+                    setUIInfo(it,s)
                     updateCtrlView()
                 }
             }
@@ -176,6 +177,7 @@ object NotifyManager {
             manager?.cancel(Constant.RemoteSongCtrlConstant.CTRL_ID)
             remoteCtrlView = null
             ctrlNotification = null
+            target = null
             //取消音乐播放观察者的注册
             remoteCommunicator?.unRegisterObserver(observer)
         }
@@ -187,8 +189,37 @@ object NotifyManager {
     private fun initUIInfo() {
         remoteCommunicator?.getCurrentSong()?.let { s ->
             remoteCtrlView?.let {
-                it.setTextViewText(R.id.song_name, s.name ?: "")
-                it.setTextViewText(R.id.singer_name, s.artistName ?: "")
+                setUIInfo(it,s)
+            }
+        }
+    }
+    
+    private fun setUIInfo(remoteViews: RemoteViews,song : Song){
+        remoteViews.setTextViewText(R.id.song_name, song.name ?: "")
+        remoteViews.setTextViewText(R.id.singer_name, song.artistName ?: "")
+        context?.let {c->
+            //如果是在线歌曲
+            if(song.online){
+                val options : RequestOptions = RequestOptions()
+                    .placeholder(R.drawable.empty_grey)
+                    .error(R.drawable.empty_grey)
+
+                target?.let {t->
+                    Glide.with(c)
+                        .asBitmap()
+                        .load(song.picUrl)
+                        .apply(options)
+                        .into(t)
+                }
+
+                //如果是本地歌曲
+            }else{
+                target?.let {t->
+                    Glide.with(c)
+                        .asBitmap()
+                        .load(R.drawable.empty_grey)
+                        .into(t)
+                }
             }
         }
     }
