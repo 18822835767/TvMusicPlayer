@@ -56,23 +56,25 @@ class RecommendModelImpl : RecommendModel{
                 val songs = mutableListOf<Song>()
                 data.result?.let {
                     it.forEach {s->
-                        val id = s.id
-                        val name = s.name ?: ""
-                        var artistName = ""
-                        val builder = StringBuilder()
-                        s.song?.artists?.forEach {artist->
-                            builder.append("${artist.name} ")
-                        }
-                        artistName = builder.toString()
-                        val picUrl = s.picUrl ?: ""
-                        val song = Song(id,null,null,name,null,artistName,picUrl)
+                        if(s.id != null){
+                            val id = s.id
+                            val name = s.name ?: ""
+                            var artistName = ""
+                            val builder = StringBuilder()
+                            s.song?.artists?.forEach {artist->
+                                builder.append("${artist.name} ")
+                            }
+                            artistName = builder.toString()
+                            val picUrl = s.picUrl ?: ""
+                            val song = Song(id,null,null,name,null,artistName,picUrl)
 
-                        if(name.isNotEmpty()){
-                            song.firstLetter = PinyinUtil.getHeaderLetter(name)
-                        }else{
-                            song.firstLetter = '#'
+                            if(name.isNotEmpty()){
+                                song.firstLetter = PinyinUtil.getHeaderLetter(name)
+                            }else{
+                                song.firstLetter = '#'
+                            }
+                            songs.add(song) 
                         }
-                        songs.add(song)
                     }
                 }
                 listener.getRecommendNewSongSuccess(songs)
