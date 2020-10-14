@@ -117,8 +117,8 @@ class BottomPlayerFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-//        //取消注册
-//        PlayServiceManager.unregisterObserver(observer)
+        //取消注册
+        PlayServiceManager.unregisterObserver(observer)
     }
 
     private fun resumeUIInfo() {
@@ -159,8 +159,8 @@ class BottomPlayerFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        //取消注册
-        PlayServiceManager.unregisterObserver(observer)
+//        //取消注册
+//        PlayServiceManager.unregisterObserver(observer)
 
         super.onDestroy()
     }
