@@ -50,17 +50,7 @@ class PlayService : Service() {
      * 定时任务.
      * */
     private var seekTimerTask: SeekTimeTask? = null
-
-    /**
-     * 标志是否是第一次播放.
-     * */
-    private var firstPlay = true
-
-    /**
-     * 记录是否调用了MediaPlayer的reset()方法
-     * */
-    private var hasReset = false
-
+    
     /**
      * 记录当前播放的歌曲在list中的位置.
      * */
@@ -145,7 +135,6 @@ class PlayService : Service() {
             mediaPlayer = MediaPlayer()
         }
         mediaPlayer?.let {
-            // todo 增加监听
             it.setOnPreparedListener { mp ->
                 if (mp != null) {
                     NotifyManager.showCtrlView()
@@ -319,7 +308,6 @@ class PlayService : Service() {
                         //将数据插入数据库中
                         it.url = localPath
                         daoModel.insert(it)
-//                        LogUtil.d("abcde","路径：${localPath}")
                     }
 
                     override fun onFailed() {
@@ -535,11 +523,9 @@ class PlayService : Service() {
         LogUtil.d(TAG,"dataSource:${dataSource}")
         
         mediaPlayer?.let {
-            hasReset = true
             it.reset()
             it.setDataSource(dataSource)
             it.prepareAsync()
-            //todo 这里少了个pause()
         }
     }
 
