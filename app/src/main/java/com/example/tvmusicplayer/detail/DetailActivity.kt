@@ -386,7 +386,14 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener, DetailContract
     }
 
     override fun onRemoveClick(v: View?, position: Int) {
-//        Toast.makeText(this,"点击位置：${position}",Toast.LENGTH_SHORT).show()
+        //如果要移除的歌正在播放
+        if (position == queueAdapter.curPosition) {
+            queueAdapter.curPosition = -1
+            //要移除的歌在当前的歌的上面
+        } else if(position < queueAdapter.curPosition){
+            queueAdapter.curPosition--
+        }
+
         queueAdapter.removeItem(position)
         ThreadUtil.runOnThreadPool(Runnable { PlayServiceManager.removeSong(position) })
     }
