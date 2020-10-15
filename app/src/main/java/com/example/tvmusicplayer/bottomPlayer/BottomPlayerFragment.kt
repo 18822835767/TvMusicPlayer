@@ -16,6 +16,7 @@ import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.service.SimplePlayObserver
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_STOP
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.squareup.picasso.Picasso
 
@@ -125,11 +126,17 @@ class BottomPlayerFragment : Fragment() {
         //设置播放状态的按钮.
         when (PlayServiceManager.getPlayState()) {
             PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_black_pause)
-            PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_black_play)
+            PLAY_STATE_PAUSE,PLAY_STATE_STOP -> playOrPauseIv.setImageResource(R.drawable.ic_black_play)
         }
 
+        //如果当前有歌
         PlayServiceManager.getCurrentSong()?.let {
             setSongInfo(it)
+        }
+        
+        //如果当前没有歌
+        if(PlayServiceManager.getCurrentSong() == null){
+            resetInfo()
         }
     }
 
