@@ -16,6 +16,7 @@ import com.example.tvmusicplayer.service.PlayServiceManager
 import com.example.tvmusicplayer.service.SimplePlayObserver
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PAUSE
 import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_PLAY
+import com.example.tvmusicplayer.util.Constant.PlaySongConstant.PLAY_STATE_STOP
 import com.example.tvmusicplayer.util.ThreadUtil
 import com.squareup.picasso.Picasso
 
@@ -49,12 +50,20 @@ class BottomPlayerFragment : Fragment() {
             })
         }
 
-        override fun onSongChange(song: Song?) {
+        override fun onSongChange(song: Song?,position : Int) {
             song?.let {
                 ThreadUtil.runOnUi(Runnable {
                     setSongInfo(it)
                 })
             }
+            
+            
+        }
+
+        override fun onSongsEmpty() {
+            ThreadUtil.runOnUi(Runnable { 
+                resetInfo()
+            })
         }
     }
 
@@ -117,21 +126,42 @@ class BottomPlayerFragment : Fragment() {
         //设置播放状态的按钮.
         when (PlayServiceManager.getPlayState()) {
             PLAY_STATE_PLAY -> playOrPauseIv.setImageResource(R.drawable.ic_black_pause)
-            PLAY_STATE_PAUSE -> playOrPauseIv.setImageResource(R.drawable.ic_black_play)
+            PLAY_STATE_PAUSE,PLAY_STATE_STOP -> playOrPauseIv.setImageResource(R.drawable.ic_black_play)
         }
 
+        //如果当前有歌
         PlayServiceManager.getCurrentSong()?.let {
             setSongInfo(it)
+        }
+        
+        //如果当前没有歌
+        if(PlayServiceManager.getCurrentSong() == null){
+            resetInfo()
         }
     }
 
     private fun setSongInfo(song: Song) {
         songNameTv.text = song.name
         singerNameTv.text = song.artistName
-        Picasso.get().load(song.picUrl)
-            .resize(250, 250)
-            .placeholder(R.drawable.album_default_view)
-            .error(R.drawable.load_error)
+        if(song.online){
+            Picasso.get().load(song.picUrl)
+                .resize(50, 50)
+                .placeholder(R.drawable.album_default_view)
+                .error(R.drawable.album_default_view)
+                .into(musicCovIv)
+        }else{
+            Picasso.get().load(R.drawable.album_default_view)
+                .resize(50,50)
+                .into(musicCovIv)
+        }
+    }
+    
+    private fun resetInfo(){
+        songNameTv.text = "歌曲名字"
+        singerNameTv.text = "歌手"
+        playOrPauseIv.setImageResource(R.drawable.ic_black_play)
+        Picasso.get().load(R.drawable.album)
+            .resize(50,50)
             .into(musicCovIv)
     }
 

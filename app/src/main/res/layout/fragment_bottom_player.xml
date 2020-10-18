@@ -32,13 +32,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/music_name"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"/>
         <TextView
             android:id="@+id/singer_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@string/singer"/>
+            android:text="@string/singer"
+            android:maxLines="1"
+            android:ellipsize="end"/>
     </LinearLayout>
 
     <ImageView

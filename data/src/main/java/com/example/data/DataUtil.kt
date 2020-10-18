@@ -2,12 +2,13 @@ package com.example.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.text.TextUtils
+import com.example.data.clientApiImpl.ClientImageApiImpl
 import com.example.repository.api.ClientLoginApi
 import com.example.repository.api.ClientMusicApi
 import com.example.data.clientApiImpl.ClientLoginApiImpl
 import com.example.data.clientApiImpl.ClientMusicApiImpl
 import com.example.data.clientApiImpl.ClientSearchApiImpl
+import com.example.data.observableApi.ObservableImageApi
 import com.example.data.observableApi.ObservableLoginApi
 import com.example.data.observableApi.ObservableMusicApi
 import com.example.data.observableApi.ObservableSearchApi
@@ -15,6 +16,7 @@ import com.example.data.util.Constant
 import com.example.data.util.ContextProvider
 import com.example.data.util.LogUtil
 import com.example.repository.RequestCallBack
+import com.example.repository.api.ClientImageApi
 import com.example.repository.api.ClientSearchApi
 import okhttp3.*
 import retrofit2.Retrofit
@@ -34,6 +36,7 @@ object DataUtil {
     internal var observableLoginApi: ObservableLoginApi
     internal var observableMusicApi: ObservableMusicApi
     internal var observableSearchApi : ObservableSearchApi
+    internal var observableImageApi : ObservableImageApi
     internal var sharedPreferences: SharedPreferences? = null
     private var cookies = HashMap<String, String>()
 
@@ -46,6 +49,8 @@ object DataUtil {
         ClientMusicApiImpl()
     val clientSearchApi : ClientSearchApi = 
         ClientSearchApiImpl()
+    val clientImageApi : ClientImageApi = 
+        ClientImageApiImpl()
 
     init {
 //        //初始化SharedPreferences
@@ -105,9 +110,9 @@ object DataUtil {
                             val cookie = stringBuilder.toString()
 
                             LogUtil.d(TAG,"返回的cookie:${cookie}")
-//                            //如果获取的cookie不是以NMTID开头，这里加上是因为获取用户歌单时会返回一个cookie
-//                            //但是这cookie是不需要的
-//                            if(!cookie.startsWith("NMTID",true)){
+                            //如果获取的cookie不是以NMTID开头，这里加上是因为获取用户歌单时(or 获取登陆状态)会返回一个cookie
+                            //但是这cookie是不需要的
+                            if(!cookie.startsWith("NMTID",true)){
                                 //更新内存中Cookie值
                                 cookies[hostString] = cookie
                                 //存储到本地磁盘中
@@ -115,7 +120,7 @@ object DataUtil {
                                 editor.putString(hostString, cookie)
                                 editor.apply()
                                 LogUtil.d(TAG, "Set-Cookie->cookies: $cookie host: $hostString")
-//                            }
+                            }
                         }
                         return originalResponse
                     }
@@ -135,6 +140,7 @@ object DataUtil {
         observableLoginApi = retrofit.create(ObservableLoginApi::class.java)
         observableMusicApi = retrofit.create(ObservableMusicApi::class.java)
         observableSearchApi = retrofit.create(ObservableSearchApi::class.java)
+        observableImageApi = retrofit.create(ObservableImageApi::class.java)
     }
 
     /**
@@ -150,7 +156,7 @@ object DataUtil {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                callback.callback(response.body.toString())
+                callback.callback(response.body?.string()?:"")
             }
 
         })

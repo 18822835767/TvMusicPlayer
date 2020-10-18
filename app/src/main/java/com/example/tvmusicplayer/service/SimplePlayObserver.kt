@@ -15,7 +15,14 @@ abstract class SimplePlayObserver : IPlayObserver.Stub() {
 
     }
 
-    override fun onSongChange(song: Song?) {
+    override fun onSongChange(song: Song?,position : Int) {
+
+    }
+
+    /**
+     * 当播放的歌曲的list没歌曲了，回调该方法.
+     * */
+    override fun onSongsEmpty() {
         
     }
 }

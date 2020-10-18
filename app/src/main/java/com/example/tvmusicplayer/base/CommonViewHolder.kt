@@ -24,7 +24,7 @@ class CommonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     
     fun setText(viewId : Int,text : String) : CommonViewHolder{
         val textView : TextView = getView<TextView>(viewId) as TextView
-        textView.setText(text)
+        textView.text = text
         return this
     }
     

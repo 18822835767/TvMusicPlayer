@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvmusicplayer.R
@@ -73,23 +72,11 @@ class PlayListDetailActivity : AppCompatActivity(),PlayListDetailContract.OnView
         PlayListDetailPresenter(this)
         
         //设置RecyclerView的数据
-        adapter = PlayListDetailAdapter(mutableListOf<Song>(),R.layout.song_item)
+        adapter = PlayListDetailAdapter(mutableListOf<Song>(),R.layout.playlist_detail__item)
         adapter.setItemClickListener(this)
         manager = LinearLayoutManager(this)
         recyclerView.layoutManager = manager
         recyclerView.adapter = adapter
-        //添加分割线
-//        recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
-        
-//        //设置歌单名字和图片在相应控件上
-//        playList?.let { 
-//            playlistNameTv.text = it.name 
-//            Picasso.get().load(it.coverImgUrl)
-//                .resize(100,100)
-//                .placeholder(R.drawable.empty_photo)
-//                .error(R.drawable.load_error)
-//                .into(playListCoverIv)
-//        }
         
         //获取歌单中的歌曲数据
         playList?.id?.let {presenter.getPlayListDetail(it)}

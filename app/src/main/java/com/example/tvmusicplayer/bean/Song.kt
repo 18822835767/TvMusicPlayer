@@ -3,7 +3,7 @@ package com.example.tvmusicplayer.bean
 import android.os.Parcel
 import android.os.Parcelable
 
-class Song : Parcelable ,Comparable<Song>{
+class Song : Parcelable, Comparable<Song> {
     var id: Long? = null
     var url: String? = null
     var size: Long? = null
@@ -33,6 +33,11 @@ class Song : Parcelable ,Comparable<Song>{
      * */
     var firstLetter: Char = ' '
 
+    /**
+     * 标记是否在在线歌曲，默认为是.
+     * */
+    var online = true
+
     constructor(parcel: Parcel) {
         id = parcel.readLong()
         url = parcel.readString()
@@ -42,6 +47,7 @@ class Song : Parcelable ,Comparable<Song>{
         artistName = parcel.readString()
         picUrl = parcel.readString()
         firstLetter = parcel.readInt().toChar()
+        online = (parcel.readByte().toInt() != 0)
     }
 
     constructor() {
@@ -78,6 +84,7 @@ class Song : Parcelable ,Comparable<Song>{
         parcel.writeString(artistName)
         parcel.writeString(picUrl)
         parcel.writeInt(firstLetter.toInt())
+        parcel.writeByte(if(online) 1 else 0)
     }
 
     override fun describeContents(): Int {
@@ -95,11 +102,11 @@ class Song : Parcelable ,Comparable<Song>{
     }
 
     override fun compareTo(other: Song): Int {
-        if(this.firstLetter == other.firstLetter){
+        if (this.firstLetter == other.firstLetter) {
             return 0
-        } else if(other.firstLetter == '#'){
+        } else if (other.firstLetter == '#') {
             return -1
-        }else if(this.firstLetter == '#'){
+        } else if (this.firstLetter == '#') {
             return 1
         }
 

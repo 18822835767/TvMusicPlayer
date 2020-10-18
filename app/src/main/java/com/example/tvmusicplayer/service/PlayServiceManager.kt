@@ -42,9 +42,8 @@ object PlayServiceManager {
         service?.playMode = mode
     }
     
-    fun getQueueSongs() : MutableList<Song>{
-        //todo 这里有点问题吧...
-        return service?.queueSongs as MutableList<Song>
+    fun getQueueSongs() : MutableList<Song>?{
+        return service?.queueSongs
     }
     
     fun getCurrentPosition() : Int{
@@ -81,5 +80,21 @@ object PlayServiceManager {
     
     fun getCurrentPoint() : Int{
         return service?.currenPoint?:0
+    }
+    
+    fun addNext(song : Song?){
+        service?.addNext(song)
+    }
+    
+    fun removeSong(position: Int){
+        service?.removeSong(position)
+    }
+
+    fun playSongByIndex(position: Int){
+        service?.playSongByIndex(position)
+    }
+    
+    fun download(song : Song){
+        service?.download(song)
     }
 }

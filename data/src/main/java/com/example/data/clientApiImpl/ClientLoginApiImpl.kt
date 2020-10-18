@@ -42,6 +42,29 @@ class ClientLoginApiImpl : ClientLoginApi {
             })
     }
 
+    override fun refreshLogin() {
+        DataUtil.observableLoginApi.refreshLogin()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Unit>{
+                override fun onComplete() {
+                    LogUtil.d(TAG, "onComplete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    LogUtil.d(TAG, "onSubscribe")
+                }
+
+                override fun onNext(t: Unit) {
+                    LogUtil.d(TAG, "onNext")
+                }
+
+                override fun onError(e: Throwable) {
+                    LogUtil.d(TAG, "onError" + e.message)
+                }
+            })
+    }
+
     override fun getLoginStatus(callback: RequestCallBack<UserJson>) {
         DataUtil.observableLoginApi.getLoginStatus()
             .subscribeOn(Schedulers.io())

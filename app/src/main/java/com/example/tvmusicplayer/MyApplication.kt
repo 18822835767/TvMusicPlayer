@@ -9,6 +9,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Process
 import com.example.tvmusicplayer.model.LoginModel
+import com.example.tvmusicplayer.model.dao.DBManager
 import com.example.tvmusicplayer.model.impl.LoginModelImpl
 import com.example.tvmusicplayer.service.PlayService
 import com.example.tvmusicplayer.service.PlayServiceManager
@@ -19,6 +20,11 @@ class MyApplication : Application() {
     private val TAG = "MyApplication"
     private var service : IPlayInterface? = null
     private val MAIN_PROCESS_NAME = "com.example.tvmusicplayer"
+    
+    companion object{
+        var app : MyApplication? = null
+        private set
+    }
     
     override fun onCreate() {
         super.onCreate()
@@ -31,6 +37,10 @@ class MyApplication : Application() {
             startService(intent)
             bindService(intent,connection, Context.BIND_AUTO_CREATE)
         }
+        
+        app = this
+        
+        DBManager.onInit(this)
         
         val pid = Process.myPid()
         val process : String = getAppNameByPID(this,pid)?:"Null_process"

@@ -172,4 +172,81 @@ class ClientMusicApiImpl : ClientMusicApi {
             })
     }
 
+    override fun getRecommendPlayList(limit: Int, callBack: RequestCallBack<RecommendPlayList>) {
+        DataUtil.observableMusicApi.getRecommendPlayList(limit)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<RecommendPlayList>{
+                override fun onComplete() {
+                    LogUtil.d(TAG, "onComplete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    LogUtil.d(TAG, "onSubscribe")
+                }
+
+                override fun onNext(t: RecommendPlayList) {
+                    LogUtil.d(TAG, "onNext")
+                    callBack.callback(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    LogUtil.d(TAG, "onError" + e.message)
+                    callBack.error(e.message ?: "UnKnown_error")
+                }
+            })
+    }
+
+    override fun getDailyRecommendPlayList(callback: RequestCallBack<DailyRecommendPlayList>) {
+        DataUtil.observableMusicApi.getDailyRecommendPlayList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<DailyRecommendPlayList>{
+                override fun onComplete() {
+                    LogUtil.d(TAG, "onComplete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    LogUtil.d(TAG, "onSubscribe")
+                }
+
+                override fun onNext(t: DailyRecommendPlayList) {
+                    LogUtil.d(TAG, "onNext")
+                    callback.callback(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    LogUtil.d(TAG, "onError" + e.message)
+                    callback.error(e.message ?: "UnKnown_error")
+                }
+
+            })
+    }
+
+    override fun getRecommendNewSong(callback : RequestCallBack<RecommendNewSong>) {
+        DataUtil.observableMusicApi.getRecommendNewSong()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<RecommendNewSong>{
+                override fun onComplete() {
+                    LogUtil.d(TAG, "onComplete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    LogUtil.d(TAG, "onSubscribe")
+                }
+
+                override fun onNext(t: RecommendNewSong) {
+                    LogUtil.d(TAG, "onNext")
+                    callback.callback(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    LogUtil.d(TAG, "onError" + e.message)
+                    callback.error(e.message ?: "UnKnown_error")
+                }
+
+            })
+    }
+
 }

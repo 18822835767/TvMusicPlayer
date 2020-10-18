@@ -1,6 +1,7 @@
 package com.example.tvmusicplayer.home
 
 import android.os.Bundle
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -17,6 +18,7 @@ import com.example.tvmusicplayer.recommend.RecommendFragment
 import com.example.tvmusicplayer.user.UserFragment
 import com.example.tvmusicplayer.manager.LoginStatusManager
 import com.example.tvmusicplayer.search.SearchActivity
+import com.example.tvmusicplayer.util.LogUtil
 import com.example.tvmusicplayer.util.NetWorkUtil
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout

@@ -1,16 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".recommend.RecommendFragment">
-
-    <com.example.tvmusicplayer.widget.BannerViewPager
-        android:id="@+id/banner_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
     
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.example.tvmusicplayer.widget.BannerViewPager
+            android:id="@+id/banner_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/circle_button_rv"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="懂你的精选歌单"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginStart="13dp"
+            android:textColor="#363636"/>
+        
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommend_playlist_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="新歌推送"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginStart="13dp"
+            android:textColor="#363636"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommend_newsong_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"/>
+        
+    </LinearLayout>
+    
+</androidx.core.widget.NestedScrollView>
+
